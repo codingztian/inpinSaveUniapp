@@ -12,6 +12,8 @@ Vue.prototype.$store = store
 // IP地址	
 Vue.prototype.api_root = 'https://erp2.xiaowo6.cn/';
 
+
+
 /**
  * 验证登录
  */
