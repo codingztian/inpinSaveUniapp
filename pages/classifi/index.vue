@@ -1,0 +1,543 @@
+<template>
+	<view class="content" v-if="list">
+		<view class="box-bg">
+			<view class="box-bg uni-nav-bar">
+				<uni-nav-bar height="6vh" shadow title="分类" 
+					color="#fff" background-color="rgb(60, 158, 253)" />
+			</view>
+		</view>
+
+		<!-- 商品分类 -->
+		<cp-goods-select
+			height="88vh" 
+			:props="{label:'label',value:'value',children:'children'}" 
+			:options="list"
+			class="listlistlist"
+			@scrolltolower="handelScrolltolower" 
+			@category-change="handelCategoryChange">
+			<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.label" class="listlistlist">
+				<view v-for="(cell,k) in item.children" :key="k" class="goods__item">
+					<view class="flexCenter">
+						<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:100px;height:100px;"></view>
+					</view>
+					<view style="border-bottom: 1px solid #EEEEEE;height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+						<view>
+							<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.label }}</view>
+							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>湖北武汉<text></text></view>
+							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>A区36号</view>
+						</view>
+						<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
+							<view style="color:#FF4C4B;font-size:14px;">3600<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
+						</view>
+					</view>
+				</view>
+			</cp-goods-item>
+		</cp-goods-select>
+		
+		
+	</view>
+</template>
+
+<script>
+	var _this;
+	export default {
+		data() {
+			return {
+				background: {
+					// 渐变色
+					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
+				},
+				data:null,
+				infodata:null,
+				
+				list: [],
+				
+			}
+		},
+		onLoad() {
+			_this = this;
+			this.list = [
+				{label: '分类1', value: 1, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类2', value: 2, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类3', value: 3, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类4', value: 4, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类5', value: 5, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类6', value: 6, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类7', value: 7, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类8', value: 8, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类9', value: 9, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类10', value: 10, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类11', value: 11, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类12', value: 12, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类13', value: 13, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类14', value: 14, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类15', value: 15, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类16', value: 16, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类17', value: 17, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类18', value: 18, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]},
+				{label: '分类19', value: 19, children: [
+					{label: '商品1', value: 1},
+					{label: '商品2', value: 2},
+					{label: '商品3', value: 3},
+					{label: '商品4', value: 4},
+					{label: '商品5', value: 5},
+					{label: '商品6', value: 6},
+					{label: '商品7', value: 7},
+					{label: '商品8', value: 8},
+					{label: '商品9', value: 9},
+				]}
+			];
+			
+		},
+		methods: {
+			handelScrolltolower(e) {
+				console.log('handelScrolltolower', e)
+			},
+			handelCategoryChange(e) {
+				console.log('handelCategoryChange', e)
+			}
+		}
+	}
+</script>
+
+<style lang="less">
+	/deep/ .uni-navbar__content  {height: 6vh;}
+	/deep/ .uni-nav-bar-text {font-size: 16px;}
+</style>
+
+<style lang="scss">
+	// @import 'static/css/cp-goods.scss';
+	
+	.flexCenter {display: flex;}
+	.radius5px {border-radius: 5px;overflow: hidden;}
+	
+	.cp-goods-select {
+		display: grid;
+		grid-template-columns: 194upx auto;
+		height: 100%;
+		width: 100%;
+		&_wrap{
+			height: 100%;
+			width: 100%;
+			overflow: auto;
+		}
+		&-aside {
+			background-color: #fff;
+			height: 100%;
+		}
+		/deep/ &-category {
+			color: #696E83;
+			background-color: #fff;
+			height: calc(100% - 60upx);
+			flex: 1;
+			position: relative;
+			
+			&__wrap{
+				position: relative;
+			}
+			
+			&-item {
+				width: 100%;
+				padding: 12px 10px 11px 10px;
+				box-sizing: border-box;
+				position: relative;
+				color: #666666;
+				background: #F4F5F6;
+				text-align: center;
+				&:last-child{
+					// margin-bottom: 200upx;
+				}
+			}
+			
+			&-item.actived {
+				color: #3A3A3A;
+				background-color: #fff;
+				position: relative;
+				color: #1660f5;
+				font-weight: 900;
+				font-size: 16px;
+				&::before {
+					content: "";
+					display: block;
+					width: 6upx;
+					height: 100%;
+					position: absolute;
+					left: 0;
+					top: 0;
+					// background-color: #1660f5;
+					background-color: transparent;
+				}
+			}
+			
+			&__actions{
+				position: sticky;
+				bottom: 0;
+			}
+		}
+	// =========================================================
+	
+	
+		/deep/ &-goods {
+			background-color: transparent;
+			height: 100%;
+			box-sizing: border-box;
+			
+			&_placeholder{
+				padding-bottom: 70vh;
+			}
+			
+			&__classify {
+				color: #333642;
+				line-height: 85upx;
+				position: sticky;
+				top: 0px;
+				z-index: 1;
+				padding: 0 8px;
+				font-size: 16px;
+				font-weight: 900;
+				background-color: #fff;
+				&_text{
+					padding-left: 10upx;
+				}
+			}
+			
+			&__list{
+				padding: 10upx;
+				&.cloumn-2 ,&.cloumn-3{
+					display: flex;
+					flex-wrap: wrap;
+				}
+			}
+			
+			.cloumn-2 .goods__item {
+				width: 49%;
+				margin-left: 10upx;
+				&:nth-of-type(2n+1){
+					margin-left: 0;
+				}
+			}
+			
+			.cloumn-3 .goods__item{
+				width: 32%;
+				margin-left: 10upx;
+				 &:nth-of-type(3n+1){
+					margin-left: 0;
+				}
+			}
+			
+			.cp-goods-select-goods__list {
+			    padding: 8px;
+					padding-top: 0px;
+			}
+			
+			.goods__item {
+				padding: 0upx;
+				box-sizing: border-box;
+				background-color: #ffffff;
+				border-radius: 4px;
+				font-size: 14px;
+				color: #262626;
+				margin-bottom: 24upx;
+				display: flex;
+				align-items: flex-start;
+				justify-content: flex-start;
+				.sub-info {
+					font-size: 12px;
+					color: #84898f;
+				}
+			}
+		}
+	}
+	
+</style>
+
+<style>
+	.content {
+		padding: 0;
+	}
+
+	.grid-text {
+		font-size: 28rpx;
+		margin-top: 4rpx;
+		color: $u-type-info;
+	}
+
+	.m_top15 {
+		margin-top: 15px;
+	}
+
+	.m_top25 {
+		margin-top: 25px;
+	}
+
+	.m_top5 {
+		margin-top: 5px;
+	}
+	
+	.u-grid-item-img {
+		margin: 0 auto;
+		display: block;
+		padding: 5px 0;
+		width: 28px;
+		height: 28px;
+	}
+	
+	
+	.color-box {
+		/* padding: 0 15px; */
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		color: #fff;
+		text-align: center;
+		margin-top: 20rpx;
+	}
+	
+	.color-item {
+		display: flex;
+		flex: 1;
+		margin: 0 8rpx;
+		flex-direction: column;
+		border-radius: 6rpx;
+		padding: 12rpx 0;
+		height: 75px;
+	}
+	
+	.bg1{
+		background: linear-gradient(-125deg, #67c707, #a7f968);
+	}
+	
+	.bg2{
+		background: linear-gradient(-125deg, #16a8cc, #1bd0fd);
+	}
+	
+	.bg3{
+		background: linear-gradient(-125deg, #e29811, #f1cf71);
+	}
+	
+	.bg4{
+		background: linear-gradient(-125deg, #cc16b6, #d496d8);
+	}
+	
+	.color-title {
+		font-size: 30px;
+		/* line-height: 75px; */
+		height: 75px;
+	}
+	
+	.color-value {
+		font-size: 24rpx;
+	}
+	
+	.text-area {
+		display: flex;
+		justify-content: center;
+	}
+	
+	.title {
+		font-size: 36rpx;
+		color: #8f8f94;
+	}
+	
+	.item {
+		padding: 10upx 30upx;
+		background-color: #fff;
+		margin: 0 10upx;
+		margin-bottom: 10upx;
+	}
+	
+	.num {
+		border-radius: 50%;
+		background-color: #ff0099;
+		color: #fff;
+		display: inline-block;
+		width: 30upx;
+		height: 30upx;
+		line-height: 30upx;
+		text-align: center;
+		padding: 2px;
+		position: absolute;
+		top: 4px;
+	}
+	
+</style>

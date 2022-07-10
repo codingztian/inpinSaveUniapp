@@ -1,0 +1,945 @@
+<template>
+	<view class="content" v-if="list">
+			<view class="box-bg">
+				<view class="box-bg uni-nav-bar">
+					<uni-nav-bar height="6vh" shadow left-icon="left" title="选择分类" 
+						color="#fff" background-color="rgb(60, 158, 253)"
+						@clickLeft="clickLeft" />
+				</view>
+			</view>
+
+			<!-- 商品分类 -->
+			<view class="goods-select">
+				<cp-goods-select
+					height="87vh"
+					:props="{label:'label',value:'id',children:'children'}" 
+					:options="list"
+					@scrolltolower="handelScrolltolower" 
+					@category-change="handelCategoryChange">
+					<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.label">
+						<view v-for="(cell,k) in item.children" :key="k" class="goods__item">
+							<view class="flexCenter">
+								<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:100px;height:100px;"></view>
+							</view>
+							<view style="border-bottom: 1px solid #EEEEEE;height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+								<view>
+									<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.label }}</view>
+									<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>湖北武汉<text></text></view>
+									<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>A区36号</view>
+								</view>
+								<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
+									<view style="color:#FF4C4B;font-size:14px;">3600<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
+									<view class="button" :class="cell.shoopNum>0?'curr':''" @click="inputDialogToggle(item,cell)" style="min-width: 52px;padding: 0 10px;border: 1px solid #BBBBBB;border-radius: 5px;text-align: center;height: 28px;line-height: 28px;font-size: 14px;">
+										{{cell.shoopNum}}
+									</view>
+								</view>
+							</view>
+						</view>
+					</cp-goods-item>
+				</cp-goods-select>
+			</view>
+			
+			<view @click="toggle('bottom')" class="bottomBox">
+				<text>共<text style="margin: 0 3px;color: #FF4C4B;">{{Object.keys($store.state.orderlist).length}}</text>件</text>
+				<text style="height: 100%;width:100px;display: flex;align-items: center;justify-content: center;border-radius: 5px;padding: 2px 10px;font-weight: normal;cursor: pointer;background: #2982FF;border-radius: 100px;color: #fff;" @click.stop="pushData">
+					下一步
+				</text>
+			</view>
+
+			<!-- 规格弹窗 -->
+			<!-- <uni-popup ref="inputDialogGui" type="dialog">	
+				<view style="width: 300px;border-radius: 11px;background-color: #fff;padding: 10px 15px;">
+					<view style="font-size: 22px;font-weight: 900;margin-bottom: 10px;"></view>
+					<view style="min-height: 100px;">
+						<view v-for="(item,val) in specifications" :key="val+'_'" :class="'spe'+val+'_'">
+							<view style="font-size: 16px;margin-bottom: 8px;">{{item.name}}</view>
+							<view class="flexCenter" style="margin-bottom: 15px;">
+								<text v-for="(ele,index) in item.type"
+									:key="val+'_'+index"
+									:class="['spe'+val+'_'+index,{'curr':item.status==index}]"
+									@click="item.status=index"
+									class="dia_goods__item">{{ele}}</text>
+							</view>
+						</view>
+						
+					</view>
+					<view class="flexCenter" 
+						style=" font-size: 18px; font-weight: 900; display: flex; justify-content: space-between; height: 35px; align-items: flex-end;">
+						<view>总计<text style="margin: 0 3px;color: #1bd0fd;font-size: 22px;">99</text>元</view>
+						<view style=" border-radius: 5px; padding: 2px 10px; font-size: 16px; font-weight: normal; cursor: pointer; background: rgb(27, 208, 253);"
+						@click="toOrder"
+						>+ 加入清单</view>
+					</view>
+					<uni-icons type="close" class="close-btn" size="40" @click="clsoeDialog"></uni-icons>
+				</view>
+				
+			</uni-popup> -->
+
+			<!-- 普通弹窗 上下左右 -->
+			<uni-popup ref="popup" background-color="#fff" @change="change">
+				<view class="popup-content" :class="{ 'popup-height': popupType === 'left' || popupType === 'right' }" style="max-height: 374px;overflow: auto;">
+					<view style="font-size:18px;color:#333333;font-weight:900;line-height: 50px;text-align: center;">已选账单</view>
+					<view v-for="(item,key) in zd" :key="key">
+						<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #ccc;">
+							<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
+							<view style="flex:1;">{{ item.label }}</view>
+							<view style="flex:1;">
+									<view class="button-text" @click="inputDialogToggle('',item)" style="min-width: 52px;padding: 0 10px;border: 1px solid #BBBBBB;border-radius: 5px;text-align: center;height: 28px;line-height: 28px;font-size: 14px;">
+										{{ item.shoopNum }}
+									</view>
+							</view>
+						</view>
+					</view>
+				</view>
+			</uni-popup>
+
+			<!-- 数量修改弹窗 -->
+			<uni-popup ref="inputDialog" type="dialog">
+				<uni-popup-dialog ref="inputClose"  mode="input" title="输入数量" value="" placeholder="请输入内容" @confirm="dialogInputConfirm">
+					<input type="number" placeholder="请输入数量" v-model="shoopInputValue"
+						style="width:100%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
+				</uni-popup-dialog>
+			</uni-popup>
+
+
+	</view>
+</template>
+
+<script>
+	var _this;
+	export default {
+		data() {
+			return {
+				background: {
+					// 渐变色
+					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
+				},
+				data:null,
+				infodata:null,
+				
+				list: [],
+				specifications:[],
+
+				shoopInputValue:"",		// 商品数量vmodel
+				goodsObj: {},					// 选中的商品对象
+
+				popupType:"",
+
+				zd:{}
+
+			}
+		},
+		onLoad() {
+			_this = this;
+			this.list = [
+				{
+					label: '肉类', 
+					id: 1, 
+					children: [
+						{
+							label: '正宗内蒙古科尔沁', 
+							id: 11,
+							kw:"39",
+							kc:"3E6D",
+
+							guige:[
+								{
+									gname:"资料",
+									type:[
+										{
+											name:"资料1",
+											id:1
+										},{
+											name:"资料2",
+											id:2
+										},{
+											name:"资料3",
+											id:3
+										}
+										// ...
+									]
+								}
+								// ...
+							]
+						},
+						{label: '牛肉', id: 12,
+							guige:[]},
+						{label: '鸡肉', id: 13,
+							guige:[]},
+						{label: '商品4', id: 14,
+							guige:[]},
+						{label: '商品5', id: 15,
+							guige:[]},
+						{label: '商品6', id: 16,
+							guige:[]},
+						{label: '商品7', id: 17,
+							guige:[]},
+						{label: '商品8', id: 18,
+							guige:[]},
+						{label: '商品9', id: 19,
+							guige:[]}
+					],
+				},
+
+				{label: '分类2', id: 2, children: [
+					{label: '商品1', id: 21,
+							guige:[]},
+					{label: '商品2', id: 22,
+							guige:[]},
+					{label: '商品3', id: 23,
+							guige:[]},
+					{label: '商品4', id: 24,
+							guige:[]},
+					{label: '商品5', id: 25,
+							guige:[]},
+					{label: '商品6', id: 26,
+							guige:[]},
+					{label: '商品7', id: 27,
+							guige:[]},
+					{label: '商品8', id: 28,
+							guige:[]},
+					{label: '商品9', id: 29,
+							guige:[]},
+				]},
+				{label: '分类3', id: 3, children: [
+					{label: '商品1', id: 31,
+							guige:[]},
+					{label: '商品2', id: 32,
+							guige:[]},
+					{label: '商品3', id: 33,
+							guige:[]},
+					{label: '商品4', id: 34,
+							guige:[]},
+					{label: '商品5', id: 35,
+							guige:[]},
+					{label: '商品6', id: 36,
+							guige:[]},
+					{label: '商品7', id: 37,
+							guige:[]},
+					{label: '商品8', id: 38,
+							guige:[]},
+					{label: '商品9', id: 39,
+							guige:[]},
+				]},
+				{label: '分类4', id: 4, children: [
+					{label: '商品1', id: 41,
+							guige:[]},
+					{label: '商品2', id: 42,
+							guige:[]},
+					{label: '商品3', id: 43,
+							guige:[]},
+					{label: '商品4', id: 44,
+							guige:[]},
+					{label: '商品5', id: 45,
+							guige:[]},
+					{label: '商品6', id: 46,
+							guige:[]},
+					{label: '商品7', id: 47,
+							guige:[]},
+					{label: '商品8', id: 48,
+							guige:[]},
+					{label: '商品9', id: 49,
+							guige:[]},
+				]},
+				{label: '分类5', id: 5, children: [
+					{label: '商品1', id: 51,
+							guige:[]},
+					{label: '商品2', id: 52,
+							guige:[]},
+					{label: '商品3', id: 53,
+							guige:[]},
+					{label: '商品4', id: 54,
+							guige:[]},
+					{label: '商品5', id: 55,
+							guige:[]},
+					{label: '商品6', id: 56,
+							guige:[]},
+					{label: '商品7', id: 57,
+							guige:[]},
+					{label: '商品8', id: 58,
+							guige:[]},
+					{label: '商品9', id: 59,
+							guige:[]},
+				]},
+				{label: '分类6', id: 6, children: [
+					{label: '商品1', id: 61,
+							guige:[]},
+					{label: '商品2', id: 62,
+							guige:[]},
+					{label: '商品3', id: 63,
+							guige:[]},
+					{label: '商品4', id: 64,
+							guige:[]},
+					{label: '商品5', id: 65,
+							guige:[]},
+					{label: '商品6', id: 66,
+							guige:[]},
+					{label: '商品7', id: 67,
+							guige:[]},
+					{label: '商品8', id: 68,
+							guige:[]},
+					{label: '商品9', id: 69,
+							guige:[]},
+				]},
+				{label: '分类7', id: 7, children: [
+					{label: '商品1', id: 71,
+							guige:[]},
+					{label: '商品2', id: 72,
+							guige:[]},
+					{label: '商品3', id: 73,
+							guige:[]},
+					{label: '商品4', id: 74,
+							guige:[]},
+					{label: '商品5', id: 75,
+							guige:[]},
+					{label: '商品6', id: 76,
+							guige:[]},
+					{label: '商品7', id: 77,
+							guige:[]},
+					{label: '商品8', id: 78,
+							guige:[]},
+					{label: '商品9', id: 79,
+							guige:[]},
+				]},
+				{label: '分类8', id: 8, children: [
+					{label: '商品1', id: 81,
+							guige:[]},
+					{label: '商品2', id: 82,
+							guige:[]},
+					{label: '商品3', id: 83,
+							guige:[]},
+					{label: '商品4', id: 84,
+							guige:[]},
+					{label: '商品5', id: 85,
+							guige:[]},
+					{label: '商品6', id: 86,
+							guige:[]},
+					{label: '商品7', id: 87,
+							guige:[]},
+					{label: '商品8', id: 88,
+							guige:[]},
+					{label: '商品9', id: 89,
+							guige:[]},
+				]},
+				{label: '分类9', id: 9, children: [
+					{label: '商品1', id: 91,
+							guige:[]},
+					{label: '商品2', id: 92,
+							guige:[]},
+					{label: '商品3', id: 93,
+							guige:[]},
+					{label: '商品4', id: 94,
+							guige:[]},
+					{label: '商品5', id: 95,
+							guige:[]},
+					{label: '商品6', id: 96,
+							guige:[]},
+					{label: '商品7', id: 97,
+							guige:[]},
+					{label: '商品8', id: 98,
+							guige:[]},
+					{label: '商品9', id: 99,
+							guige:[]},
+				]},
+				{label: '分类10', id: 10, children: [
+					{label: '商品1', id: 101,
+							guige:[]},
+					{label: '商品2', id: 102,
+							guige:[]},
+					{label: '商品3', id: 103,
+							guige:[]},
+					{label: '商品4', id: 104,
+							guige:[]},
+					{label: '商品5', id: 105,
+							guige:[]},
+					{label: '商品6', id: 106,
+							guige:[]},
+					{label: '商品7', id: 107,
+							guige:[]},
+					{label: '商品8', id: 108,
+							guige:[]},
+					{label: '商品9', id: 109,
+							guige:[]},
+				]},
+				{label: '分类11', id: 11, children: [
+					{label: '商品1', id: 111,
+							guige:[]},
+					{label: '商品2', id: 112,
+							guige:[]},
+					{label: '商品3', id: 113,
+							guige:[]},
+					{label: '商品4', id: 114,
+							guige:[]},
+					{label: '商品5', id: 115,
+							guige:[]},
+					{label: '商品6', id: 116,
+							guige:[]},
+					{label: '商品7', id: 117,
+							guige:[]},
+					{label: '商品8', id: 118,
+							guige:[]},
+					{label: '商品9', id: 119,
+							guige:[]},
+				]},
+				{label: '分类12', id: 12, children: [
+					{label: '商品1', id: 121,
+							guige:[]},
+					{label: '商品2', id: 122,
+							guige:[]},
+					{label: '商品3', id: 123,
+							guige:[]},
+					{label: '商品4', id: 124,
+							guige:[]},
+					{label: '商品5', id: 125,
+							guige:[]},
+					{label: '商品6', id: 126,
+							guige:[]},
+					{label: '商品7', id: 127,
+							guige:[]},
+					{label: '商品8', id: 128,
+							guige:[]},
+					{label: '商品9', id: 129,
+							guige:[]},
+				]},
+				{label: '分类13', id: 13, children: [
+					{label: '商品1', id: 1,
+							guige:[]},
+					{label: '商品2', id: 1,
+							guige:[]},
+					{label: '商品3', id: 1,
+							guige:[]},
+					{label: '商品4', id: 1,
+							guige:[]},
+					{label: '商品5', id: 1,
+							guige:[]},
+					{label: '商品6', id: 1,
+							guige:[]},
+					{label: '商品7', id: 1,
+							guige:[]},
+					{label: '商品8', id: 1,
+							guige:[]},
+					{label: '商品9', id: 1,
+							guige:[]},
+				]},
+				{label: '分类14', id: 14, children: [
+					{label: '商品1', id: 1,
+							guige:[]},
+					{label: '商品2', id: 2,
+							guige:[]},
+					{label: '商品3', id: 3,
+							guige:[]},
+					{label: '商品4', id: 4,
+							guige:[]},
+					{label: '商品5', id: 5,
+							guige:[]},
+					{label: '商品6', id: 6,
+							guige:[]},
+					{label: '商品7', id: 7,
+							guige:[]},
+					{label: '商品8', id: 8,
+							guige:[]},
+					{label: '商品9', id: 9,
+							guige:[]},
+				]},
+				{label: '分类15', id: 15, children: [
+					{label: '商品1', id: 1,
+							guige:[]},
+					{label: '商品2', id: 2,
+							guige:[]},
+					{label: '商品3', id: 3,
+							guige:[]},
+					{label: '商品4', id: 4,
+							guige:[]},
+					{label: '商品5', id: 5,
+							guige:[]},
+					{label: '商品6', id: 6,
+							guige:[]},
+					{label: '商品7', id: 7,
+							guige:[]},
+					{label: '商品8', id: 8,
+							guige:[]},
+					{label: '商品9', id: 9,
+							guige:[]},
+				]},
+				{label: '分类16', id: 16, children: [
+					{label: '商品1', id: 1,
+							guige:[]},
+					{label: '商品2', id: 2,
+							guige:[]},
+					{label: '商品3', id: 3,
+							guige:[]},
+					{label: '商品4', id: 4,
+							guige:[]},
+					{label: '商品5', id: 5,
+							guige:[]},
+					{label: '商品6', id: 6,
+							guige:[]},
+					{label: '商品7', id: 7,
+							guige:[]},
+					{label: '商品8', id: 8,
+							guige:[]},
+					{label: '商品9', id: 9,
+							guige:[]},
+				]},
+				{label: '分类17', id: 17, children: [
+					{label: '商品1', id: 1,
+							guige:[]},
+					{label: '商品2', id: 2,
+							guige:[]},
+					{label: '商品3', id: 3,
+							guige:[]},
+					{label: '商品4', id: 4,
+							guige:[]},
+					{label: '商品5', id: 5,
+							guige:[]},
+					{label: '商品6', id: 6,
+							guige:[]},
+					{label: '商品7', id: 7,
+							guige:[]},
+					{label: '商品8', id: 8,
+							guige:[]},
+					{label: '商品9', id: 9,
+							guige:[]},
+				]},
+				{label: '分类18', id: 18, children: [
+					{label: '商品1', id: 1,
+							guige:[]},
+					{label: '商品2', id: 2,
+							guige:[]},
+					{label: '商品3', id: 3,
+							guige:[]},
+					{label: '商品4', id: 4,
+							guige:[]},
+					{label: '商品5', id: 5,
+							guige:[]},
+					{label: '商品6', id: 6,
+							guige:[]},
+					{label: '商品7', id: 7,
+							guige:[]},
+					{label: '商品8', id: 8,
+							guige:[]},
+					{label: '商品9', id: 9,
+							guige:[]},
+				]},
+				{label: '分类19', id: 19, children: [
+					{label: '商品1', id: 1,
+							guige:[]},
+					{label: '商品2', id: 2,
+							guige:[]},
+					{label: '商品3', id: 3,
+							guige:[]},
+					{label: '商品4', id: 4,
+							guige:[]},
+					{label: '商品5', id: 5,
+							guige:[]},
+					{label: '商品6', id: 6,
+							guige:[]},
+					{label: '商品7', id: 7,
+							guige:[]},
+					{label: '商品8', id: 8,
+							guige:[]},
+					{label: '商品9', id: 9,
+							guige:[]},
+				]}
+			];
+			this.list.forEach(element => {
+				// - this.$set(原数组, 索引值, 需要赋的值)
+				element.children.forEach(item => {
+					this.$set(item, "shoopNum", 0);
+				})
+			});
+
+			console.log(this.list);
+			
+		},
+		watch: {
+			
+		},
+		methods: {
+			clickLeft() {
+				uni.switchTab({url: "/pages/statistics/index"});
+			},
+			// 数量修改弹窗
+			inputDialogToggle(classifi,goods) {
+				this.goodsObj = goods;
+				// console.log(this.$refs.inputDialog)
+				this.shoopInputValue = goods.shoopNum;
+				this.$refs.inputDialog.open();
+			},
+			// 底部弹窗
+			toggle(type) {
+
+				// 获取对象长度
+				
+				if(Object.keys(this.$store.state.orderlist).length) {
+					this.zd = this.$store.state.orderlist;
+					console.log(this.zd);
+					this.popupType = type;
+					// open 方法传入参数 等同在 uni-popup 组件上绑定 type属性
+					this.$refs.popup.open(type)
+				}
+				
+			},
+			change(e) {
+				// console.log('当前模式：' + e.type + ',状态：' + e.show);
+			},
+			
+			// 关闭弹窗
+			clsoeDialog() {
+				this.$refs.inputDialog.close()
+			},
+			
+			// 加入账单
+			dialogInputConfirm(val) {
+
+				uni.showLoading({title: '加入账单中'});
+
+				setTimeout(() => {
+					uni.hideLoading()
+					console.log(this.goodsObj);
+					this.goodsObj.shoopNum = this.shoopInputValue;
+					// this.$store.state.orderlist.push(this.goodsObj);
+					this.$set(this.$store.state.orderlist, this.goodsObj.id, this.goodsObj);
+					// 关闭窗口后，恢复默认内容
+					this.$refs.inputDialog.close()
+				}, 100)
+			},
+			// 去到下单页
+			pushData() {
+				console.log(this.$store.state.orderlist);
+				console.log(Object.keys(this.$store.state.orderlist).length);
+				// return
+				// 获取对象长度
+				let len = Object.keys(this.$store.state.orderlist).length;
+				if(len==0) {
+					uni.showToast({
+						title: '未选择商品',
+						icon: 'none'
+					})
+					// uni.showModal({
+					// 		title: '提示',
+					// 		content: '',
+					// 		success: function (res) {
+					// 				if (res.confirm) {
+					// 						console.log('用户点击确定');
+					// 				} else if (res.cancel) {
+					// 						console.log('用户点击取消');
+					// 				}
+					// 		}
+					// });
+				} else uni.navigateTo({url: '/pages/shoppingCart/index'})
+				
+			},
+
+			// 加入账单
+			toOrder(res) { },
+
+			handelScrolltolower(e) {
+				console.log('handelScrolltolower', e)
+			},
+			handelCategoryChange(e) {
+				console.log('handelCategoryChange', e)
+			}
+		}
+	}
+</script>
+
+<style lang="scss">
+	// @import 'static/css/cp-goods.scss';
+
+	.flexCenter {display: flex;}
+	.radius5px {border-radius: 5px;overflow: hidden;}
+	
+	.cp-goods-select {
+		display: grid;
+		grid-template-columns: 194upx auto;
+		height: 100%;
+		width: 100%;
+		&_wrap{
+			height: 100%;
+			width: 100%;
+			overflow: auto;
+		}
+		&-aside {
+			background-color: #fff;
+			height: 100%;
+		}
+		/deep/ &-category {
+			color: #696E83;
+			background-color: #fff;
+			height: calc(100% - 60upx);
+			flex: 1;
+			position: relative;
+			
+			&__wrap{
+				position: relative;
+			}
+			
+			&-item {
+				width: 100%;
+				padding: 12px 10px 11px 10px;
+				box-sizing: border-box;
+				position: relative;
+				color: #666666;
+				background: #F4F5F6;
+				text-align: center;
+				&:last-child{
+					// margin-bottom: 200upx;
+				}
+			}
+			
+			&-item.actived {
+				color: #3A3A3A;
+				background-color: #fff;
+				position: relative;
+				color: #2982FF;
+				font-weight: 900;
+				font-size: 16px;
+				&::before {
+					content: "";
+					display: block;
+					width: 6upx;
+					height: 100%;
+					position: absolute;
+					left: 0;
+					top: 0;
+					// background-color: #1660f5;
+					background-color: transparent;
+				}
+			}
+			
+			&__actions{
+				position: sticky;
+				bottom: 0;
+			}
+		}
+	// =========================================================
+	
+	
+		/deep/ &-goods {
+			background-color: transparent;
+			height: 100%;
+			box-sizing: border-box;
+			
+			&_placeholder{
+				padding-bottom: 70vh;
+			}
+			
+			&__classify {
+				color: #333642;
+				line-height: 85upx;
+				position: sticky;
+				top: 0px;
+				z-index: 1;
+				padding: 0 8px;
+				font-size: 16px;
+				font-weight: 900;
+				// background-color: #F4F5F6;
+				background-color: #fff;
+				&_text{
+					padding-left: 10upx;
+				}
+			}
+			
+			&__list{
+				padding: 10upx;
+				&.cloumn-2 ,&.cloumn-3{
+					display: flex;
+					flex-wrap: wrap;
+				}
+			}
+			
+			.cloumn-2 .goods__item {
+				width: 49%;
+				margin-left: 10upx;
+				&:nth-of-type(2n+1){
+					margin-left: 0;
+				}
+			}
+			
+			.cloumn-3 .goods__item{
+				width: 32%;
+				margin-left: 10upx;
+				 &:nth-of-type(3n+1){
+					margin-left: 0;
+				}
+			}
+			
+			.cp-goods-select-goods__list {
+				padding: 8px;
+				padding-top: 0;
+			}
+			
+			.goods__item {
+				padding: 0upx;
+				box-sizing: border-box;
+				background-color: #ffffff;
+				border-radius: 4px;
+				font-size: 14px;
+				color: #262626;
+				margin-bottom: 24upx;
+				display: flex;
+				align-items: flex-start;
+				justify-content: flex-start;
+				.sub-info {
+					font-size: 12px;
+					color: #84898f;
+				}
+			}
+		}
+	}
+	
+</style>
+
+<style lang="less">
+	/deep/ .uni-navbar__content  {height: 6vh;}
+	/deep/ .uni-nav-bar-text {font-size: 16px;}
+</style>
+
+<style>
+	.content {
+		padding: 0;
+		height: 100%;
+		/* display: grid;
+    	grid-template-rows: auto 60px; */
+	}
+
+	.bottomBox {
+		width: 100%;
+		height: 7vh;
+		padding: 10px;
+		padding-left: 20px;
+		display: flex;justify-content: space-between;
+		align-items: flex-end;background-color: rgb(255, 255, 255);
+		box-shadow: rgb(204 204 204) 0px -1px 10px 0px;
+		font-size: 16px;color: #666666;
+		position: relative;z-index: 1;
+		/* position: fixed;bottom: 0;z-index: 1; */
+	}
+
+	.grid-text {
+		font-size: 28rpx;
+		margin-top: 4rpx;
+	}
+	.dia_goods__item {
+		cursor: pointer;
+		min-width: 55px;
+		height: 25px;
+		line-height: 23px;
+		text-align: center;
+		border: 0.5px solid #1bd0fd;
+		border-radius: 5px;
+		display: block;
+		margin-right: 12px;
+	}
+	.dia_goods__item.curr {
+		background: #1bd0fd;
+		color: #fff;
+	}
+	.close-btn {
+		cursor: pointer;
+		color: gray !important;
+		position: absolute;
+		bottom: -48px;
+		left: 50%;
+		margin-left: -25px;
+	}
+	.m_top15 {
+		margin-top: 15px;
+	}
+
+	.m_top25 {
+		margin-top: 25px;
+	}
+
+	.m_top5 {
+		margin-top: 5px;
+	}
+	
+	.u-grid-item-img {
+		margin: 0 auto;
+		display: block;
+		padding: 5px 0;
+		width: 28px;
+		height: 28px;
+	}
+	
+	
+	.color-box {
+		/* padding: 0 15px; */
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		color: #fff;
+		text-align: center;
+		margin-top: 20rpx;
+	}
+	
+	.color-item {
+		display: flex;
+		flex: 1;
+		margin: 0 8rpx;
+		flex-direction: column;
+		border-radius: 6rpx;
+		padding: 12rpx 0;
+		height: 75px;
+	}
+	
+	.bg1{
+		background: linear-gradient(-125deg, #67c707, #a7f968);
+	}
+	
+	.bg2{
+		background: linear-gradient(-125deg, #16a8cc, #1bd0fd);
+	}
+	
+	.bg3{
+		background: linear-gradient(-125deg, #e29811, #f1cf71);
+	}
+	
+	.bg4{
+		background: linear-gradient(-125deg, #cc16b6, #d496d8);
+	}
+	
+	.color-title {
+		font-size: 30px;
+		/* line-height: 75px; */
+		height: 75px;
+	}
+	
+	.color-id {
+		font-size: 24rpx;
+	}
+	
+	.text-area {
+		display: flex;
+		justify-content: center;
+	}
+	
+	.title {
+		font-size: 36rpx;
+		color: #8f8f94;
+	}
+	
+	.item {
+		padding: 10upx 30upx;
+		background-color: #fff;
+		margin: 0 10upx;
+		margin-bottom: 10upx;
+	}
+	
+	.num {
+		border-radius: 50%;
+		background-color: #ff0099;
+		color: #fff;
+		display: inline-block;
+		width: 30upx;
+		height: 30upx;
+		line-height: 30upx;
+		text-align: center;
+		padding: 2px;
+		position: absolute;
+		top: 4px;
+	}
+	
+</style>
