@@ -1,6 +1,6 @@
 {
     "name" : "库易点",
-    "appid" : "__UNI__6400033",
+    "appid" : "__UNI__5311EDB",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
@@ -105,7 +105,8 @@
             "urlCheck" : true,
             "es6" : true
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {}
     },
     "mp-alipay" : {
         "usingComponents" : true

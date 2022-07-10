@@ -67,9 +67,9 @@
 			getsysteminfo(){
 				var _that = this
 				//这里请求接口
-				_that._post_form('api/index/getsysteminfo', {}, (result) => {
-						_that.systeminfo = result.data;
-				});
+				// _that._post_form('api/index/getsysteminfo', {}, (result) => {
+				// 		_that.systeminfo = result.data;
+				// });
 			},
 			// 点击登录
 			loginUp() {
@@ -93,10 +93,12 @@
 			loginSever(account, password) {
 				var _that = this
 				//这里请求接口
-				_that._post_form('api/user/login', {
-					account: account,
+				_that._post_form('/api/login', {
+					mobile: account,
 					password: password,
 				}, (result) => {
+					// 17701030513
+					// kuyidianpassword
 					var userinfo = result.data.userinfo;
 					userinfo.account = account;
 					userinfo.password = password;

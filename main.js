@@ -10,7 +10,7 @@ import store from './store'
 Vue.prototype.$store = store
 
 // IP地址	
-Vue.prototype.api_root = 'https://erp2.xiaowo6.cn/';
+Vue.prototype.api_root = 'https://wx.enables.cn';
 
 
 
@@ -135,7 +135,7 @@ Vue.prototype._post_form = function(url, data, success, fail, complete) {
 			'content-type': 'application/x-www-form-urlencoded',
 		},
 		method: 'POST',
-		data: data,
+		data: data,	
 		success: function(res) {
 			if (res.statusCode !== 200 || typeof res.data !== 'object') {
 				App.showError('网络请求出错！');
