@@ -10,7 +10,7 @@ import store from './store'
 Vue.prototype.$store = store
 
 // IP地址	
-Vue.prototype.api_root = 'https://wx.enables.cn';
+Vue.prototype.api_root = 'https://wx.enables.cn/index.php';
 
 
 
@@ -100,9 +100,7 @@ Vue.prototype._get = function(url, data, success, fail, complete) {
 	// 构造get请求
 	uni.request({
 		url: App.api_root + url,
-		header: {
-			'content-type': 'application/x-www-form-urlencoded' //自定义请求头信息
-		},
+
 		data: data,
 		success: function(res) {
 			if (res.statusCode !== 200) {

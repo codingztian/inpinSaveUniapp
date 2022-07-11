@@ -100,7 +100,8 @@
 				})
 			},
 			getlist() {
-				_this._post_form('/api/ykjp/information/basisinfo/customerinfo/index', {}, (result) => {
+				_this._post_form('/api/user/kehu', {}, (result) => {
+					console.log(result);
 					_this.setData({'list' : result.data.data})
 				});
 			},

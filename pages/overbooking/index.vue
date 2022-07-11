@@ -550,12 +550,20 @@
 			});
 
 			console.log(this.list);
+
+			_this.getGoodsData();
 			
 		},
 		watch: {
 			
 		},
 		methods: {
+			getGoodsData() {
+				_this._post_form('/api/goods/index', {}, (result) => {
+					console.log(result);
+					// _this.data = result.data
+				});
+			},
 			clickLeft() {
 				uni.switchTab({url: "/pages/statistics/index"});
 			},

@@ -99,19 +99,19 @@
 				}, (result) => {
 					// 17701030513
 					// kuyidianpassword
-					var userinfo = result.data.userinfo;
-					userinfo.account = account;
-					userinfo.password = password;
-
-					_that.setUserInfo(userinfo);
-
-					uni.setStorageSync('token', userinfo.token)
-					uni.setStorageSync('user_id', userinfo.user_id)
-
-					uni.switchTab({
-						url: '/pages/statistics/index'
-					});
-
+					if(result.errno == 0) {
+						var userinfo = result.data.userinfo;
+						_that.setUserInfo(userinfo);
+						uni.setStorageSync('token', result.data.token)
+						uni.setStorageSync('user_id', userinfo.uid)
+						uni.switchTab({url: '/pages/statistics/index'});
+					} else {
+						uni.showToast({
+							title: '账号或密码不匹配',
+							icon: 'none',
+							duration: 1000
+						});
+					}
 				});
 			}
 

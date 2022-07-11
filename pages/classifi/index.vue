@@ -267,9 +267,15 @@
 					{label: '商品9', value: 9},
 				]}
 			];
-			
+			_this.getGoodsData();
 		},
 		methods: {
+			getGoodsData() {
+				_this._post_form('/api/goods/index', {}, (result) => {
+					console.log(result);
+					// _this.data = result.data
+				});
+			},
 			handelScrolltolower(e) {
 				console.log('handelScrolltolower', e)
 			},

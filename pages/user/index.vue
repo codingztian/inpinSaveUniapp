@@ -10,8 +10,9 @@
 		<view class="logo" @click="goLogin" :hover-class="!login ? 'logo-hover' : ''">
 			<image class="logo-img" src="../../static/images/user/myPic.png"></image>
 			<view class="logo-title">
-				<text class="uer-name">{{login ? userInfo.nickname : '您未登录'}}</text>
+				<text class="uer-name">{{login ? userInfo.username : '您未登录'}}</text>
 				<text class="uni-panel-icon uni-icon" v-if="!login">&#xe581;</text>
+				<view @click="loginout">注销</view>
 			</view>
 		</view>
 		
@@ -72,6 +73,7 @@
 </template>
 
 <script>
+	var _this;
 	export default {
 		data() {
 			return {
@@ -80,14 +82,23 @@
 			}
 		},
 		onLoad() {
+			_this = this;
 			let userinfo = uni.getStorageSync('userinfo');
 			if (userinfo) {
 				this.login=true;
+				this.userInfo = userinfo;
 			}
-			this.getUserDetail()
+			this.getUserDetail();
+
+			console.log(uni.getStorageSync('userinfo'));
 		},
 		methods: {
-
+			loginout() {
+				_this._post_form('/api/login/loginout', {}, (result) => {
+					console.log(result);
+					// _this.data = result.data
+				});
+			},
 			cutPage(url) {
 				uni.navigateTo({
 					url: url
@@ -96,11 +107,11 @@
 
 			getUserDetail() {
 				var _this = this;
-				_this._post_form('api/user/getUserDetail', {}, function(result) {
-					_this.setData({
-						userInfo:result.data
-					})
-				});
+				// _this._post_form('api/user/getUserDetail', {}, function(result) {
+				// 	_this.setData({
+				// 		userInfo:result.data
+				// 	})
+				// });
 			},
 			goLogin() {
 				if (!this.login) {

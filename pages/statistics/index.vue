@@ -104,13 +104,14 @@
 				}
 			},
 			getinfo(){
-				_this._post_form('api/index/getmenus2', {}, (result) => {
-					_this.data = result.data
+				_this._post_form('/api/index/stat', {}, (result) => {
+					console.log(result);
+					// _this.data = result.data
 				});
 				
-				_this._post_form('api/ykjp/summary/Purchase/index', {}, (result) => {
-					_this.infodata = result.data.data
-				});
+				// _this._post_form('api/ykjp/summary/Purchase/index', {}, (result) => {
+				// 	_this.infodata = result.data.data
+				// });
 			}
 		}
 	}

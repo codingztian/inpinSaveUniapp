@@ -3,23 +3,29 @@
 		// tabble 中间按钮
 		// 代码位置：App.vue
 		onLaunch: function() { //APP 初始化完成
-			uni.onTabBarMidButtonTap(()=>{
-				console.log("点击了")
-		        // 这里可以根据 个人需求 做点击处理，
-		        // 本人需进行页面跳转。
-				uni.navigateTo({
-					url:"/pages/overbooking/index",
-					animationType:'slide-in-bottom'
-				})
-			})
+
+			// uni.onTabBarMidButtonTap(()=>{
+			// 	console.log("点击了")
+		  //       // 这里可以根据 个人需求 做点击处理，
+		  //       // 本人需进行页面跳转。
+			// 	uni.navigateTo({
+			// 		url:"/pages/overbooking/index",
+			// 		animationType:'slide-in-bottom'
+			// 	})
+			// })
 			console.log('App Launch')
 		},
 		onShow: function() {
+			let userinfo = uni.getStorageSync('userinfo');
+			if (!userinfo) {
+				uni.navigateTo({url:"/pages/login/index",})
+			}
 			console.log('App Show')
 		},
 		onHide: function() {
 			console.log('App Hide')
 		}
+		
 	}
 </script>
 
