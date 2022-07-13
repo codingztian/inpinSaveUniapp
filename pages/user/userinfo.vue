@@ -13,9 +13,9 @@
 			<view>
 				<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
 					<view>
-						<text class="title u-line-2">客户名称：{{ item.name }}</text>
-						<text class="title u-line-2">{{ item.contact }} {{ item.phone }}</text>
-						<text class="title u-line-2">{{ item.telephone }}</text>
+						<text class="title u-line-2">{{ item.cLevelName }}</text>
+						<text class="title u-line-2">{{ item.name }} {{ item.number }}</text>
+						<text class="title u-line-2">{{ item.cCategoryName }}</text>
 					</view>
 					<view>
 						<text @tap="contentclick(item.id)">
@@ -31,20 +31,7 @@
 		<view class="addBtnBox">
 			<view class="addBtn" @click="clickRight">添加客户</view>
 		</view>
-		<!-- <u-swipe-action :show="item.show" :index="index" v-for="(item, index) in list" :key="item.id" @click="click" @open="open"
-		 :options="options" >
-			<view class="item u-border-bottom" @tap="contentclick(item.id)">
-				<view class="title-wrap">
-					<text class="title u-line-2">客户名称：{{ item.name }}</text>
-					<text class="title u-line-2">客户等级：{{ item.level }}</text>
-					<text class="title u-line-2">联系人：{{ item.contact }}</text>
-					<text class="title u-line-2">联系方式：{{ item.phone }}</text>
-					<text class="title u-line-2">公司电话：{{ item.telephone }}</text>
-					<text class="title u-line-2">账期(天)：{{ item.period }}</text>
-					<text class="title u-line-2">状态：{{ item.status }}</text>
-				</view>
-			</view>
-		</u-swipe-action> -->
+		
 		<u-modal v-model="show" content="是否删除该客户？" :show-cancel-button = "true" @confirm="confirm"></u-modal>
 		<u-toast ref="uToast" />
 	</view>
@@ -102,7 +89,7 @@
 			getlist() {
 				_this._post_form('/api/user/kehu', {}, (result) => {
 					console.log(result);
-					_this.setData({'list' : result.data.data})
+					_this.setData({'list' : result.data.list})
 				});
 			},
 			click(index, index1) {
@@ -120,7 +107,7 @@
 				});
 			},
 			contentclick(e){
-				uni.navigateTo({url: '/pages/information/customerinfo/details'});
+				uni.navigateTo({url: '/pages/information/customerinfo/details?id=' + e});
 			}
 		}
 	}

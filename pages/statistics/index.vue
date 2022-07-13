@@ -1,5 +1,5 @@
 <template>
-	<view class="content" v-if="data">
+	<view class="content">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
 				<uni-nav-bar height="6vh" shadow title="首页" 
@@ -8,45 +8,48 @@
 		</view>
 		
 		<view class="contentCon">
-			<view class="yjInfo">
+			<!-- <view class="yjInfo">
 				<text class="icon"></text>
 				<text style="color:#4F5B94;font-size:13px;">您有120单待审核，请及时审批。</text>
-			</view>
+			</view> -->
 			<view class="color-box" v-if="infodata">
 				<view class="color-item ibg1" @click="toOverbooking('inOrder')">
 					<view class="color-title">入库管理</view>
 					<view class="color-value">
-						今日入库：{{ parseInt(infodata.purchase.totalMoney) }}
+						今日入库：{{ parseInt(infodata.SALE) }}
 					</view>
-					<view class="color-value">
-						待审核：{{ parseInt(infodata.purchase.totalMoney) }}
-					</view>
+					<!-- <view class="color-value">
+						待审核：{{ parseInt(infodata.SALE) }}
+					</view> -->
 				</view>
 				<view class="color-item ibg2" @click="toOverbooking('outOrder')">
 					<view class="color-title">出库管理</view>
 					<view class="color-value">
-						今日出库：{{ parseInt(infodata.Retprodcut.totalMoney) }}
+						今日出库：{{ parseInt(infodata.PUR) }}
 					</view>
-					<view class="color-value">
-						待审核：{{ parseInt(infodata.Retprodcut.totalMoney) }}
-					</view>
+					<!-- <view class="color-value">
+						待审核：{{ parseInt(infodata.PUR) }}
+					</view> -->
 				</view>
 			</view>
 			
 			<view class="color-box" v-if="infodata">
-				<view class="color-item ibg3" @click="toOverbooking('kcyj')">
-					<view class="color-title">库存预警</view>
-					<view class="color-value">
-						预警商品数：{{ parseInt(infodata.deliveryPro.totalMoney) }}
+				<view class="color-item ibg3" @click="toOverbooking('kcyj')" style="display: flex;flex-direction: column;justify-content: center;">
+					<view class="color-title" style="text-align: center;">
+						<!-- 库存预警 -->
+						敬请期待
+					</view>
+					<!-- <view class="color-value">
+						预警商品数：{{ parseInt(infodata.PUR) }}
 					</view>
 					<view class="color-value">
-						最低库存数：{{ parseInt(infodata.deliveryPro.totalMoney) }}
-					</view>
+						最低库存数：{{ parseInt(infodata.PUR) }}
+					</view> -->
 				</view>
 				<view class="color-item ibg4">
 					<view class="color-title">联系库管</view>
-					<view class="color-value">张师傅</view>
-					<view class="color-value">13207196768</view>
+					<view class="color-value">{{ infodata.kg.name }}</view>
+					<view class="color-value">{{ infodata.kg.tel }}</view>
 				</view>
 			</view>
 			
@@ -84,7 +87,12 @@
 					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
 				},
 				data:null,
-				infodata:null,
+				infodata: {
+					kg: {
+						name:"",
+						tel:""
+					}
+				},
 			}
 		},
 		onLoad() {
@@ -104,9 +112,13 @@
 				}
 			},
 			getinfo(){
-				_this._post_form('/api/index/stat', {}, (result) => {
+				_this._post_form('/api/stat/home', {}, (result) => {
 					console.log(result);
-					// _this.data = result.data
+					_this.infodata = result.data
+					_this.infodata.kg = {
+						name: "张师傅",
+						tel: "13299998888"
+					}
 				});
 				
 				// _this._post_form('api/ykjp/summary/Purchase/index', {}, (result) => {

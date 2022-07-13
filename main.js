@@ -126,11 +126,12 @@ Vue.prototype._get = function(url, data, success, fail, complete) {
 // 模拟继承post请求的方法
 Vue.prototype._post_form = function(url, data, success, fail, complete) {
 	let App = this;
-	data.token = uni.getStorageSync('token');
+	// data.token = uni.getStorageSync('token');
 	uni.request({
 		url: App.api_root + url,
 		header: {
 			'content-type': 'application/x-www-form-urlencoded',
+			'token': uni.getStorageSync('token')
 		},
 		method: 'POST',
 		data: data,	

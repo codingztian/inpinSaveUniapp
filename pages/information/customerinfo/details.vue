@@ -45,15 +45,15 @@
 
 		},
 		onLoad(e) {
+			console.log(e);
 			_this = this;
-			_this.getUnitList(e.id);
+			_this.getUnitList(e);
 		},
 		methods: {
 			getUnitList(id) {
-				console.log(id);
-				_this._post_form('/api/ykjp/information/basisinfo/customerinfo/getdetails', {id}, (result) => {
-					_this.setData({'unitlist' : result.data.data})
-				});
+				// _this._post_form('/api/ykjp/information/basisinfo/customerinfo/getdetails', {id}, (result) => {
+				// 	_this.setData({'unitlist' : result.data.data})
+				// });
 			}
 		}
 	}
