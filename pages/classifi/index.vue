@@ -10,24 +10,25 @@
 		<!-- 商品分类 -->
 		<cp-goods-select
 			height="88vh" 
-			:props="{label:'label',value:'value',children:'children'}" 
+			:props="{label:'name',value:'id',children:'children'}" 
+			v-if="list"
 			:options="list"
 			class="listlistlist"
 			@scrolltolower="handelScrolltolower" 
 			@category-change="handelCategoryChange">
-			<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.label" class="listlistlist">
+			<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.name" class="listlistlist">
 				<view v-for="(cell,k) in item.children" :key="k" class="goods__item">
 					<view class="flexCenter">
-						<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:100px;height:100px;"></view>
+						<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="cell.thumb_img" alt="51" style="width:100px;height:100px;"></view>
 					</view>
 					<view style="border-bottom: 1px solid #EEEEEE;height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 						<view>
-							<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.label }}</view>
-							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>湖北武汉<text></text></view>
-							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>A区36号</view>
+							<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.name }}</view>
+							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>{{cell.factory_name}}<text></text></view>
+							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>{{cell.location}}</view>
 						</view>
 						<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
-							<view style="color:#FF4C4B;font-size:14px;">3600<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
+							<view style="color:#FF4C4B;font-size:14px;">{{cell.kucun}}<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
 						</view>
 					</view>
 				</view>
@@ -51,252 +52,24 @@
 				infodata:null,
 				
 				list: [],
-
-// data:[
-// 	{
-// 	label: "商品分类1",
-// 	id: "1",
-// 	// ...
-// 	children: [
-// 		{
-// 			label: '商品分类名称',
-// 			id:"1",
-// 			// ...	
-// 		},{
-// 			label: '商品分类名称',
-// 			id:"1",
-// 		},
-// 			// ...
-// 		]
-// 	},
-// 	{
-// 		label: "商品分类2",
-// 		// ...
-// 	}
-// 	// ...
-// ]
 				
 			}
 		},
 		onLoad() {
 			_this = this;
-			this.list = [
-				{label: '分类1', value: 1, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类2', value: 2, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类3', value: 3, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类4', value: 4, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类5', value: 5, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类6', value: 6, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类7', value: 7, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类8', value: 8, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类9', value: 9, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类10', value: 10, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类11', value: 11, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类12', value: 12, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类13', value: 13, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类14', value: 14, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类15', value: 15, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类16', value: 16, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类17', value: 17, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类18', value: 18, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]},
-				{label: '分类19', value: 19, children: [
-					{label: '商品1', value: 1},
-					{label: '商品2', value: 2},
-					{label: '商品3', value: 3},
-					{label: '商品4', value: 4},
-					{label: '商品5', value: 5},
-					{label: '商品6', value: 6},
-					{label: '商品7', value: 7},
-					{label: '商品8', value: 8},
-					{label: '商品9', value: 9},
-				]}
-			];
+			
 			_this.getGoodsData();
 		},
 		methods: {
 			getGoodsData() {
 				_this._post_form('/api/goods/index', {}, (result) => {
 					console.log(result);
+					if(result.errno==0) {
+						// result.data 对象格式 转为数组格式
+						_this.list = Object.values(result.data);
+					}
+					console.log(_this.list);
+
 					// _this.data = result.data
 				});
 			},

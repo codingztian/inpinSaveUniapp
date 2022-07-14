@@ -13,14 +13,17 @@
 			<view>
 				<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
 					<view>
-						<text class="title u-line-2">{{ item.cLevelName }}</text>
-						<text class="title u-line-2">{{ item.name }} {{ item.number }}</text>
-						<text class="title u-line-2">{{ item.cCategoryName }}</text>
+						<text class="title u-line-2" style="color:#333;font-size: 18px;font-weight: 900;line-height: 32px;">{{ item.name }}</text>
+						<text class="title u-line-2" style="color:#999999;font-size: 12px;">{{ item.linkName }} {{item.mobile}}</text>
+						<text class="title u-line-2" style="color:#666666;font-size: 14px;">{{ item.address }}</text>
 					</view>
-					<view>
-						<text @tap="contentclick(item.id)">
-							<uni-icons type="compose" size="24"></uni-icons>
-						</text>
+					<view style="display:flex;">
+						<view @tap="eidtorUser(item.id)">
+							<uni-icons type="compose" size="30"></uni-icons>
+						</view>
+						<view @tap="delUser(item.id)" style="margin-left:10px;">
+							<uni-icons type="trash" size="30"></uni-icons>
+						</view>
 						<!-- <text @open="open(id)">
 							<uni-icons type="trash" size="24"></uni-icons>
 						</text> -->
@@ -29,7 +32,7 @@
 			</view>
 		</view>
 		<view class="addBtnBox">
-			<view class="addBtn" @click="clickRight">添加客户</view>
+			<view class="addBtn" @click="addUser">添加客户</view>
 		</view>
 		
 		<u-modal v-model="show" content="是否删除该客户？" :show-cancel-button = "true" @confirm="confirm"></u-modal>
@@ -77,14 +80,30 @@
 			clickLeft() {
 				uni.switchTab({url: '/pages/user/index'});
 			},
-			clickRight() {
+			addUser() {
 				uni.navigateTo({url: '/pages/information/customerinfo/add'});
 			},
-
-			onNavigationBar(){
-				uni.navigateTo({
-					url:'add'
-				})
+			eidtorUser(e){
+				uni.navigateTo({url: '/pages/information/customerinfo/add?id=' + e});
+				// uni.navigateTo({url: '/pages/information/customerinfo/details?id=' + e});
+			},
+			delUser(e) {
+				_this.show = true;
+				_this.id = e
+			},
+			confirm(){
+				console.log(_this.id);
+				_this._post_form('/api/user/kehudo', {
+					action: "delete",
+					id: _this.id
+				}, (result) => {
+					console.log(result);
+					_this.$refs.uToast.show({
+						title: '删除成功',
+						type: 'success',
+					});
+					_this.getlist()
+				});
 			},
 			getlist() {
 				_this._post_form('/api/user/kehu', {}, (result) => {
@@ -92,23 +111,20 @@
 					_this.setData({'list' : result.data.list})
 				});
 			},
-			click(index, index1) {
+			
+			onNavigationBar(){
+				uni.navigateTo({
+					url:'add'
+				})
+			},
+			clickShow(index, index1) {
 				_this.show = true;
 				_this.id = this.list[index].id;
 			},
 			open(index) {
 				this.list[index].show = true;
 			},
-			confirm(){
-				_this._post_form('/api/ykjp/information/basisinfo/customerinfo/del', {
-					id:_this.id
-				}, (result) => {
-					_this.getlist()
-				});
-			},
-			contentclick(e){
-				uni.navigateTo({url: '/pages/information/customerinfo/details?id=' + e});
-			}
+			
 		}
 	}
 </script>
@@ -131,7 +147,7 @@
 	.action .title-wrap .title {
 		font-size: 14px;
 		color: #333;
-		line-height: 30px;
+		line-height: 26px;
 	}
 	.addBtnBox {
 		height: 8vh;

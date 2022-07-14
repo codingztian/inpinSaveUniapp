@@ -12,8 +12,11 @@
 			<view>
 				<view class="title-wrap" :index="index" v-for="(item, index) in unitlist" :key="item.id">
 					<view>
-						<text class="title u-line-2">{{ item.name }}</text>
+						<text class="title u-line-2" style="color:#333;font-size: 18px;font-weight: 900;line-height: 32px;">{{ item.name }}</text>
+						<text class="title u-line-2" style="color:#999999;font-size: 12px;">{{ item.linkName }} {{item.mobile}}</text>
+						<text class="title u-line-2" style="color:#666666;font-size: 14px;">{{ item.address }}</text>
 					</view>
+					<view></view>
 				</view>
 			</view>
 		</view>
@@ -90,8 +93,9 @@
 				})
 			},
 			getUnitList() {
-				_this._post_form('/api/ykjp/information/basisinfo/supplier/index', {}, (result) => {
-					_this.setData({'unitlist' : result.data.data})
+				_this._post_form('/api/user/gys', {}, (result) => {
+					console.log(result);
+					_this.setData({'unitlist' : result.data.list})
 				});
 			},
 			click(index, index1) {
@@ -120,20 +124,21 @@
 <style lang="scss" scoped>
 	.action {
 		height:86vh;
-		padding: 12px;
+		// padding: 12px;
 		overflow: auto;
 	}
 	.action .title-wrap {
-		margin-bottom: 12px;
+		padding:12px 14px;
+		// margin-bottom: 12px;
 		display: flex;
 		align-items: center;
-    	justify-content: space-between;
+		justify-content: space-between;
 	}
 
 	.action .title-wrap .title {
 		font-size: 14px;
 		color: #333;
-		line-height: 30px;
+		line-height: 24px;
 	}
 	.addBtnBox {
 		height: 8vh;

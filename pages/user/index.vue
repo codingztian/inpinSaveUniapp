@@ -43,11 +43,11 @@
 			<view class="flex">
 				<view class="io about" style="margin-right: 35px;" @click="cutPage('/pages/user/about')">
 					<view class="pic"></view>
-					关于我们
+					设置
 				</view>
 				<view class="io set" @click="cutPage('/pages/user/about')">
 					<view class="pic"></view>
-					设置
+					关于我们
 				</view>
 			</view>
 		</view>

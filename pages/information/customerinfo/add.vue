@@ -11,7 +11,7 @@
 		<view class="cmain">
 			<u-form :model="model" :rules="rules" ref="uForm" :errorType="errorType">
 				<u-form-item :leftIconStyle="{color: '#888', fontSize: '32rpx'}" left-icon="coupon" label-width="180"
-				:label-position="labelPosition" label="客户名称" prop="name">
+				:label-position="labelPosition" label="商户名称" prop="name">
 					<u-input :border="border" placeholder="请输入客户名称" v-model="model.name" type="text"></u-input>
 				</u-form-item>
 				
@@ -20,13 +20,13 @@
 					<u-input :border="border" placeholder="请输入联系人" v-model="model.linkman" type="text"></u-input>
 				</u-form-item>
 				
-				<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="phone" :label-position="labelPosition" label="手机号码" prop="phone" label-width="150">
+				<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="phone" :label-position="labelPosition" label="联系电话" prop="phone" label-width="150">
 					<u-input :border="border" placeholder="请输入手机号" v-model="model.phone" type="number"></u-input>
 				</u-form-item>
 				
-				<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="phone" :label-position="labelPosition" label="座机号码" prop="phone" label-width="150">
+				<!-- <u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="phone" :label-position="labelPosition" label="座机号码" prop="phone" label-width="150">
 					<u-input :border="border" placeholder="请输入公司公司电话" v-model="model.telephone" type="number"></u-input>
-				</u-form-item>
+				</u-form-item> -->
 				
 				<u-form-item :label-position="labelPosition" label="所在地区" prop="city" label-width="150">
 					<u-input :border="border" type="select" :select-open="pickerShow" v-model="model.city" placeholder="请选择地区" @click="pickerShow = true"></u-input>
@@ -37,13 +37,13 @@
 					<u-input :border="border" placeholder="请输入详细地址" v-model="model.address" type="text"></u-input>
 				</u-form-item>
 				
-				<u-form-item :label-position="labelPosition" label="说明" prop="remark">
+				<!-- <u-form-item :label-position="labelPosition" label="说明" prop="remark">
 					<u-input type="textarea" :border="border" placeholder="请填写说明" v-model="model.remark" />
-				</u-form-item>
+				</u-form-item> -->
 			</u-form>
 
 			<view class="mt20">
-				<u-button type="success" :ripple="true" :plain="true" shape="circle" @click="submit">提交</u-button>
+				<u-button type="success" :ripple="true" :plain="true" shape="circle" @click="submit">保存</u-button>
 			</view>
 			<u-picker mode="region" v-model="pickerShow" @confirm="regionConfirm"></u-picker>
 			
@@ -144,8 +144,22 @@
 			}
 
 		},
-		onLoad() {
+		onLoad(e) {
 			_this = this;
+			if(e.id) {
+				_this._post_form('/api/user/kehu', {}, (result) => {
+					console.log(result);
+					result.data.list.forEach(element => {
+						if(element.id == e.id) {
+							_this.model.name = element.name;
+							_this.model.linkman = element.linkName;
+							_this.model.phone = element.mobile;
+							_this.model.city = element.address.split(" ")[0];
+							_this.model.address = element.address.split(" ")[1];
+						}
+					});
+				});
+			}
 		},
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
@@ -157,15 +171,15 @@
 			submit() {
 				this.$refs.uForm.validate(valid => {
 					if (valid) {
-						_this._post_form('/api/ykjp/information/basisinfo/customerinfo/add', {
-							name:_this.model.name,
-							linkman:_this.model.linkman,
-							address:_this.model.address,
-							city:_this.model.city,
-							remark:_this.model.remark,
-							phone:_this.model.phone,
-							telephone:_this.model.telephone,
+						_this._post_form('/api/user/kehudo', {
+							action: "add",
+							company: _this.model.name,
+							boss: _this.model.linkman,
+							mobile: _this.model.phone,
+							address: _this.model.city+" "+_this.model.address,
+
 						}, (result) => {
+							console.log(result);
 							_this.$refs.uToast.show({
 								title: '添加成功',
 								type: 'success',
@@ -174,7 +188,7 @@
 						});
 					}else{
 						this.$refs.uToast.show({
-							title: '验证失败',
+							title: '信息有误',
 							type: 'error'
 						})
 					}
