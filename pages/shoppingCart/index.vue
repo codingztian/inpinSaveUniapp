@@ -69,7 +69,7 @@
 			}
 		},
 		computed:{
-			zd() {
+			zd() {	// vuex 数据页面初始化渲染 赋值到zd 否则为undefined
 			    return this.$store.state.orderlist
 			},
 		},
@@ -114,12 +114,33 @@
 			},
 
 			toOredrOver() {
+				let goodsArr = []
+				Object.values(this.zd).forEach(e=> {
+					goodsArr.push({
+						goods_id:e.id,
+						goods_num:e.shoopNum
+					})
+				});
+				console.log(goodsArr);
+				if(!this.selectAddress.id) {
+					uni.showToast({title: '请选择收货地址', icon: 'none'});
+					return;
+				}
 				uni.showLoading({title: '提交账单中'});
 				setTimeout(() => {
-					uni.hideLoading()
-					uni.navigateTo({
-						url: '/pages/shoppingCart/over'
-					})
+					_this._post_form('/api/order/sendorder', {
+						goods_info: JSON.stringify(goodsArr),
+						kehu_id: this.selectAddress.id,
+					}, (result) => {
+						uni.hideLoading();
+						if(result.errno==0) {
+							uni.navigateTo({url: '/pages/shoppingCart/over'});
+						} else {
+							uni.showToast({title: result.error, icon: 'none'});
+						}
+						
+					});
+					
 				}, 300)
 			},
 			
