@@ -2,7 +2,7 @@
 	<view class="center">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
-				<uni-nav-bar height="6vh" shadow left-icon="left" title="添加客户" 
+				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="添加客户" 
 					color="#fff" background-color="rgb(60, 158, 253)"
 					@clickLeft="clickLeft" />
 			</view>
@@ -145,6 +145,7 @@
 
 		},
 		onLoad(e) {
+			console.log(e);
 			_this = this;
 			if(e.id) {
 				_this._post_form('/api/user/kehu', {}, (result) => {
@@ -209,9 +210,4 @@
 		padding:30rpx;
  		background-color: #fff;
 	}
-</style>
-
-<style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
 </style>

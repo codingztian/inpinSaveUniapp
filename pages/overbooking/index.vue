@@ -2,7 +2,7 @@
 	<view class="content" v-if="list">
 			<view class="box-bg">
 				<view class="box-bg uni-nav-bar">
-					<uni-nav-bar height="6vh" shadow left-icon="left" title="选择分类" 
+					<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="选择分类" 
 						color="#fff" background-color="rgb(60, 158, 253)"
 						@clickLeft="clickLeft" />
 				</view>
@@ -11,26 +11,36 @@
 			<!-- 商品分类 -->
 			<view class="goods-select">
 				<cp-goods-select
-					height="87vh"
-					:props="{label:'label',value:'id',children:'children'}" 
+					height="83vh"
+					:props="{label:'name',value:'id',children:'children'}" 
 					:options="list"
 					@scrolltolower="handelScrolltolower" 
 					@category-change="handelCategoryChange">
-					<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.label">
+					<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.name">
 						<view v-for="(cell,k) in item.children" :key="k" class="goods__item">
 							<view class="flexCenter">
-								<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:100px;height:100px;"></view>
+								<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="cell.thumb_img" alt="51" style="width:80px;height:80px;"></view>
 							</view>
-							<view style="border-bottom: 1px solid #EEEEEE;height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+							<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 								<view>
-									<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.label }}</view>
-									<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>湖北武汉<text></text></view>
-									<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>A区36号</view>
+									<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.name }}</view>
+									<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
+										<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">供应商</text>
+										<text>{{cell.factory_name}}</text>
+									</view>
+									<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
+										<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">库位</text>
+										<text>{{cell.location}}</text>
+									</view>
 								</view>
-								<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
-									<view style="color:#FF4C4B;font-size:14px;">3600<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
-									<view class="button" :class="cell.shoopNum>0?'curr':''" @click="inputDialogToggle(item,cell)" style="min-width: 52px;padding: 0 10px;border: 1px solid #BBBBBB;border-radius: 5px;text-align: center;height: 28px;line-height: 28px;font-size: 14px;">
-										{{cell.shoopNum}}
+								<view style="display:flex;align-items: center;justify-content: space-between;margin: 5px 0;height: 25px;">
+									<view style="color:#FF4C4B;font-size:14px;">
+										<text style="font-weight:900;">{{cell.kucun}}</text>
+										<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{cell.unit_name}}</text>
+									</view>
+									<view class="button" :class="cell.shoopNum>0?'curr':''" @click="inputDialogToggle(item,cell)" style="text-align: center;font-size: 14px;">
+										<text v-if="cell.shoopNum>0" style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;">+{{cell.shoopNum}}</text>
+										<view v-else><uni-icons type="plus-filled" size="24"></uni-icons></view>
 									</view>
 								</view>
 							</view>
@@ -80,12 +90,12 @@
 				<view class="popup-content" :class="{ 'popup-height': popupType === 'left' || popupType === 'right' }" style="max-height: 374px;overflow: auto;">
 					<view style="font-size:18px;color:#333333;font-weight:900;line-height: 50px;text-align: center;">已选账单</view>
 					<view v-for="(item,key) in zd" :key="key">
-						<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #ccc;">
+						<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #eee;">
 							<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
-							<view style="flex:1;">{{ item.label }}</view>
-							<view style="flex:1;">
-									<view class="button-text" @click="inputDialogToggle('',item)" style="min-width: 52px;padding: 0 10px;border: 1px solid #BBBBBB;border-radius: 5px;text-align: center;height: 28px;line-height: 28px;font-size: 14px;">
-										{{ item.shoopNum }}
+							<view style="flex:1;font-size:18px;font-weight:900;">{{ item.name }}</view>
+							<view style="flex:0;">
+									<view class="button-text" @click="inputDialogToggle('',item)" style="text-align: center;font-size: 14px;">
+										<text style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;float: right;">+{{item.shoopNum}}</text>
 									</view>
 							</view>
 						</view>
@@ -96,11 +106,9 @@
 			<!-- 数量修改弹窗 -->
 			<uni-popup ref="inputDialog" type="dialog">
 				<uni-popup-dialog ref="inputClose"  mode="input" title="输入数量" value="" placeholder="请输入内容" @confirm="dialogInputConfirm">
-					<input type="number" placeholder="请输入数量" v-model="shoopInputValue"
-						style="width:100%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
+					<input type="number" placeholder="请输入数量" v-model="shoopInputValue" style="width:100%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
 				</uni-popup-dialog>
 			</uni-popup>
-
 
 	</view>
 </template>
@@ -131,447 +139,44 @@
 		},
 		onLoad() {
 			_this = this;
-			this.list = [
-				{
-					label: '肉类', 
-					id: 1, 
-					children: [
-						{
-							label: '正宗内蒙古科尔沁', 
-							id: 11,
-							kw:"39",
-							kc:"3E6D",
-
-							guige:[
-								{
-									gname:"资料",
-									type:[
-										{
-											name:"资料1",
-											id:1
-										},{
-											name:"资料2",
-											id:2
-										},{
-											name:"资料3",
-											id:3
-										}
-										// ...
-									]
-								}
-								// ...
-							]
-						},
-						{label: '牛肉', id: 12,
-							guige:[]},
-						{label: '鸡肉', id: 13,
-							guige:[]},
-						{label: '商品4', id: 14,
-							guige:[]},
-						{label: '商品5', id: 15,
-							guige:[]},
-						{label: '商品6', id: 16,
-							guige:[]},
-						{label: '商品7', id: 17,
-							guige:[]},
-						{label: '商品8', id: 18,
-							guige:[]},
-						{label: '商品9', id: 19,
-							guige:[]}
-					],
-				},
-
-				{label: '分类2', id: 2, children: [
-					{label: '商品1', id: 21,
-							guige:[]},
-					{label: '商品2', id: 22,
-							guige:[]},
-					{label: '商品3', id: 23,
-							guige:[]},
-					{label: '商品4', id: 24,
-							guige:[]},
-					{label: '商品5', id: 25,
-							guige:[]},
-					{label: '商品6', id: 26,
-							guige:[]},
-					{label: '商品7', id: 27,
-							guige:[]},
-					{label: '商品8', id: 28,
-							guige:[]},
-					{label: '商品9', id: 29,
-							guige:[]},
-				]},
-				{label: '分类3', id: 3, children: [
-					{label: '商品1', id: 31,
-							guige:[]},
-					{label: '商品2', id: 32,
-							guige:[]},
-					{label: '商品3', id: 33,
-							guige:[]},
-					{label: '商品4', id: 34,
-							guige:[]},
-					{label: '商品5', id: 35,
-							guige:[]},
-					{label: '商品6', id: 36,
-							guige:[]},
-					{label: '商品7', id: 37,
-							guige:[]},
-					{label: '商品8', id: 38,
-							guige:[]},
-					{label: '商品9', id: 39,
-							guige:[]},
-				]},
-				{label: '分类4', id: 4, children: [
-					{label: '商品1', id: 41,
-							guige:[]},
-					{label: '商品2', id: 42,
-							guige:[]},
-					{label: '商品3', id: 43,
-							guige:[]},
-					{label: '商品4', id: 44,
-							guige:[]},
-					{label: '商品5', id: 45,
-							guige:[]},
-					{label: '商品6', id: 46,
-							guige:[]},
-					{label: '商品7', id: 47,
-							guige:[]},
-					{label: '商品8', id: 48,
-							guige:[]},
-					{label: '商品9', id: 49,
-							guige:[]},
-				]},
-				{label: '分类5', id: 5, children: [
-					{label: '商品1', id: 51,
-							guige:[]},
-					{label: '商品2', id: 52,
-							guige:[]},
-					{label: '商品3', id: 53,
-							guige:[]},
-					{label: '商品4', id: 54,
-							guige:[]},
-					{label: '商品5', id: 55,
-							guige:[]},
-					{label: '商品6', id: 56,
-							guige:[]},
-					{label: '商品7', id: 57,
-							guige:[]},
-					{label: '商品8', id: 58,
-							guige:[]},
-					{label: '商品9', id: 59,
-							guige:[]},
-				]},
-				{label: '分类6', id: 6, children: [
-					{label: '商品1', id: 61,
-							guige:[]},
-					{label: '商品2', id: 62,
-							guige:[]},
-					{label: '商品3', id: 63,
-							guige:[]},
-					{label: '商品4', id: 64,
-							guige:[]},
-					{label: '商品5', id: 65,
-							guige:[]},
-					{label: '商品6', id: 66,
-							guige:[]},
-					{label: '商品7', id: 67,
-							guige:[]},
-					{label: '商品8', id: 68,
-							guige:[]},
-					{label: '商品9', id: 69,
-							guige:[]},
-				]},
-				{label: '分类7', id: 7, children: [
-					{label: '商品1', id: 71,
-							guige:[]},
-					{label: '商品2', id: 72,
-							guige:[]},
-					{label: '商品3', id: 73,
-							guige:[]},
-					{label: '商品4', id: 74,
-							guige:[]},
-					{label: '商品5', id: 75,
-							guige:[]},
-					{label: '商品6', id: 76,
-							guige:[]},
-					{label: '商品7', id: 77,
-							guige:[]},
-					{label: '商品8', id: 78,
-							guige:[]},
-					{label: '商品9', id: 79,
-							guige:[]},
-				]},
-				{label: '分类8', id: 8, children: [
-					{label: '商品1', id: 81,
-							guige:[]},
-					{label: '商品2', id: 82,
-							guige:[]},
-					{label: '商品3', id: 83,
-							guige:[]},
-					{label: '商品4', id: 84,
-							guige:[]},
-					{label: '商品5', id: 85,
-							guige:[]},
-					{label: '商品6', id: 86,
-							guige:[]},
-					{label: '商品7', id: 87,
-							guige:[]},
-					{label: '商品8', id: 88,
-							guige:[]},
-					{label: '商品9', id: 89,
-							guige:[]},
-				]},
-				{label: '分类9', id: 9, children: [
-					{label: '商品1', id: 91,
-							guige:[]},
-					{label: '商品2', id: 92,
-							guige:[]},
-					{label: '商品3', id: 93,
-							guige:[]},
-					{label: '商品4', id: 94,
-							guige:[]},
-					{label: '商品5', id: 95,
-							guige:[]},
-					{label: '商品6', id: 96,
-							guige:[]},
-					{label: '商品7', id: 97,
-							guige:[]},
-					{label: '商品8', id: 98,
-							guige:[]},
-					{label: '商品9', id: 99,
-							guige:[]},
-				]},
-				{label: '分类10', id: 10, children: [
-					{label: '商品1', id: 101,
-							guige:[]},
-					{label: '商品2', id: 102,
-							guige:[]},
-					{label: '商品3', id: 103,
-							guige:[]},
-					{label: '商品4', id: 104,
-							guige:[]},
-					{label: '商品5', id: 105,
-							guige:[]},
-					{label: '商品6', id: 106,
-							guige:[]},
-					{label: '商品7', id: 107,
-							guige:[]},
-					{label: '商品8', id: 108,
-							guige:[]},
-					{label: '商品9', id: 109,
-							guige:[]},
-				]},
-				{label: '分类11', id: 11, children: [
-					{label: '商品1', id: 111,
-							guige:[]},
-					{label: '商品2', id: 112,
-							guige:[]},
-					{label: '商品3', id: 113,
-							guige:[]},
-					{label: '商品4', id: 114,
-							guige:[]},
-					{label: '商品5', id: 115,
-							guige:[]},
-					{label: '商品6', id: 116,
-							guige:[]},
-					{label: '商品7', id: 117,
-							guige:[]},
-					{label: '商品8', id: 118,
-							guige:[]},
-					{label: '商品9', id: 119,
-							guige:[]},
-				]},
-				{label: '分类12', id: 12, children: [
-					{label: '商品1', id: 121,
-							guige:[]},
-					{label: '商品2', id: 122,
-							guige:[]},
-					{label: '商品3', id: 123,
-							guige:[]},
-					{label: '商品4', id: 124,
-							guige:[]},
-					{label: '商品5', id: 125,
-							guige:[]},
-					{label: '商品6', id: 126,
-							guige:[]},
-					{label: '商品7', id: 127,
-							guige:[]},
-					{label: '商品8', id: 128,
-							guige:[]},
-					{label: '商品9', id: 129,
-							guige:[]},
-				]},
-				{label: '分类13', id: 13, children: [
-					{label: '商品1', id: 1,
-							guige:[]},
-					{label: '商品2', id: 1,
-							guige:[]},
-					{label: '商品3', id: 1,
-							guige:[]},
-					{label: '商品4', id: 1,
-							guige:[]},
-					{label: '商品5', id: 1,
-							guige:[]},
-					{label: '商品6', id: 1,
-							guige:[]},
-					{label: '商品7', id: 1,
-							guige:[]},
-					{label: '商品8', id: 1,
-							guige:[]},
-					{label: '商品9', id: 1,
-							guige:[]},
-				]},
-				{label: '分类14', id: 14, children: [
-					{label: '商品1', id: 1,
-							guige:[]},
-					{label: '商品2', id: 2,
-							guige:[]},
-					{label: '商品3', id: 3,
-							guige:[]},
-					{label: '商品4', id: 4,
-							guige:[]},
-					{label: '商品5', id: 5,
-							guige:[]},
-					{label: '商品6', id: 6,
-							guige:[]},
-					{label: '商品7', id: 7,
-							guige:[]},
-					{label: '商品8', id: 8,
-							guige:[]},
-					{label: '商品9', id: 9,
-							guige:[]},
-				]},
-				{label: '分类15', id: 15, children: [
-					{label: '商品1', id: 1,
-							guige:[]},
-					{label: '商品2', id: 2,
-							guige:[]},
-					{label: '商品3', id: 3,
-							guige:[]},
-					{label: '商品4', id: 4,
-							guige:[]},
-					{label: '商品5', id: 5,
-							guige:[]},
-					{label: '商品6', id: 6,
-							guige:[]},
-					{label: '商品7', id: 7,
-							guige:[]},
-					{label: '商品8', id: 8,
-							guige:[]},
-					{label: '商品9', id: 9,
-							guige:[]},
-				]},
-				{label: '分类16', id: 16, children: [
-					{label: '商品1', id: 1,
-							guige:[]},
-					{label: '商品2', id: 2,
-							guige:[]},
-					{label: '商品3', id: 3,
-							guige:[]},
-					{label: '商品4', id: 4,
-							guige:[]},
-					{label: '商品5', id: 5,
-							guige:[]},
-					{label: '商品6', id: 6,
-							guige:[]},
-					{label: '商品7', id: 7,
-							guige:[]},
-					{label: '商品8', id: 8,
-							guige:[]},
-					{label: '商品9', id: 9,
-							guige:[]},
-				]},
-				{label: '分类17', id: 17, children: [
-					{label: '商品1', id: 1,
-							guige:[]},
-					{label: '商品2', id: 2,
-							guige:[]},
-					{label: '商品3', id: 3,
-							guige:[]},
-					{label: '商品4', id: 4,
-							guige:[]},
-					{label: '商品5', id: 5,
-							guige:[]},
-					{label: '商品6', id: 6,
-							guige:[]},
-					{label: '商品7', id: 7,
-							guige:[]},
-					{label: '商品8', id: 8,
-							guige:[]},
-					{label: '商品9', id: 9,
-							guige:[]},
-				]},
-				{label: '分类18', id: 18, children: [
-					{label: '商品1', id: 1,
-							guige:[]},
-					{label: '商品2', id: 2,
-							guige:[]},
-					{label: '商品3', id: 3,
-							guige:[]},
-					{label: '商品4', id: 4,
-							guige:[]},
-					{label: '商品5', id: 5,
-							guige:[]},
-					{label: '商品6', id: 6,
-							guige:[]},
-					{label: '商品7', id: 7,
-							guige:[]},
-					{label: '商品8', id: 8,
-							guige:[]},
-					{label: '商品9', id: 9,
-							guige:[]},
-				]},
-				{label: '分类19', id: 19, children: [
-					{label: '商品1', id: 1,
-							guige:[]},
-					{label: '商品2', id: 2,
-							guige:[]},
-					{label: '商品3', id: 3,
-							guige:[]},
-					{label: '商品4', id: 4,
-							guige:[]},
-					{label: '商品5', id: 5,
-							guige:[]},
-					{label: '商品6', id: 6,
-							guige:[]},
-					{label: '商品7', id: 7,
-							guige:[]},
-					{label: '商品8', id: 8,
-							guige:[]},
-					{label: '商品9', id: 9,
-							guige:[]},
-				]}
-			];
-			this.list.forEach(element => {
-				// - this.$set(原数组, 索引值, 需要赋的值)
-				element.children.forEach(item => {
-					this.$set(item, "shoopNum", 0);
-				})
-			});
-
-			console.log(this.list);
 
 			_this.getGoodsData();
 			
 		},
 		watch: {
-			
+			shoopInputValue() {
+				// console.log(this.shoopInputValue);
+				if(parseInt(this.shoopInputValue)>parseInt(this.goodsObj.kucun)) {
+					this.shoopInputValue = this.goodsObj.kucun;
+				}
+			}
 		},
 		methods: {
 			getGoodsData() {
 				_this._post_form('/api/goods/index', {}, (result) => {
-					console.log(result);
-					// _this.data = result.data
+					if(result.errno==0) {
+						// result.data 对象格式 转为数组格式
+						_this.list = Object.values(result.data);
+					}
+					this.list.forEach(element => {
+						// - this.$set(原数组, 索引值, 需要赋的值)
+						element.children.forEach(item => {
+							this.$set(item, "shoopNum", 0);
+						})
+					});
 				});
 			},
 			clickLeft() {
+				this.$store.state.orderlist = {};
+				this.$store.state.selectAddress = {};
 				uni.switchTab({url: "/pages/statistics/index"});
 			},
 			// 数量修改弹窗
 			inputDialogToggle(classifi,goods) {
 				this.goodsObj = goods;
 				// console.log(this.$refs.inputDialog)
-				this.shoopInputValue = goods.shoopNum;
+				console.log(this.goodsObj);
+				this.shoopInputValue = goods.shoopNum==0?"":goods.shoopNum;
 				this.$refs.inputDialog.open();
 			},
 			// 底部弹窗
@@ -614,8 +219,8 @@
 			},
 			// 去到下单页
 			pushData() {
-				console.log(this.$store.state.orderlist);
-				console.log(Object.keys(this.$store.state.orderlist).length);
+				// console.log(this.$store.state.orderlist);
+				// console.log(Object.keys(this.$store.state.orderlist).length);
 				// return
 				// 获取对象长度
 				let len = Object.keys(this.$store.state.orderlist).length;
@@ -800,8 +405,8 @@
 </style>
 
 <style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
+	// /deep/ .uni-navbar__content  {height: 6vh;}
+	// /deep/ .uni-nav-bar-text {font-size: 16px;}
 </style>
 
 <style>
@@ -949,5 +554,6 @@
 		position: absolute;
 		top: 4px;
 	}
+	.uniui-plus-filled {color: #f3a73f !important;}
 	
 </style>

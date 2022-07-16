@@ -1,9 +1,8 @@
 <script>
 	export default {
-		// tabble 中间按钮
-		// 代码位置：App.vue
-		onLaunch: function() { //APP 初始化完成
-
+		onLaunch: function(e) { //APP 初始化完成
+			// tabble 中间按钮
+			// 代码位置：App.vue
 			// uni.onTabBarMidButtonTap(()=>{
 			// 	console.log("点击了")
 		  //       // 这里可以根据 个人需求 做点击处理，
@@ -13,25 +12,29 @@
 			// 		animationType:'slide-in-bottom'
 			// 	})
 			// })
-			console.log('App Launch')
+			console.log('App Launch：初始化完成（全局只触发一次）');
+			console.log("userInfo：",uni.getStorageSync('userinfo'));
 		},
-		onShow: function() {
-			let userinfo = uni.getStorageSync('userinfo');
-			if (!userinfo) {
+		onShow: function(e) {
+			console.log(e);
+			console.log('App Show：','页面启动完成')
+			if (e.path !== 'pages/login/index' && !uni.getStorageSync('token')) {
 				uni.navigateTo({url:"/pages/login/index",})
 			}
-			console.log('App Show')
 		},
 		onHide: function() {
-			console.log('App Hide')
+			console.log('App Hide：已进入后台运行')
 		}
 		
 	}
 </script>
 
 <style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
+	// .box-bg {height: 9vh;background: rgb(60, 158, 253);}
+	// /deep/ .uni-navbar__content  {height: 8vh;}
+	.uni-status-bar {height: 4vh !important;}
+	/deep/ .uni-navbar__content  {border: none !important;}
+	/deep/ .uni-nav-bar-text {font-size: 18px !important;}
 </style>
 
 <style lang="scss">
@@ -74,7 +77,18 @@
 	.uni-app--showtabbar uni-page-wrapper::after {
 		height: 6vh !important;
 	}
-	
+
+	.cp-goods-select-category-item.actived {
+		color: #2982FF !important;
+		background-color: #fff !important;
+	}
+	.cp-goods-select-category-item.actived::before {
+		background-color: transparent !important;
+	}
+	.cp-goods-select-goods__classify {
+		line-height: 42px !important;
+		background-color: #fff !important;
+	}
 
 </style>
 

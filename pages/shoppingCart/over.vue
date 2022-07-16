@@ -1,5 +1,11 @@
 <template>
 	<view class="content">
+		<view class="box-bg">
+			<view class="box-bg uni-nav-bar">
+				<uni-nav-bar height="6vh" statusBar=true shadow title="下单成功" 
+					color="#fff" background-color="rgb(60, 158, 253)" />
+			</view>
+		</view>
 		<view class="orderOverImg"></view>
 		<view style="font-size:16px;color:#666666;text-align: center;">订单提交完成</view>
 

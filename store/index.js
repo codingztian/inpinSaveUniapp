@@ -24,7 +24,9 @@ const store = new Vuex.Store({//全局变量定义
 
         pointId:'',
 				
-        orderlist: {}
+        orderlist: {},
+
+        selectAddress:{}
 
     },
 

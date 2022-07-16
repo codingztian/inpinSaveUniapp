@@ -2,14 +2,14 @@
 	<view class="">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
-				<uni-nav-bar height="6vh" shadow left-icon="left" title="供应商" 
+				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="供应商" 
 					color="#fff" background-color="rgb(60, 158, 253)"
 					leftText="返回" @clickLeft="clickLeft" />
 			</view>
 		</view>
 
-		<view class="action">
-			<view>
+		<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()">
+			<view style="padding: 12px;">
 				<view class="title-wrap" :index="index" v-for="(item, index) in unitlist" :key="item.id">
 					<view>
 						<text class="title u-line-2" style="color:#333;font-size: 18px;font-weight: 900;line-height: 32px;">{{ item.name }}</text>
@@ -19,11 +19,14 @@
 					<view></view>
 				</view>
 			</view>
-		</view>
+			<view>
+				<uni-load-more iconType="auto" :status="status" v-if="lodingStatus" />
+			</view>
+		</scroll-view>
 
-		<view class="addBtnBox">
+		<!-- <view class="addBtnBox">
 			<view class="addBtn" @click="clickRight">添加供应商</view>
-		</view>
+		</view> -->
 		
 		<!-- <u-swipe-action :show="item.show" :index="index" v-for="(item, index) in unitlist" :key="item.id" @click="click" @open="open"
 		 :options="options" >
@@ -65,7 +68,13 @@
 				id:null,
 				value: '',
 				type: 'text',
-				border: true
+				border: true,
+
+				page:1,
+				pageinfo:{},
+				status: 'loading',
+				lodingStatus: false,
+
 			}
 
 		},
@@ -93,11 +102,25 @@
 				})
 			},
 			getUnitList() {
-				_this._post_form('/api/user/gys', {}, (result) => {
+				_this._post_form('/api/user/gys', {page:this.page}, (result) => {
 					console.log(result);
-					_this.setData({'unitlist' : result.data.list})
+					// _this.setData({'unitlist' : result.data.list})
+					_this.pageinfo = result.data.pageinfo;
+					_this.unitlist = _this.unitlist.concat(result.data.list);
 				});
 			},
+			lower(e) {
+				if(this.pageinfo.count < 10) return false;
+				if(this.lodingStatus) return false;
+				this.lodingStatus = true;
+				let set = setTimeout(() => {
+					clearTimeout(set);
+					this.page++;
+					this.lodingStatus = false;
+					this.getUnitList()
+				}, 3000)
+			},
+
 			click(index, index1) {
 				_this.show = true;
 				_this.id = this.unitlist[index].id;
@@ -123,7 +146,7 @@
 
 <style lang="scss" scoped>
 	.action {
-		height:86vh;
+		height:90vh;
 		// padding: 12px;
 		overflow: auto;
 	}
@@ -158,9 +181,4 @@
 	}
 
 	
-</style>
-
-<style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
 </style>

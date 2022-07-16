@@ -1,10 +1,24 @@
 <template>
-	<view class="qiun-center qiun-columns">
+	<view>
+		<view class="box-bg">
+			<view class="box-bg uni-nav-bar">
+				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="我的信息" 
+					color="#fff" background-color="rgb(60, 158, 253)"
+					@clickLeft="clickLeft" />
+			</view>
+		</view>
 		<view>
 			<!-- <image src="../../static/images/none.jpg" class="qiun-none"></image> -->
 		</view>
-		<view>
-			<text class="qiun-text2">没有任何消息</text>
+		<view class="userinfo">
+			<view class="inview">
+				<text>我的程序</text>
+				<text>{{userinfo.name}}</text>
+			</view>
+			<view class="inview">
+				<text>用户名称</text>
+				<text>{{userinfo.username}}</text>
+			</view>
 		</view>
 	</view>
 </template>
@@ -13,17 +27,37 @@
 	export default {
 		data() {
 			return {
-				
+				userinfo:"",
 			}
 		},
+		onLoad() {
+			let _this = this;
+			_this.userinfo = _this.getUserInfo()
+		},
 		methods: {
-			
+			clickLeft() {
+				uni.switchTab({url: "/pages/user/index"});
+			},
 		}
 	}
 </script>
 
 <style>
 	page{background: #FFFFFF;}
+	.userinfo {
+		font-size: 18px;
+    font-weight: 900;
+    line-height: 35px;
+    padding: 15px;
+	}
+	.userinfo .inview {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px;
+		border-bottom: 1px solid #e5e5e5;
+	}
+
 .qiun-center{
 	display: flex;
 	display: -webkit-flex;

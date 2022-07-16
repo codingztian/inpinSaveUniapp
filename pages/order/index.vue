@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
-				<uni-nav-bar height="6vh" shadow title="订单管理" 
+				<uni-nav-bar title="订单管理" statusBar=true height="6vh"
 					color="#fff" background-color="rgb(60, 158, 253)" />
 			</view>
 		</view>
@@ -22,16 +22,25 @@
 			<view class="orderlist">
 				<view v-for="(cell,k) in orederList" :key="k" class="goods__item">
 				<view class="flexCenter">
-					<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:100px;height:100px;"></view>
+					<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:80px;height:80px;"></view>
 				</view>
-				<view style="border-bottom: 1px solid #EEEEEE;height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+				<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 					<view>
 						<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.label }}</view>
-						<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>湖北武汉<text></text></view>
-						<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>A区36号</view>
+						<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
+							<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">供应商</text>
+							<text>xxxxxxx</text>
+						</view>
+						<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
+							<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">库位</text>
+							<text>ASDFGHJKL</text>
+						</view>
 					</view>
 					<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
-						<view style="color:#FF4C4B;font-size:14px;">3600<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
+						<view style="color:#FF4C4B;font-size:14px;">
+							<text style="font-weight:900;">3600</text>
+							<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text>
+						</view>
 					</view>
 				</view>
 				</view>
@@ -85,15 +94,15 @@
 </script>
 
 <style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
+	// /deep/ .uni-navbar__content  {height: 6vh;}
+	// /deep/ .uni-nav-bar-text {font-size: 16px;}
 	/deep/ .example-body .uni-date__x-input {height: 5vh;}
-	/deep/ .uni-date-x--border {border: none;border-radius: 0;box-sizing: border-box;}
+	/deep/ .uni-date-x--border {border: none !important;border-radius: 0;box-sizing: border-box;}
 </style>
 <!-- border-bottom: 1px solid #dcdfe6;border-top: 1px solid #dcdfe6;
  -->
 <style>
-	page {background: #F4F5F6;}
+	/* page {background: #F4F5F6;} */
 
 	.crOrder {
 		width: 95%;
@@ -101,16 +110,28 @@
 		color: #2982FF;
 		font-size: 14px;
 		background: #fff;
-		border: 1px solid #2982FF;
+		/* border: 1px solid #2982FF; */
 		border-radius: 5px;
 		display: flex;
+		/* overflow: hidden; */
 	}
 	.crOrder .crOrderBtn {
 		flex: 1;
 		display: flex;
 		align-items: center;
-    	justify-content: center;
+		justify-content: center;
+		border: 1px solid #2982FF;
+		border-radius: 5px;
 	}
+	.crOrder .crOrderBtn:nth-child(1) {
+		border-top-right-radius: 0px;
+		border-bottom-right-radius: 0px;
+	}
+	.crOrder .crOrderBtn:nth-child(2) {
+		border-top-left-radius: 0px;
+		border-bottom-left-radius: 0px;
+	}
+
 	.crOrder .crOrderBtn.curr {
 		background: #2982FF;
 		color: #fff;
@@ -118,7 +139,7 @@
 	.example-body {}
 
 	.orderlist {
-		height: 77vh;
+		height: 79vh;
 		padding:8px 12px;
 		overflow: auto;
 	}

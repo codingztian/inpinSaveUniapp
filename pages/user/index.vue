@@ -20,7 +20,7 @@
 		<view class="info" style="margin-bottom:26px;margin-top: -30px;">
 			<view style="margin-bottom:12px;">信息管理</view>
 			<view class="flex" style="justify-content: space-between;">
-				<view class="io myinfo" @click="cutPage('/pages/user/about')">
+				<view class="io myinfo" @click="cutPage('/pages/user/message')">
 					<view class="pic"></view>
 					个人信息
 				</view>
@@ -32,13 +32,17 @@
 					<view class="pic"></view>
 					供应商
 				</view>
-				<view class="io mykg" @click="cutPage('/pages/user/index')">
+				<view class="io set" @click="cutPage('/pages/user/about')">
+					<view class="pic"></view>
+					关于我们
+				</view>
+				<!-- <view class="io mykg" @click="cutPage('/pages/user/mykg')">
 					<view class="pic"></view>
 					我的库管
-				</view>
+				</view> -->
 			</view>
 		</view>
-		<view class="info">
+		<!-- <view class="info">
 			<view style="margin-bottom:12px;">信息管理</view>
 			<view class="flex">
 				<view class="io about" style="margin-right: 35px;" @click="cutPage('/pages/user/about')">
@@ -49,7 +53,7 @@
 					<view class="pic"></view>
 					关于我们
 				</view>
-			</view>
+			</view> -->
 		</view>
 
 		<!-- 		
@@ -94,6 +98,9 @@
 		},
 		methods: {
 			loginout() {
+				uni.clearStorage();
+				uni.navigateTo({url:"/pages/login/index",})
+				return
 				_this._post_form('/api/login/loginout', {}, (result) => {
 					console.log(result);
 					// _this.data = result.data

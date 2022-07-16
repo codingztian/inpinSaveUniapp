@@ -2,14 +2,14 @@
 	<view class="content" v-if="list">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
-				<uni-nav-bar height="6vh" shadow title="分类" 
+				<uni-nav-bar shadow title="分类" statusBar=true height="6vh"
 					color="#fff" background-color="rgb(60, 158, 253)" />
 			</view>
 		</view>
 
 		<!-- 商品分类 -->
 		<cp-goods-select
-			height="88vh" 
+			height="90vh" 
 			:props="{label:'name',value:'id',children:'children'}" 
 			v-if="list"
 			:options="list"
@@ -19,16 +19,28 @@
 			<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.name" class="listlistlist">
 				<view v-for="(cell,k) in item.children" :key="k" class="goods__item">
 					<view class="flexCenter">
-						<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="cell.thumb_img" alt="51" style="width:100px;height:100px;"></view>
+						<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="cell.thumb_img" alt="51" style="width:80px;height:80px;"></view>
 					</view>
-					<view style="border-bottom: 1px solid #EEEEEE;height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+					<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 						<view>
 							<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.name }}</view>
-							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>{{cell.factory_name}}<text></text></view>
-							<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>{{cell.location}}</view>
+							<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
+								<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">供应商</text>
+								<text>{{cell.factory_name}}</text>
+							</view>
+							<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
+								<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">库位</text>
+								<text>{{cell.location}}</text>
+							</view>
 						</view>
-						<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
-							<view style="color:#FF4C4B;font-size:14px;">{{cell.kucun}}<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
+						<view style="display:flex;align-items: center;justify-content: space-between;margin: 5px 0px;">
+							<view style="color:#FF4C4B;font-size:14px;">
+								<text style="font-weight:900;">{{cell.kucun}}</text>
+								<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{cell.unit_name}}</text>
+							</view>
+							<view style="display: flex;align-items: center;">
+									<uni-icons type="phone-filled" size="22" style="margin-right:6px;" @tap="call('13207196768','张三')"></uni-icons>
+							</view>
 						</view>
 					</view>
 				</view>
@@ -61,6 +73,35 @@
 			_this.getGoodsData();
 		},
 		methods: {
+			call(phone,kg) {
+				const res = uni.getSystemInfoSync();
+
+				// ios系统默认有个模态框
+				if(res.platform=='ios'){
+					uni.makePhoneCall({
+						phoneNumber:phone,
+						success(){
+							console.log('拨打成功了');
+						},
+						fail() {
+							console.log('拨打失败了');
+						}
+					})
+				}else{
+					//安卓手机手动设置一个showActionSheet
+					uni.showActionSheet({
+						itemList: [kg+'：'+phone,'呼叫库管'],
+						success:function(res){
+							console.log(res);
+							if(res.tapIndex==1){
+								uni.makePhoneCall({
+									phoneNumber: phone,
+								})
+							}
+						}
+					})
+				}
+			},
 			getGoodsData() {
 				_this._post_form('/api/goods/index', {}, (result) => {
 					console.log(result);
@@ -84,8 +125,8 @@
 </script>
 
 <style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
+	// /deep/ .uni-navbar__content  {height: 6vh;}
+	// /deep/ .uni-nav-bar-text {font-size: 16px;}
 </style>
 
 <style lang="scss">
@@ -342,5 +383,6 @@
 		position: absolute;
 		top: 4px;
 	}
+	.uniui-phone-filled {color: #ccc !important;}
 	
 </style>

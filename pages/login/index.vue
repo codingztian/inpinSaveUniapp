@@ -6,7 +6,7 @@
 			<view class="login-boxs">
 				<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="kefu-ermai" :label-position="labelPosition"
 				 label="+86 |" prop="phone" >
-					<u-input :border="border" placeholder="请输入手机号" v-model="username" type="text"> </u-input>
+					<u-input :border="border" placeholder="请输入手机号" v-model="username" type="number"> </u-input>
 				</u-form-item>
 				<u-form-item :label-position="labelPosition" label="密码" prop="password">
 					<u-input :password-icon="true" :border="border" type="password" v-model="password" placeholder="请输入密码"></u-input>
@@ -24,7 +24,7 @@
 					<text style="color:#0076E7;font-size:18px;font-weight: bold;margin: 0 10px">400-890-6299</text>
 				</view>
 				<view class="otherWayTextWrapper">
-					<view class="otherWayText">小程序</view>
+					<view class="otherWayText">库易点小程序</view>
 				</view>
 				<view class="icons">
 					<slot name="otherLoginWays_icons">
@@ -52,15 +52,8 @@
 		},
 		onLoad() {
 			var _this = this;
-			this.getsysteminfo();
-			
-			
-			var userinfo = {};
-			userinfo = _this.getUserInfo();
-			if (userinfo) {
-				if ((userinfo.account != '') && (userinfo.password != '')) {
-					_this.loginSever(userinfo.account, userinfo.password)
-				}
+			if(uni.getStorageSync('token')){
+				uni.switchTab({url:"/pages/statistics/index",})
 			}
 		},
 		methods: {
@@ -119,12 +112,10 @@
 	}
 </script>
 
-	<!-- page {
-		background: url(../../static/images/loginbg.png) top center / 100% no-repeat;
-	} -->
-
 <style lscoped lang="scss">
-
+	page {
+		background: url(../../static/images/loginbg.png) top center / 100% no-repeat;
+	}
 
 	.force-login-wrap {
 		position: fixed;

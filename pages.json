@@ -62,9 +62,21 @@
 				"navigationStyle": "custom"
 			}
 		},{
+			"path": "pages/shoppingCart/userinfo",
+			"style": {
+				"navigationBarTitleText": "客户地址",
+				"navigationStyle": "custom"
+			}
+		},{
 			"path": "pages/user/supplierlist",
 			"style": {
 				"navigationBarTitleText": "供应商",
+				"navigationStyle": "custom"
+			}
+		},{
+			"path": "pages/user/mykg",
+			"style": {
+				"navigationBarTitleText": "库管",
 				"navigationStyle": "custom"
 			}
 		},{
@@ -77,17 +89,13 @@
 			"path": "pages/shoppingCart/index",
 			"style": {
 				"navigationBarTitleText": "下单清单",
-				"navigationBarBackgroundColor":"#3C9EFD",
-				"navigationBarTextStyle":"white"
+				"navigationStyle": "custom"
 			}
 		},{
 			"path": "pages/shoppingCart/over",
 			"style": {
-				"navigationBarTitleText": "清单完成",
-				"navigationBarBackgroundColor":"#3C9EFD",
-				"navigationBarTextStyle":"white",
-				"autoBackButton":false,
-				"disableSwipeBack":true
+				"navigationBarTitleText": "over",
+				"navigationStyle": "custom"
 			}
 		},{
 		    "path": "pages/user/account",
@@ -112,13 +120,13 @@
             "path": "pages/user/service",
             "style": {
             	"navigationBarTitleText": "服务条款及协议",
-				"navigationStyle": "custom"
+							"navigationStyle": "custom"
             }
         },
 		{
 		    "path": "pages/user/message", 
 		    "style": {
-		    	"navigationBarTitleText": "新消息通知"
+					"navigationStyle": "custom"
 		    }
 		},
 		{

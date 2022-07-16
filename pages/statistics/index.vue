@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
-				<uni-nav-bar height="6vh" shadow title="首页" 
+				<uni-nav-bar statusBar=true height="6vh" shadow title="首页"
 					color="#fff" background-color="rgb(60, 158, 253)" />
 			</view>
 		</view>
@@ -34,7 +34,7 @@
 			</view>
 			
 			<view class="color-box" v-if="infodata">
-				<view class="color-item ibg3" @click="toOverbooking('kcyj')" style="display: flex;flex-direction: column;justify-content: center;">
+				<view class="color-item ibg3" style="display: flex;flex-direction: column;justify-content: center;">
 					<view class="color-title" style="text-align: center;">
 						<!-- 库存预警 -->
 						敬请期待
@@ -48,13 +48,13 @@
 				</view>
 				<view class="color-item ibg4">
 					<view class="color-title">联系库管</view>
-					<view class="color-value">{{ infodata.kg.name }}</view>
-					<view class="color-value">{{ infodata.kg.tel }}</view>
+					<view class="color-value">{{ kginfo.manager_name }}</view>
+					<view class="color-value">{{ kginfo.manager_mobile }}</view>
 				</view>
 			</view>
 			
 			<view>
-				<view class="akeySend" @click="toOverbooking('overbooking')">
+				<view class="akeySend bg2" @click="toOverbooking('overbooking')">
 					<view style="font-size:18px;font-weight: 900;">快捷发货</view>
 					<view>选择商品和客户，库管为你快捷发货</view>
 				</view>
@@ -87,12 +87,8 @@
 					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
 				},
 				data:null,
-				infodata: {
-					kg: {
-						name:"",
-						tel:""
-					}
-				},
+				infodata: {},
+				kginfo:{}
 			}
 		},
 		onLoad() {
@@ -115,10 +111,9 @@
 				_this._post_form('/api/stat/home', {}, (result) => {
 					console.log(result);
 					_this.infodata = result.data
-					_this.infodata.kg = {
-						name: "张师傅",
-						tel: "13299998888"
-					}
+				});
+				_this._post_form('/api/user/manager', {}, (result) => {
+					_this.kginfo = result.data;
 				});
 				
 				// _this._post_form('api/ykjp/summary/Purchase/index', {}, (result) => {
@@ -130,12 +125,13 @@
 </script>
 
 <style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
+	// /deep/ .uni-navbar__content  {height: 6vh;}
+	// /deep/ .uni-nav-bar-text {font-size: 20px;}
 </style>
 
 <style>
 	.contentCon {
+		height: 90vh;
 		padding: 10px 10px;
 	}
 
@@ -209,7 +205,6 @@
     margin: 10px 4px;
 		border-radius: 8px;
     color: #fff;
-    background: #3C9EFD;
 	}
 	.akeySend:after {border: none;}
 
@@ -238,11 +233,9 @@
 	.bg1{
 		background: linear-gradient(-125deg, #67c707, #a7f968);
 	}
-	
 	.bg2{
-		background: linear-gradient(-125deg, #16a8cc, #1bd0fd);
+		background: linear-gradient(-125deg, #70C1FD, #399BFD);
 	}
-	
 	.bg3{
 		background: linear-gradient(-125deg, #e29811, #f1cf71);
 	}

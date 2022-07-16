@@ -1,30 +1,44 @@
 <template>
 	<view class="content">
-		<view class="flexCenter" style="height:100px;display: grid;grid-template-columns: 40px auto 35px;background: #fff;border-radius: 5px;padding: 12px;margin-bottom: 20px;margin: 12px;">
-			<view style=""><uni-icons type="location-filled" size="30" style="color:#2590FF;"></uni-icons></view>
-			<view style="display: flex;align-items: flex-start;flex-direction: column;justify-content: space-around;height: 76px;">
-				<view style="color:#333333;font-size: 17px;font-weight: 900;">华新生鲜大卖场</view>
-				<view style="color:#999;">张三 13207196768</view>
-				<view style="color:#666;">高新大道华新大厦A座11栋</view>
+		<view class="box-bg">
+			<view class="box-bg uni-nav-bar">
+				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="订货清单" 
+					color="#fff" background-color="rgb(60, 158, 253)"
+					@clickLeft="clickLeft" />
 			</view>
-			<view style="display: flex;align-items: center;"><uni-icons type="forward" size="30"></uni-icons></view>
 		</view>
 
-		<view style="margin: 12px;padding:12px;background: #fff;border-radius: 5px;">
-			<view v-for="(item,key) in zd" :key="key">
-			<view class="flexCenter" style="justify-content: flex-start;align-items: center;">
-				<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
-				<view style="flex:1;">{{ item.label }}</view>
-				<view style="flex:1;">
-						<view class="button-text" @click="inputDialogToggle('',item)" style="min-width: 52px;padding: 0 10px;border: 1px solid #BBBBBB;border-radius: 5px;text-align: center;height: 28px;line-height: 28px;font-size: 14px;">
-							{{ item.shoopNum }}
+		<view style="padding: 20px 12px 10px;padding-bottom: 0;" :style="{height:selectAddressStatus?'20vh':'12vh'}" @tap="toUser">
+			<view class="flexCenter" style="height:100%;display: grid;grid-template-columns: 40px auto 35px;background: #fff;border-radius: 5px;padding: 12px;">
+				<view style="display: flex;align-items: center;"><uni-icons type="location-filled" size="30" style="color:#2590FF;"></uni-icons></view>
+				<view style="display: flex;align-items: flex-start;flex-direction: column;justify-content: space-around;height: 100%;">
+						<view v-if="selectAddressStatus" style="color:#333333;font-size: 17px;font-weight: 900;">{{selectAddress.name}}</view>
+						<view v-if="selectAddressStatus" style="color:#999;">{{selectAddress.linkName}} {{selectAddress.mobile}}</view>
+						<view v-if="selectAddressStatus" style="color:#666;">{{selectAddress.address}}</view>
+						<view v-if="!selectAddressStatus"  style="color:#333333;font-size: 17px;font-weight: 900;">选择收获地址</view>
+				</view>
+				<view style="display: flex;align-items: center;"><uni-icons type="forward" size="30"></uni-icons></view>
+			</view>
+		</view>
+
+		<view style="height: 61vh;padding: 12px;overflow: auto;">
+			<view style="padding:12px;background: #fff;border-radius: 5px;">
+				<view v-for="(item,key) in zd" :key="key">
+					<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #eee;">
+						<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
+						<view style="flex:1;font-size:18px;font-weight:900;">{{ item.name }}</view>
+						<view style="flex:0;">
+								<view class="button-text" style="text-align: center;font-size: 14px;">
+									<text style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;float: right;">+{{item.shoopNum}}</text>
+								</view>
 						</view>
+					</view>
 				</view>
 			</view>
 		</view>
-		</view>
 
-		<view style="width: 100%;height: 60px;display: flex;justify-content: space-between;padding: 10px;align-items: flex-end;background-color: rgb(255, 255, 255);box-shadow: rgb(204 204 204) 0px -1px 10px 0px;padding-left: 20px;font-size: 16px;color: #666666;position: fixed;bottom: 0;z-index: 1;">
+
+		<view style="width: 100%;height: 9vh;display: flex;justify-content: space-between;padding: 10px;align-items: flex-end;background-color: rgb(255, 255, 255);box-shadow: rgb(204 204 204) 0px -1px 10px 0px;padding-left: 20px;font-size: 16px;color: #666666;position: fixed;bottom: 0;z-index: 1;">
 			<text>共<text style="margin: 0 3px;color: #FF4C4B;">{{Object.keys(zd).length}}</text>件</text>
 			<text @click="toOredrOver" style="height: 100%;width:100px;display: flex;align-items: center;justify-content: center;border-radius: 5px;padding: 2px 10px;font-weight: normal;cursor: pointer;background: #2982FF;border-radius: 100px;color: #fff;">
 				提交
@@ -50,7 +64,8 @@
 			return {
 				shoopInputValue:"",		// 商品数量vmodel
 				goodsObj: {},					// 选中的商品对象
-
+				selectAddressStatus: false,
+				selectAddress: {},				// 选中的地址对象
 			}
 		},
 		computed:{
@@ -58,11 +73,23 @@
 			    return this.$store.state.orderlist
 			},
 		},
-		onLoad() {
+		onLoad(e) {
 			_this = this;
-			console.log(this.$store.state.orderlist)
+			console.log(this.$store.state.orderlist);
+			console.log(this.$store.state.selectAddress.id);
+			if(this.$store.state.selectAddress.id) {
+				this.selectAddressStatus = true;
+				this.selectAddress = this.$store.state.selectAddress
+			}
+
 		},
 		methods: {
+			clickLeft() {
+				uni.navigateTo({url: "/pages/overbooking/index"});
+			},
+			toUser() {
+				uni.navigateTo({url: "/pages/shoppingCart/userinfo"});
+			},
 			// 数量修改弹窗
 			inputDialogToggle(classifi,goods) {
 				this.goodsObj = goods;

@@ -2,7 +2,7 @@
 	<view class="content">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
-				<uni-nav-bar height="6vh" shadow left-icon="left" title="库存预警" 
+				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="库存预警" 
 					color="#fff" background-color="rgb(60, 158, 253)"
 					@clickLeft="clickLeft" />
 			</view>
@@ -91,9 +91,4 @@
 
 
 
-</style>
-
-<style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
 </style>

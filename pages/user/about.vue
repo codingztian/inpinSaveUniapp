@@ -3,7 +3,7 @@
 		<view class="content">
 			<view class="box-bg">
 				<view class="box-bg uni-nav-bar">
-					<uni-nav-bar height="6vh" shadow left-icon="left" title="关于我们" 
+					<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="关于我们" 
 						color="#fff" background-color="rgb(60, 158, 253)"
 						leftText="返回" @clickLeft="clickLeft" />
 				</view>
@@ -21,9 +21,9 @@
 				</view>
 				<view class="descSpan">
 					<text class="s1">隐私协议</text>
-					<text class="s2" @click="cutPage('/pages/user/service')">
+					<view class="s2" @click="cutPage('/pages/user/service')">
 						<uni-icons type="right" size="30"></uni-icons>
-					</text>
+					</view>
 				</view>
 			</view>
 			
@@ -134,11 +134,6 @@
 		}
 	}
 </script>
-
-<style lang="less">
-	/deep/ .uni-navbar__content  {height: 6vh;}
-	/deep/ .uni-nav-bar-text {font-size: 16px;}
-</style>
 
 <style>
 	page {
