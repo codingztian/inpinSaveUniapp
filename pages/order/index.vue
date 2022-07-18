@@ -19,32 +19,51 @@
 		</view>
 
 		<view style="background: #fff;">
-			<view class="orderlist">
-				<view v-for="(cell,k) in orederList" :key="k" class="goods__item">
-				<view class="flexCenter">
-					<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:80px;height:80px;"></view>
-				</view>
-				<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+			<scroll-view  class="orderlist scroll" scroll-y="true" @scrolltolower="lower()" >
+				<view v-if="orederList.length">
 					<view>
-						<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.label }}</view>
-						<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
-							<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">供应商</text>
-							<text>xxxxxxx</text>
-						</view>
-						<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
-							<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">库位</text>
-							<text>ASDFGHJKL</text>
+						<view v-for="(cell,key) in orederList" :key="key">
+							<view style="background: #f8f8f8;padding: 12px 10px 7px;margin-bottom: 10px;color: #333;">
+								<text>{{cell.time}}</text>
+								<!-- <text style="float:right;">收货方：{{cell.kehu}}</text> -->
+							</view>
+							<view v-for="(item,index) in cell.goods" :key="key+index" class="goods__item">
+								<view class="flexCenter">
+									<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="item.thumb_img" alt="51" style="width:80px;height:80px;"></view>
+								</view>
+								<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
+									<view>
+										<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ item.name }}</view>
+										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
+											<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;"> {{ crOrderIndex==1?'供应商':'收货方'}}</text>
+											<text>{{item.factory_name}}</text>
+										</view>
+										
+										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==1">
+											<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">库位</text>
+											<text>{{item.location}}</text>
+										</view>
+										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==2">
+											<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">供应商</text>
+											<text>{{item.factory_name}}</text>
+										</view>
+									</view>
+									<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
+										<view style="color:#FF4C4B;font-size:14px;">
+											<text style="font-weight:900;">{{item.num}}</text>
+											<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{item.unit_name}}</text>
+										</view>
+									</view>
+								</view>
+							</view>
 						</view>
 					</view>
-					<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
-						<view style="color:#FF4C4B;font-size:14px;">
-							<text style="font-weight:900;">3600</text>
-							<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text>
-						</view>
-					</view>
+					<view><uni-load-more iconType="auto" :status="status" v-if="lodingStatus" /></view>
 				</view>
+				<view v-else style="padding-top: 18vh;">
+					<u-empty mode="order" icon="http://cdn.uviewui.com/uview/empty/order.png"  ></u-empty>
 				</view>
-			</view>
+			</scroll-view>
 		</view>
 
 	</view>
@@ -57,37 +76,77 @@
 			return {
 				crOrderIndex: 1,
 				range: [],
-				orederList: [
-					{label: "猪肉",id: "1",kw: "36号",num: "3600",},{label: "牛肉",id: "1",kw: "36号",num: "3600",},{label: "肌肉",id: "1",kw: "36号",num: "3600",},
-					{label: "猪肉",id: "1",kw: "36号",num: "3600",},{label: "牛肉",id: "1",kw: "36号",num: "3600",},{label: "肌肉",id: "1",kw: "36号",num: "3600",},
-					{label: "猪肉",id: "1",kw: "36号",num: "3600",},{label: "牛肉",id: "1",kw: "36号",num: "3600",},{label: "肌肉",id: "1",kw: "36号",num: "3600",},
-					{label: "猪肉",id: "1",kw: "36号",num: "3600",},{label: "牛肉",id: "1",kw: "36号",num: "3600",},{label: "肌肉",id: "1",kw: "36号",num: "3600",},
-				],
+				orederList: [],
+				page:1,
+				pageinfo:{},
+				status: 'loading',
+				lodingStatus: false,
 			}
 		},
-		onLoad() {
+		onLoad(e) {
 			_this = this;
-			// 获取今天时间 yyyy-MM-dd
-			var date = new Date();
-			var year = date.getFullYear();
-			var month = date.getMonth() + 1;
-			var day = date.getDate();
-			var today = year + '-' + month + '-' + day;
-			this.range = [today,today]
+			// console.log(e.crOrderIndex);
+			if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
+			var startTime = new Date().getTime();
+			var sevenDay = 1000 * 60 * 60 * 24 * 15;
+			_this.range = [_this.timeTrans(new Date(startTime - sevenDay)),_this.timeTrans(new Date())];
 		},
 		watch: {
 			range(newval) {
 				console.log('范围选:', this.range);
+				_this.getOrderInfo();
 			}
 		},
 		methods: {
 			cutCrOrder(val) {
-				this.crOrderIndex = val;
+				if(val!=this.crOrderIndex) {
+					this.crOrderIndex = val;
+					this.orederList = [];
+					this.page = 1;
+					_this.getOrderInfo();
+				}
+			},
+			getOrderInfo() {
+				let _this = this;
+				uni.showLoading({mask:true,title: '订单载入中'});
+
+				_this._post_form('/api/order/orderlist', {
+					start_date: _this.range[0],
+					end_date: _this.range[1],
+					type: _this.crOrderIndex,
+					page: 1
+				},
+				res=> {
+					let s = setTimeout(()=>{
+						clearTimeout(s);
+						if(res.errno==0) {
+							_this.orederList = _this.orederList.concat(res.data.list);
+							_this.pageinfo = res.data.pageinfo;
+							console.log(_this.orederList);
+						}
+						uni.hideLoading();
+					},800);
+				});
+			},
+			lower(e) {
+				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
+				if(this.lodingStatus) return false;
+				this.lodingStatus = true;
+				let set = setTimeout(() => {
+					clearTimeout(set);
+					this.page++;
+					this.lodingStatus = false;
+					this.getOrderInfo()
+				}, 3000)
+			},
+			timeTrans(date) {
+				var year = date.getFullYear();
+				var month = date.getMonth() + 1;
+				var day = date.getDate();
+				return year + '-' + month + '-' + day;
 			},
 			maskClick(e){
 				console.log('maskClick事件:', e);
-
-
 			}
 		}
 	}
@@ -96,7 +155,9 @@
 <style lang="less">
 	// /deep/ .uni-navbar__content  {height: 6vh;}
 	// /deep/ .uni-nav-bar-text {font-size: 16px;}
-	/deep/ .example-body .uni-date__x-input {height: 5vh;}
+	/deep/ .example-body .uni-date__x-input {height: 5vh;
+		// border-bottom: 1px solid #eee;
+	}
 	/deep/ .uni-date-x--border {border: none !important;border-radius: 0;box-sizing: border-box;}
 </style>
 <!-- border-bottom: 1px solid #dcdfe6;border-top: 1px solid #dcdfe6;
@@ -140,8 +201,9 @@
 
 	.orderlist {
 		height: 79vh;
-		padding:8px 12px;
+		/* padding:8px 12px; */
 		overflow: auto;
+		box-sizing: border-box;
 	}
 
 	.flexCenter {display: flex;}
@@ -153,7 +215,7 @@
 		border-radius: 4px;
 		font-size: 14px;
 		color: #262626;
-		margin-bottom: 24upx;
+		margin: 0 22upx 24upx;
 		display: flex;
 		align-items: flex-start;
 		justify-content: flex-start;

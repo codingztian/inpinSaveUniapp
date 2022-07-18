@@ -7,43 +7,53 @@
 					@clickLeft="clickLeft"/>
 			</view>
 		</view>
-		<view style="height: 94vh;overflow: auto;">
+		<view style="height: 90vh;overflow: auto;">
 			<view class="qiun-title">服务条款及使用协议</view>
 			<view class="qiun-text-view">
-				<view class="qiun-text">欢迎您选择并使用uCharts，uCharts是一款开源的、跨平台的、基于uni-app平台的快速图表生成组件，支持H5、APP、各大小程序。</view>
-				<view class="qiun-text">使用uCharts前您应当阅读并遵守本协议。请您务必审慎阅读、充分理解各条款内容,特别是免除或者限制责任的条款,以及开通是使用某项服务的单独协议,并选择接收或者不接受。限制、免责条款可能以加粗形式提示您注意。</view>
-				<view class="qiun-text">除非您已阅读并接受本协议所有条款，否则您无权下载、安装或使用本软件及相关服务。您的下载、安装、使用、登录等行为即视为您已阅读并同意本协议的约束。</view>
-				<view class="qiun-text-title">一 协议的范围</view>
-				<view class="qiun-text-title">1.1 协议适用主体范围：</view>
-				<view class="qiun-text">本协议适用于uCharts下载、安装、使用、登录本软件，以及使用本服务所订立的协议的人员。</view>
-				<view class="qiun-text-title">1.2 协议关系及冲突条款：</view>
-				<view class="qiun-text">本协议的内容，包括但不限于以下与本服务、本协议相关的协议、规则、规范以及uCharts可能不断发布的关于本服务的相关协议、规则、规范等内容，前述内容一经正式发布，即为本协议不可分割的组成部分，与其构成统一整体，您同样应当遵守。</view>
-				<view class="qiun-text-title">二 关于本服务</view>
-				<view class="qiun-text-title">2.1 本服务内容：</view>
-				<view class="qiun-text">本服务内容是指uCharts通过本软件向用户提供的相关服务（简称“本服务”）。</view>
-				<view class="qiun-text-title">2.2 本服务形式：</view>
-				<view class="qiun-text">您可能通过电脑、手机等终端以客户端、网页等形式使用本服务，具体以uCharts提供的为准，同时，uCharts会不断丰富您使用本服务的终端、形式等。当您使用本服务时，您应选择与您的终端、系统等相匹配的本软件版本，否则，您可能无法正常使用本服务。</view>
-				<view class="qiun-text-title">2.3 许可的范围</view>
-				<view class="qiun-text">2.3.1 uCharts给予您一项个人的、不可转让及非排他性的许可，以使用本软件。您可以非商业目的在单一台终端设备上下载、安装、使用、登录本软件。</view>
-				<view class="qiun-text">2.3.2 您可以制作本软件的一个副本，仅用做备份。备份副本必须包含原软件中含有的所有著作权信息。</view>
-				<view class="qiun-text">2.3.3 本条及本协议其他条款未明示授权的其它一切权利仍由uCharts保留，您在行使这些权力时须另外取得uCharts的书面许可。uCharts如果未行使前述任何权利，并不构成对该权利的放弃。</view>
-				<view class="qiun-text-title">三 软件的获取</view>
-				<view class="qiun-text">3.1 您可以从uCharts官方网站、uni-app插件市场、码云等平台获取uCharts源码或示例项目。</view>
-				<view class="qiun-text">3.2 如果您从未经uCharts授权的第三方获取本软件或本软件名称相同的安装程序，uCharts无法保证该软件能够正常使用，并因此给您造成的损失不予负责。</view>
-				<view class="qiun-text-title">四 软件的安装与卸载</view>
-				<view class="qiun-text">4.1 uCharts可能为不同的终端、系统等提供了不同的软件版本，您应当根据实际情况选择下载合适的版本进行安装。</view>
-				<view class="qiun-text">4.2 下载安装程序后，您需要按照该程序提示的步骤正确安装。</view>
-				<view class="qiun-text">4.3 如果您不再需要使用本软件或者需要安装新版本软件，可以自行卸载。</view>
-				<view class="qiun-text-title">五 软件的更新</view>
-				<view class="qiun-text">5.1 为了增进用户体验，完善服务内容，uCharts将不断提供新的服务，并为您不时提供软件更新（这些更新可能会采取软件替换、修改、功能强化、版本升级等形式）</view>
-				<view class="qiun-text">5.2 本软件可能为您默认开启自动升级，更新等功能，但是会把本次更新的内容告知与您，您确认后新版本才能正常使用。</view>
-				<view class="qiun-text">5.3 本软件新版本确认更新使用后，旧版本的软件可能无法使用，请您随时核对并下载最新版本。</view>
-				<view class="qiun-text-title">六 其他</view>
-				<view class="qiun-text">6.1 您使用本软件或本服务即视为您已阅读并同意接收本协议的约束。uCharts有权在必要时修改本协议条款，您可以在本软件、本服务的最新版本中查阅相关协议条款，本协议条款变更后，如果您继续使用本软件或本服务，即视为您已接受修改后的协议。如果您不接受修改后的协议，应当停止使用本软件。</view>
-				<view class="qiun-text">6.2 本协议的成立、生效、履行、解释及纠纷解决，适用中华人民共和国大陆地区法律（不包括冲突法）。</view>
-				<view class="qiun-text">6.3 若您和uCharts之间发生任何纠纷或争议，首先应友好协商解决；协商不成的，您同意将纠纷或争议提交本协议签订地有管辖权的人民法院管辖。</view>
-				<view class="qiun-text">6.4 本协议所有条款的标题仅为阅读方便，本身无实际涵义，不能作为本协议涵义解释的依据。</view>
-				<view class="qiun-text">6.5 本协议条款无论因何种原因部分无效或不可执行，其余条款仍有效，对双方具有约束力。本协议条款无论因何种原因部分无效或不可执行，其余条款仍有效，对双方具有约束力。</view>
+				<view class="qiun-text">在此特别提醒您（用户）在注册成为用户之前，请认真阅读本《隐私协议》（以下简称“协议”），确保您充分理解本协议中各条款。</view>
+				<view class="qiun-text">请您审慎阅读并选择接受或不接受本协议。您的注册、登录、使用等行为将视为对本协议的接受，并同意接受本协议各项条款的约束。</view>
+				<view class="qiun-text">本协议约定由大同市宇鑫冷链物流有限公司（以下简称“本公司”）与用户之间关于“本公司”软件服务（以下简称“服务“）的权利义务。“用户”是指注册、登录、使用本服务的个人。</view>
+				<view class="qiun-text">本协议可由本公司随时更新，更新后的协议条款一旦公布即代替原来的协议条款，恕不再另行通知，用户可在本微信小程序中查阅最新版协议条款。在修改协议条款后，如果用户不接受修改后的条款，请立即停止使用本公司提供的服务，用户继续使用服务将被视为接受修改后的协议。</view>
+				<view class="qiun-text-title">一、账号注册</view>
+				<!-- <view class="qiun-text-title">1.1 协议适用主体范围：</view> -->
+				<view class="qiun-text">1.1 用户在使用本服务前需要注册一个账号。“库易点”账号应当使用手机号码绑定注册，请用户使用尚未与“库易点”账号绑定的手机号码，以及未被服务根据本协议封禁的手机号码注册“库易点”账号。服务可以根据用户需求或产品需要对账号注册和绑定的方式进行变更，而无须事先通知用户。</view>
+				<view class="qiun-text">1.2 用户注册时应当授权库易点及使用其个人信息方可成功注册“库易点”账号。故用户完成注册即表明用户同意服务提取、公开及使用用户的信息。</view>
+				<view class="qiun-text">1.3 鉴于“库易点”账号的绑定注册方式，您同意服务在注册时将允许您的手机号码及手机设备识别码等信息用于注册。</view>
+				<view class="qiun-text">1.4 在用户注册及使用本服务时，库易点需要搜集能识别用户身份的个人信息以便服务可以在必要时联系用户，或为用户提供更好的使用体验。库易点搜集的信息包括但不限于用户的姓名、地址；“库易点”同意对这些信息的使用将受限于第三条用户个人隐私信息保护的约束。</view>
+				<view class="qiun-text-title">二、用户个人隐私信息保护</view>
+				<view class="qiun-text">2.1 如果库易点发现或收到他人举报或投诉用户违反本协议约定的，库易点有权不经通知随时对相关内容，包括但不限于用户资料进行审查、删除，并视情节轻重对违规账号处以包括但不限于警告、账号封禁 、设备封禁 、功能封禁 的处罚，且通知用户处理结果。</view>
+				<view class="qiun-text">2.2 因违反用户协议被封禁的用户，可以自行与库易点联系。其中，被实施功能封禁的用户会在封禁期届满后自动恢复被封禁功能。被封禁用户可提交申诉，库易点将对申诉进行审查，并自行合理判断决定是否变更处罚措施。</view>
+				<view class="qiun-text">2.3 用户理解并同意，库易点有权依合理判断对违反有关法律法规或本协议规定的行为进行处罚，对违法违规的任何用户采取适当的法律行动，并依据法律法规保存有关信息向有关部门报告等，用户应承担由此而产生的一切法律责任。</view>
+				<view class="qiun-text">2.4 用户理解并同意，因用户违反本协议约定，导致或产生的任何第三方主张的任何索赔、要求或损失，包括合理的律师费，用户应当赔偿库易点与合作公司、关联公司，并使之免受损害。</view>
+				<view class="qiun-text-title">三、用户发布内容规范</view>
+				<view class="qiun-text">3.1 本条所述内容是指用户使用服务的过程中所制作、上载、复制、发布、传播的任何内容，包括但不限于账号头像、名称、用户说明等注册信息及认证资料，或文字、图片、视频、图文等本服务所产生的内容。</view>
+				<view class="qiun-text">3.2 用户不得利用“库易点”账号或本服务制作、上载、复制、发布、传播如下法律、法规和政策禁止的内容：</view>
+				<view class="qiun-text">(1) 反对宪法所确定的基本原则的；</view>
+				<view class="qiun-text">(2) 危害国家安全，泄露国家秘密，颠覆国家政权，破坏国家统一的；</view>
+				<view class="qiun-text">(3) 损害国家荣誉和利益的；</view>
+				<view class="qiun-text">(4) 煽动民族仇恨、民族歧视，破坏民族团结的；</view>
+				<view class="qiun-text">(5) 破坏国家宗教政策，宣扬邪教和封建迷信的；</view>
+				<view class="qiun-text">(6) 散布谣言，扰乱社会秩序，破坏社会稳定的；</view>
+				<view class="qiun-text">(7) 散布淫秽、色情、赌博、暴力、凶杀、恐怖或者教唆犯罪的；</view>
+				<view class="qiun-text">(8) 侮辱或者诽谤他人，侵害他人合法权益的；</view>
+				<view class="qiun-text">(9) 含有法律、行政法规禁止的其他内容的信息。</view>
+				<view class="qiun-text-title">四、用户发布内容规范</view>
+				<view class="qiun-text">4.1 用户在本服务中或通过本服务所传送、发布的任何内容并不反映或代表，也不得被视为反映或代表库易点的观点、立场或政策，库易点对此不承担任何责任。</view>
+				<view class="qiun-text">4.2 用户不得利用“库易点”账号或本服务进行如下行为：</view>
+				<view class="qiun-text">(1) 提交、发布虚假信息，或盗用他人头像或资料，冒充、利用他人名义的；</view>
+				<view class="qiun-text">(2) 强制、诱导其他用户关注、点击链接页面或分享信息的；</view>
+				<view class="qiun-text">(3) 虚构事实、隐瞒真相以误导、欺骗他人的；</view>
+				<view class="qiun-text">(4) 利用技术手段批量建立虚假账号的；</view>
+				<view class="qiun-text">(5) 利用“库易点”账号或本服务从事任何违法犯罪活动的；</view>
+				<view class="qiun-text">(6) 制作、发布与以上行为相关的方法、工具，或对此类方法、工具进行运营或传播，无论这些行为是否为商业目的；</view>
+				<view class="qiun-text">(7) 其他违反法律法规规定、侵犯其他用户合法权益、干扰“库易点”正常运营或服务未明示授权的行为。</view>
+				<view class="qiun-text">4.3 用户须对利用“库易点”账号或本服务传送信息的真实性、合法性、无害性、准确性、有效性等全权负责，与用户所传播的信息相关的任何法律责任由用户自行承担，与库易点无关。</view>
+				<view class="qiun-text-title">五、用户发布内容规范</view>
+				<view class="qiun-text">5.1 库易点郑重提醒用户注意本协议中免除库易点责任和限制用户权利的条款，请用户仔细阅读，自主考虑风险。未成年人应在法定监护人的陪同下阅读本协议。</view>
+				<view class="qiun-text">5.2 本协议的效力、解释及纠纷的解决，适用于中华人民共和国法律。若用户和库易点之间发生任何纠纷或争议，首先应友好协商解决，协商不成的，用户同意将纠纷或争议提交库易点住所地有管辖权的人民法院管辖。</view>
+				<view class="qiun-text">5.3 本协议的任何条款无论因何种原因无效或不具可执行性，其余条款仍有效，对双方具有约束力。</view>
+				<view class="qiun-text-title" style="text-align: center;">本《协议》版权由库易点所有</view>
+				<view class="qiun-text-title" style="text-align: center;">库易点保留一切对本《协议》解释的权利</view>
 			</view>
 		</view>
 	</view>
@@ -67,6 +77,6 @@
 <style>
 .qiun-title{font-size: 36upx;font-weight: bold;text-align: center;padding: 20upx 0upx;}
 .qiun-text-view{background-color: #FFFFFF;margin: 10upx;padding: 10upx;}
-.qiun-text-title{font-size: 32upx;font-weight: bold;line-height: 64upx;text-align: left;}
+.qiun-text-title{font-size: 32upx;font-weight: bold;line-height: 64upx;text-align: left;margin-top: 20upx; }
 .qiun-text{font-size: 30upx;line-height: 50upx;width: 100%;text-align: left;text-indent: 60upx;}
 </style>

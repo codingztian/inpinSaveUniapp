@@ -2,7 +2,7 @@
 	<view class="center">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
-				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="添加客户" 
+				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" :title="detailDate?'修改客户信息':'添加客户'" 
 					color="#fff" background-color="rgb(60, 158, 253)"
 					@clickLeft="clickLeft" />
 			</view>
@@ -141,25 +141,22 @@
 					label:'合作仓',
 					value:'合作仓',
 				}],
+
+				detailDate: "",
 			}
 
 		},
 		onLoad(e) {
-			console.log(e);
+			console.log(e.detailDate);
 			_this = this;
-			if(e.id) {
-				_this._post_form('/api/user/kehu', {}, (result) => {
-					console.log(result);
-					result.data.list.forEach(element => {
-						if(element.id == e.id) {
-							_this.model.name = element.name;
-							_this.model.linkman = element.linkName;
-							_this.model.phone = element.mobile;
-							_this.model.city = element.address.split(" ")[0];
-							_this.model.address = element.address.split(" ")[1];
-						}
-					});
-				});
+			if(e.detailDate) {
+				_this.detailDate = JSON.parse(e.detailDate);
+				console.log(_this.detailDate);
+				_this.model.name = _this.detailDate.name;
+				_this.model.linkman = _this.detailDate.linkName;
+				_this.model.phone = _this.detailDate.mobile;
+				_this.model.city = _this.detailDate.address.split(" ")[0];
+				_this.model.address = _this.detailDate.address.split(" ")[1];
 			}
 		},
 		onReady() {
@@ -170,25 +167,44 @@
 				uni.navigateTo({url: "/pages/user/userinfo"});
 			},
 			submit() {
-				this.$refs.uForm.validate(valid => {
+				_this.$refs.uForm.validate(valid => {
 					if (valid) {
-						_this._post_form('/api/user/kehudo', {
+						let params = {
 							action: "add",
 							company: _this.model.name,
 							boss: _this.model.linkman,
 							mobile: _this.model.phone,
 							address: _this.model.city+" "+_this.model.address,
+						}
+						if(_this.detailDate) {
+							params.action = "edit";
+							params.id = _this.detailDate.id;
+						}
+						_this._post_form('/api/user/kehudo', params, (result) => {
+							uni.showLoading({mask:true,title: _this.detailDate?'信息修改中...':'信息添加中...'});
+							let set = setTimeout(() => {
+								clearTimeout(set);
+								if(result.errno==0) {
+										uni.hideLoading();
+										_this.$refs.uToast.show({
+											title: _this.detailDate?'信息修改成功':'信息添加成功',
+											type: 'success',
+										});
+										let setn = setTimeout(() => {
+											clearTimeout(setn);
+											_this.clickLeft();
+										}, 666);
+								} else {
+									_this.$refs.uToast.show({
+										title: result.error,
+										type: 'error'
+									});
+								}
+							}, 1000);
 
-						}, (result) => {
-							console.log(result);
-							_this.$refs.uToast.show({
-								title: '添加成功',
-								type: 'success',
-								back: true
-							})
 						});
 					}else{
-						this.$refs.uToast.show({
+						_this.$refs.uToast.show({
 							title: '信息有误',
 							type: 'error'
 						})

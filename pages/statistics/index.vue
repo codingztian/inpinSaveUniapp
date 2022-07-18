@@ -13,7 +13,7 @@
 				<text style="color:#4F5B94;font-size:13px;">您有120单待审核，请及时审批。</text>
 			</view> -->
 			<view class="color-box" v-if="infodata">
-				<view class="color-item ibg1" @click="toOverbooking('inOrder')">
+				<view class="color-item ibg1" @tap="toTab(1)">
 					<view class="color-title">入库管理</view>
 					<view class="color-value">
 						今日入库：{{ parseInt(infodata.SALE) }}
@@ -22,7 +22,7 @@
 						待审核：{{ parseInt(infodata.SALE) }}
 					</view> -->
 				</view>
-				<view class="color-item ibg2" @click="toOverbooking('outOrder')">
+				<view class="color-item ibg2" @tap="toTab(2)">
 					<view class="color-title">出库管理</view>
 					<view class="color-value">
 						今日出库：{{ parseInt(infodata.PUR) }}
@@ -98,6 +98,9 @@
 		methods: {
 			toOverbooking(path) {
 				uni.navigateTo({url: '/pages/'+path+'/index'})
+			},
+			toTab(e) {
+				uni.switchTab({url: '/pages/order/index'});
 			},
 
 			onClick(url){

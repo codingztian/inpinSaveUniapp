@@ -149,6 +149,12 @@ Vue.prototype._post_form = function(url, data, success, fail, complete) {
 				});
 				return false;
 			}
+			if (res.data.errno==99) {
+				console.log(res.data.error);
+				uni.clearStorageSync()
+				uni.navigateTo({url:"/pages/login/index"})
+				return;
+			}
 			success && success(res.data);
 		},
 		fail: function(res) {

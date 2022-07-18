@@ -215,12 +215,12 @@
 					this.$set(this.$store.state.orderlist, this.goodsObj.id, this.goodsObj);
 					// 关闭窗口后，恢复默认内容
 					this.$refs.inputDialog.close()
-				}, 100)
+				}, 300)
 			},
 			// 去到下单页
 			pushData() {
 				// console.log(this.$store.state.orderlist);
-				// console.log(Object.keys(this.$store.state.orderlist).length);
+				// console.log(Object.keys(this.$store.state.inputDialog).length);
 				// return
 				// 获取对象长度
 				let len = Object.keys(this.$store.state.orderlist).length;

@@ -9,7 +9,7 @@
 		</view>
 
 		<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()">
-			<view style="padding: 12px;">
+			<view style="padding: 12px;" v-if="unitlist.length">
 				<view class="title-wrap" :index="index" v-for="(item, index) in unitlist" :key="item.id">
 					<view>
 						<text class="title u-line-2" style="color:#333;font-size: 18px;font-weight: 900;line-height: 32px;">{{ item.name }}</text>
@@ -110,7 +110,7 @@
 				});
 			},
 			lower(e) {
-				if(this.pageinfo.count < 10) return false;
+				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
 				if(this.lodingStatus) return false;
 				this.lodingStatus = true;
 				let set = setTimeout(() => {

@@ -100,7 +100,9 @@
 			// 加入账单
 			dialogInputConfirm(val) {
 
-				uni.showLoading({title: '加入账单中'});
+				uni.showLoading({
+					
+					title: '加入账单中'});
 
 				setTimeout(() => {
 					uni.hideLoading()
@@ -126,7 +128,7 @@
 					uni.showToast({title: '请选择收货地址', icon: 'none'});
 					return;
 				}
-				uni.showLoading({title: '提交账单中'});
+				uni.showLoading({mask:true,title: '提交账单中'});
 				setTimeout(() => {
 					_this._post_form('/api/order/sendorder', {
 						goods_info: JSON.stringify(goodsArr),
@@ -141,7 +143,7 @@
 						
 					});
 					
-				}, 300)
+				}, 1000)
 			},
 			
 		}
@@ -151,5 +153,5 @@
 <style>
 	page {background: #F4F5F6;}
 	.flexCenter {display: flex;}
-	
+	.uni-icons.uniui-location-filled {color: #2590ff !important;}
 </style>

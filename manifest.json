@@ -16,8 +16,8 @@
             "autoclose" : true,
             "delay" : 0
         },
-        "statusbar": {  
-            "immersed": false  
+        "statusbar" : {
+            "immersed" : false
         },
         /* 模块配置 */
         "modules" : {},

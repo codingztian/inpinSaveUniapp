@@ -17,7 +17,7 @@
 			<view class="desc">
 				<view class="descSpan" style="border-bottom:1px solid #F4F5F6;">
 					<text class="s1">联系我们</text>
-					<text class="s2">13299998888</text>
+					<text class="s2">13353421184</text>
 				</view>
 				<view class="descSpan">
 					<text class="s1">隐私协议</text>

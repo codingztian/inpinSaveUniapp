@@ -11,7 +11,7 @@
 
 			<!-- <view class="action"> -->
 				<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()" >
-					<view style="padding: 12px;">
+					<view style="padding: 12px;" v-if="list.length">
 						<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
 							<view>
 								<text class="title u-line-2" style="color:#333;font-size: 18px;font-weight: 900;line-height: 32px;">{{ item.name }}</text>
@@ -19,11 +19,11 @@
 								<text class="title u-line-2" style="color:#666666;font-size: 14px;">{{ item.address }}</text>
 							</view>
 							<view style="display:flex;">
-								<view @tap="eidtorUser(item.id)">
-									<uni-icons type="compose" size="30"></uni-icons>
+								<view @tap="eidtorUser(item)">
+									<uni-icons type="compose" size="24"></uni-icons>
 								</view>
 								<view @tap="delUser(item.id)" style="margin-left:10px;">
-									<uni-icons type="trash" size="30"></uni-icons>
+									<uni-icons type="trash-filled" size="24"></uni-icons>
 								</view>
 								<!-- <text @open="open(id)">
 									<uni-icons type="trash" size="24"></uni-icons>
@@ -95,16 +95,14 @@
 			addUser() {
 				uni.navigateTo({url: '/pages/information/customerinfo/add'});
 			},
-			eidtorUser(e){
-				uni.navigateTo({url: '/pages/information/customerinfo/add?id=' + e});
-				// uni.navigateTo({url: '/pages/information/customerinfo/details?id=' + e});
+			eidtorUser(e) {
+				uni.navigateTo({url: '/pages/information/customerinfo/add?detailDate='+ encodeURIComponent(JSON.stringify(e))});
 			},
 			delUser(e) {
 				_this.show = true;
 				_this.id = e
 			},
 			confirm(){
-				console.log(_this.id);
 				_this._post_form('/api/user/kehudo', {
 					action: "delete",
 					id: _this.id
@@ -123,11 +121,12 @@
 					// _this.setData({'list' : result.data.list})
 					_this.pageinfo = result.data.pageinfo;
 					_this.list = _this.list.concat(result.data.list);
+					console.log(_this.list);
 				});
 			},
 
 			lower(e) {
-				if(this.pageinfo.count < 10) return false;
+				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
 				if(this.lodingStatus) return false;
 				this.lodingStatus = true;
 				let set = setTimeout(() => {
@@ -164,10 +163,11 @@
 		overflow: auto;
 	}
 	.action .title-wrap {
-		margin-bottom: 12px;
+		padding-bottom: 5px;
 		display: flex;
 		align-items: center;
-    	justify-content: space-between;
+		justify-content: space-between;
+		border-bottom: 1px solid #eee;
 	}
 
 	.action .title-wrap .title {
@@ -191,7 +191,7 @@
 		background: #2982FF;
 		border-radius: 50px;
 	}
-
+	.uni-icons {color: #999 !important;}
 	
 </style>
 

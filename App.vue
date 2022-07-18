@@ -12,18 +12,19 @@
 			// 		animationType:'slide-in-bottom'
 			// 	})
 			// })
-			console.log('App Launch：初始化完成（全局只触发一次）');
-			console.log("userInfo：",uni.getStorageSync('userinfo'));
+
+			// console.log('App Launch：初始化完成（全局只触发一次）');
+			// console.log("userInfo：",uni.getStorageSync('userinfo'));
 		},
 		onShow: function(e) {
-			console.log(e);
-			console.log('App Show：','页面启动完成')
+			// console.log(e);
+			// console.log('App Show：','页面启动完成')
 			if (e.path !== 'pages/login/index' && !uni.getStorageSync('token')) {
 				uni.navigateTo({url:"/pages/login/index",})
 			}
 		},
 		onHide: function() {
-			console.log('App Hide：已进入后台运行')
+			// console.log('App Hide：已进入后台运行')
 		}
 		
 	}
