@@ -96,7 +96,7 @@
 				uni.navigateTo({url: '/pages/information/customerinfo/add'});
 			},
 			eidtorUser(e) {
-				uni.navigateTo({url: '/pages/information/customerinfo/add?detailDate='+ encodeURIComponent(JSON.stringify(e))});
+				uni.navigateTo({url: '/pages/information/customerinfo/add?detailDate='+ JSON.stringify(e)});
 			},
 			delUser(e) {
 				_this.show = true;

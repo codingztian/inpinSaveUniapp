@@ -22,29 +22,28 @@
 			<scroll-view  class="orderlist scroll" scroll-y="true" @scrolltolower="lower()" >
 				<view v-if="orederList.length">
 					<view>
-						<view v-for="(cell,key) in orederList" :key="key">
+						<view v-for="(cell,key) in orederList" :key="key+'_'">
 							<view style="background: #f8f8f8;padding: 12px 10px 7px;margin-bottom: 10px;color: #333;">
 								<text>{{cell.time}}</text>
-								<!-- <text style="float:right;">收货方：{{cell.kehu}}</text> -->
+								<text style="float:right;">{{ crOrderIndex==2?'收货方：'+cell.kehu:''}}</text>
 							</view>
-							<view v-for="(item,index) in cell.goods" :key="key+index" class="goods__item">
+							<view v-for="(item,index) in cell.goods" :key="key+'_'+index" class="goods__item">
 								<view class="flexCenter">
 									<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="item.thumb_img" alt="51" style="width:80px;height:80px;"></view>
 								</view>
 								<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 									<view>
 										<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ item.name }}</view>
-										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
-											<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;"> {{ crOrderIndex==1?'供应商':'收货方'}}</text>
+										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==1">
+											<text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>
 											<text>{{item.factory_name}}</text>
 										</view>
-										
 										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==1">
-											<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">库位</text>
+											<text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>
 											<text>{{item.location}}</text>
 										</view>
 										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==2">
-											<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">供应商</text>
+											<text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>
 											<text>{{item.factory_name}}</text>
 										</view>
 									</view>
@@ -88,12 +87,14 @@
 			// console.log(e.crOrderIndex);
 			if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
 			var startTime = new Date().getTime();
-			var sevenDay = 1000 * 60 * 60 * 24 * 15;
+			var sevenDay = 1000 * 60 * 60 * 24 * 1;
 			_this.range = [_this.timeTrans(new Date(startTime - sevenDay)),_this.timeTrans(new Date())];
 		},
 		watch: {
 			range(newval) {
-				console.log('范围选:', this.range);
+				// console.log('范围选:', this.range);
+				this.orederList = [];
+				this.page = 1;
 				_this.getOrderInfo();
 			}
 		},

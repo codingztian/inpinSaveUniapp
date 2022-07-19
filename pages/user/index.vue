@@ -12,7 +12,7 @@
 			<view class="logo-title">
 				<text class="uer-name">{{login ? userInfo.username : '您未登录'}}</text>
 				<text class="uni-panel-icon uni-icon" v-if="!login">&#xe581;</text>
-				<view @click="loginout">注销</view>
+				<view @click="loginout" style="font-size: 14px;color: #eee;">[退出登录]</view>
 			</view>
 		</view>
 		

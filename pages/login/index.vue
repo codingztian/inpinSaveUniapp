@@ -114,7 +114,7 @@
 
 <style lscoped lang="scss">
 	page {
-		background: url(../../static/images/loginbg.png) top center / 100% no-repeat;
+		// background: url(../../static/images/loginbg.png) top center / 100% no-repeat;
 	}
 
 	.force-login-wrap {
