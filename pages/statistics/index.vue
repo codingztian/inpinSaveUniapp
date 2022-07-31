@@ -91,7 +91,7 @@
 				kginfo:{}
 			}
 		},
-		onLoad() {
+		onShow() {
 			_this = this;
 			_this.getinfo();
 		},
@@ -237,7 +237,8 @@
 		background: linear-gradient(-125deg, #67c707, #a7f968);
 	}
 	.bg2{
-		background: linear-gradient(-125deg, #70C1FD, #399BFD);
+		/*background: linear-gradient(-125deg, #70C1FD, #399BFD);*/
+		background: url(../../static/images/sendGoods.png) center / cover no-repeat;
 	}
 	.bg3{
 		background: linear-gradient(-125deg, #e29811, #f1cf71);

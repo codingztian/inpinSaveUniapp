@@ -59,7 +59,7 @@
 		width: 206px;
 		height: 202px;
 		margin: 80upx auto 40upx;
-		background: url(../../static/images/orderOverImg.png) center no-repeat;
+		background: url(../../static/images/orderOverImg.png) center / cover no-repeat;
 	}
 	.overBtn {
 		width: 68%;

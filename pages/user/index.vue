@@ -159,7 +159,7 @@
 		padding: 70px 27px 0px;
 		background-color: #2fc25b;
 		background: url(../../static/images/user/userbg.png) center / cover no-repeat;
-		display: flex;
+		display: flex; 
 	}
 
 	.logo-hover {
@@ -197,13 +197,16 @@
 		width: 60px;
 		height: 60px;
 		color: #666666;
+		background-size: 100% 100%;
+		background-position: center;
+		background-repeat: no-repeat;
 	}
-	.info .io.myinfo .pic {background: url(../../static/images/user/myInfo.png) center no-repeat;}
-	.info .io.userinfo .pic {background: url(../../static/images/user/userInfo.png) center no-repeat;;}
-	.info .io.customerInfo .pic {background: url(../../static/images/user/customerInfo.png) center no-repeat;}
-	.info .io.mykg .pic {background: url(../../static/images/user/myKg.png) center no-repeat;}
-	.info .io.about .pic {background: url(../../static/images/user/about.png) center no-repeat;}
-	.info .io.set .pic {background: url(../../static/images/user/set.png) center no-repeat;}
+	.info .io.myinfo .pic {background-image: url(../../static/images/user/myInfo.png);}
+	.info .io.userinfo .pic {background-image: url(../../static/images/user/userInfo.png);}
+	.info .io.customerInfo .pic {background-image: url(../../static/images/user/customerInfo.png);}
+	.info .io.mykg .pic {background-image: url(../../static/images/user/myKg.png);}
+	.info .io.about .pic {background-image: url(../../static/images/user/about.png);}
+	.info .io.set .pic {background-image: url(../../static/images/user/set.png);}
 
 
 	.uer-name {

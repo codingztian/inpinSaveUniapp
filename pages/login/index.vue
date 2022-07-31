@@ -1,7 +1,8 @@
 <template>
 	<view class="force-login-wrap">
+		<image class="force-login-wrap-bg" src="../../static/images/loginbg.png" mode="aspectFill"></image>
 		<view class="force-login__content y-f">
-			<image class="user-avatar" src="../../static/images/about.png" mode="aspectFill"></image>
+			<image class="user-avatar" src="../../static/images/logo.png" mode="aspectFill"></image>
 
 			<view class="login-boxs">
 				<u-form-item :rightIconStyle="{color: '#888', fontSize: '32rpx'}" right-icon="kefu-ermai" :label-position="labelPosition"
@@ -114,7 +115,7 @@
 
 <style lscoped lang="scss">
 	page {
-		// background: url(../../static/images/loginbg.png) top center / 100% no-repeat;
+		background: #fff;
 	}
 
 	.force-login-wrap {
@@ -403,4 +404,8 @@
 		width: 100%;
 		margin-top: 10px;
 	}
+</style>
+
+<style>
+	.force-login-wrap-bg {position: absolute;top: 0;left: 0;width: 100%;height: 100%;z-index: -1;}
 </style>

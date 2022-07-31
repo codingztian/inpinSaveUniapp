@@ -9,10 +9,10 @@
 
 		<!-- 商品分类 -->
 		<cp-goods-select
-			height="90vh" 
+			height="90vh"  
 			:props="{label:'name',value:'id',children:'children'}" 
 			v-if="list"
-			:options="list"
+			:options="list" 
 			class="listlistlist"
 			@scrolltolower="handelScrolltolower" 
 			@category-change="handelCategoryChange">
@@ -67,7 +67,8 @@
 				
 			}
 		},
-		onLoad() {
+		
+		onShow() {
 			_this = this;
 			
 			_this.getGoodsData();
