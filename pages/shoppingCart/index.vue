@@ -21,12 +21,15 @@
 			</view>
 		</view>
 
-		<view style="height: 61vh;padding: 12px;overflow: auto;">
+		<view style="height: 71vh;padding: 12px;overflow: auto;">
 			<view style="padding:12px;background: #fff;border-radius: 5px;">
 				<view v-for="(item,key) in zd" :key="key">
 					<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #eee;">
 						<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
-						<view style="flex:1;font-size:18px;font-weight:900;">{{ item.name }}</view>
+						<view style="flex:1;font-size:18px;font-weight:900;margin-right: 10px;">
+							<view>{{ item.name }}</view>
+							<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{ item.price }}</view>
+						</view>
 						<view style="flex:0;">
 								<view class="button-text" style="text-align: center;font-size: 14px;">
 									<text style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;float: right;">+{{item.shoopNum}}</text>
@@ -37,9 +40,12 @@
 			</view>
 		</view>
 
+		<view style="width: 100%;height: 7vh;display: flex;justify-content: space-between;padding: 10px;align-items: flex-end;background-color: rgb(255, 255, 255);box-shadow: rgb(204 204 204) 0px -1px 10px 0px;padding-left: 20px;font-size: 16px;color: #666666;position: fixed;bottom: 0;z-index: 1;">
+			<text>
+				<text>共<span style="margin: 0 3px;color: #FF4C4B;">{{Object.keys(zd).length}}</span>件商品</text>
+				<text style="color: #ff4c4b;font-weight: 900;margin-left: 10px;">¥{{count==0?'0.00':count}}</text>
+			</text>
 
-		<view style="width: 100%;height: 9vh;display: flex;justify-content: space-between;padding: 10px;align-items: flex-end;background-color: rgb(255, 255, 255);box-shadow: rgb(204 204 204) 0px -1px 10px 0px;padding-left: 20px;font-size: 16px;color: #666666;position: fixed;bottom: 0;z-index: 1;">
-			<text>共<text style="margin: 0 3px;color: #FF4C4B;">{{Object.keys(zd).length}}</text>件</text>
 			<text @click="toOredrOver" style="height: 100%;width:100px;display: flex;align-items: center;justify-content: center;border-radius: 5px;padding: 2px 10px;font-weight: normal;cursor: pointer;background: #2982FF;border-radius: 100px;color: #fff;">
 				提交
 			</text>
@@ -66,6 +72,8 @@
 				goodsObj: {},					// 选中的商品对象
 				selectAddressStatus: false,
 				selectAddress: {},				// 选中的地址对象
+				count: 0,
+
 			}
 		},
 		computed:{
@@ -81,11 +89,16 @@
 				this.selectAddressStatus = true;
 				this.selectAddress = this.$store.state.selectAddress
 			}
-
+			this.count = 0;
+			for (const key in this.$store.state.orderlist) {
+				this.count += parseInt(this.$store.state.orderlist[key].shoopNum)*parseInt(this.$store.state.orderlist[key].price);
+			}
+			this.count = this.count.toFixed(2);
 		},
 		methods: {
 			clickLeft() {
-				uni.navigateTo({url: "/pages/overbooking/index"});
+				// uni.navigateTo({url: "/pages/overbooking/index"});
+				uni.navigateBack({delta: 1});
 			},
 			toUser() {
 				uni.navigateTo({url: "/pages/shoppingCart/userinfo"});
@@ -100,9 +113,7 @@
 			// 加入账单
 			dialogInputConfirm(val) {
 
-				uni.showLoading({
-					
-					title: '加入账单中'});
+				uni.showLoading({title: '加入账单中'});
 
 				setTimeout(() => {
 					uni.hideLoading()
@@ -110,6 +121,7 @@
 					this.goodsObj.shoopNum = this.shoopInputValue;
 					// this.$store.state.orderlist.push(this.goodsObj);
 					this.$set(this.$store.state.orderlist, this.goodsObj.id, this.goodsObj);
+					
 					// 关闭窗口后，恢复默认内容
 					this.$refs.inputDialog.close()
 				}, 100)

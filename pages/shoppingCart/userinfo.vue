@@ -73,7 +73,9 @@
 		},
 		methods: {
 			clickLeft() {
-				uni.navigateTo({url: '/pages/shoppingCart/index'});
+				// uni.navigateTo({url: '/pages/shoppingCart/index'});
+				uni.navigateBack({delta: 1});
+
 			},
 			currTap(item,e) {
 				console.log(item);

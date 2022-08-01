@@ -6,7 +6,7 @@
 					color="#fff" background-color="rgb(60, 158, 253)" />
 			</view>
 		</view>
-		<view style="height:6vh;background: #fff;display: flex;align-items: center;justify-content: center;">
+		<view style="height:8vh;background: #fff;display: flex;align-items: center;justify-content: center;">
 			<view class="crOrder">
 				<view class="crOrderBtn" :class="{'curr':crOrderIndex==1}" @click="cutCrOrder(1)">入库订单</view>
 				<view class="crOrderBtn" :class="{'curr':crOrderIndex==2}" @click="cutCrOrder(2)">出库订单</view>
@@ -24,16 +24,20 @@
 					<view>
 						<view v-for="(cell,key) in orederList" :key="key">
 							<view style="background: #f8f8f8;padding: 12px 10px 7px;margin-bottom: 10px;color: #333;">
-								<text>{{cell.time}} {{key}}</text>
+								<text>{{cell.time}}</text>
 								<text style="float:right;">{{ crOrderIndex==2?'收货方：'+cell.kehu:''}}</text>
 							</view>
 							<view v-for="(item,index) in cell.goods" :key="index" class="goods__item">
+								<view style="width:100%;margin: 4px 0px;display: flex;justify-content: space-between;font-size: 13px;">
+									<span>订单号：{{cell.order}}</span>
+									<span :class="'f3a73f'" v-if="crOrderIndex==2">发货状态</span>
+								</view>
 								<view class="flexCenter">
 									<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="item.thumb_img" alt="51" style="width:80px;height:80px;"></view>
 								</view>
 								<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 									<view>
-										<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ item.name }} {{index}}</view>
+										<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ item.name }}</view>
 										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==1">
 											<text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>
 											<text>{{item.factory_name}}</text>
@@ -52,12 +56,13 @@
 											<text style="font-weight:900;">{{item.num}}</text>
 											<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{item.unit_name}}</text>
 										</view>
+										<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{parseInt(item.id).toFixed(2)}}</view>
 									</view>
 								</view>
 							</view>
 						</view>
 					</view>
-					<view><uni-load-more iconType="auto" :status="status" v-if="lodingStatus" /></view>
+					<view><uni-load-more iconType="auto" :status="status" v-if="lodingStatus"/></view>
 				</view>
 				<view v-else style="padding-top: 18vh;">
 					<u-empty mode="order" icon="http://cdn.uviewui.com/uview/empty/order.png"  ></u-empty>
@@ -119,12 +124,12 @@
 				},
 				res=> {
 					let s = setTimeout(()=>{
-						clearTimeout(s);
 						if(res.errno==0) {
 							_this.orederList = _this.orederList.concat(res.data.list);
 							_this.pageinfo = res.data.pageinfo;
 							console.log(_this.orederList);
 						}
+						clearTimeout(s);
 						uni.hideLoading();
 					},800);
 				});
@@ -164,6 +169,10 @@
 <!-- border-bottom: 1px solid #dcdfe6;border-top: 1px solid #dcdfe6;
  -->
 <style>
+	.bc3711{color: #18bc37;}
+	.f3a73f{color: #f3a73f;}
+	.e43d33{color: #e43d33;}
+	.f939c1{color: #8f939c;}
 	/* page {background: #F4F5F6;} */
 
 	.crOrder {
@@ -184,6 +193,7 @@
 		justify-content: center;
 		border: 1px solid #2982FF;
 		border-radius: 5px;
+		font-size: 18px;
 	}
 	.crOrder .crOrderBtn:nth-child(1) {
 		border-top-right-radius: 0px;
@@ -201,7 +211,7 @@
 	.example-body {}
 
 	.orderlist {
-		height: 79vh;
+		height: 77vh;
 		/* padding:8px 12px; */
 		overflow: auto;
 		box-sizing: border-box;
@@ -220,6 +230,7 @@
 		display: flex;
 		align-items: flex-start;
 		justify-content: flex-start;
+		flex-wrap: wrap;
 	}
 	
 </style>

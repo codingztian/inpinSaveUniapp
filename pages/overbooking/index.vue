@@ -50,7 +50,10 @@
 			</view>
 			
 			<view @click="toggle('bottom')" class="bottomBox">
-				<text>共<text style="margin: 0 3px;color: #FF4C4B;">{{Object.keys($store.state.orderlist).length}}</text>件</text>
+				<text>
+					<text>共<span style="margin: 0 3px;color: #FF4C4B;">{{Object.keys($store.state.orderlist).length}}</span>件商品</text>
+					<text style="color: #ff4c4b;font-weight: 900;margin-left: 10px;">¥{{count==0?'0.00':count}}</text>
+				</text>
 				<text style="height: 100%;width:100px;display: flex;align-items: center;justify-content: center;border-radius: 5px;padding: 2px 10px;font-weight: normal;cursor: pointer;background: #2982FF;border-radius: 100px;color: #fff;" @click.stop="pushData">
 					下一步
 				</text>
@@ -92,11 +95,14 @@
 					<view v-for="(item,key) in zd" :key="key">
 						<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #eee;">
 							<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
-							<view style="flex:1;font-size:18px;font-weight:900;">{{ item.name }}</view>
+							<view style="flex:1;font-size:18px;font-weight:900;margin-right: 10px;">
+								<view>{{ item.name }}</view>
+								<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{ item.price }}</view>
+							</view>
 							<view style="flex:0;">
-									<view class="button-text" @click="inputDialogToggle('',item)" style="text-align: center;font-size: 14px;">
-										<text style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;float: right;">+{{item.shoopNum}}</text>
-									</view>
+								<view class="button-text" @click="inputDialogToggle('',item)" style="text-align: center;font-size: 14px;">
+									<text style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;float: right;">+{{item.shoopNum}}</text>
+								</view>
 							</view>
 						</view>
 					</view>
@@ -105,11 +111,17 @@
 
 			<!-- 数量修改弹窗 -->
 			<uni-popup ref="inputDialog" type="dialog">
-				<uni-popup-dialog ref="inputClose"  mode="input" title="输入数量" value="" placeholder="请输入内容" @confirm="dialogInputConfirm">
-					<input type="number" placeholder="请输入数量" v-model="shoopInputValue" style="width:100%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
+				<uni-popup-dialog ref="inputClose"  mode="input" title="输入数量价格" value="" placeholder="请输入内容" @confirm="dialogInputConfirm">
+					<view style="padding: 20px 0;width: 80%;display: flex;align-items: center;">
+						<label>数 量：</label>
+						<input type="number" placeholder="请输入数量" v-model="shoopInputValue" style="box-sizing: border-box;width:78%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
+					</view>
+					<view style="padding-bottom: 20px;width: 80%;display: flex;align-items: center;">
+						<label>价 格：</label>
+						<input type="number" placeholder="请输入价格" v-model="shoopInputPrice" style="box-sizing: border-box;width:78%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
+					</view>
 				</uni-popup-dialog>
 			</uni-popup>
-
 	</view>
 </template>
 
@@ -129,6 +141,8 @@
 				specifications:[],
 
 				shoopInputValue:"",		// 商品数量vmodel
+				shoopInputPrice:"",		// 商品数量vmodel
+				count: 0,
 				goodsObj: {},					// 选中的商品对象
 
 				popupType:"",
@@ -141,7 +155,7 @@
 			_this = this;
 
 			_this.getGoodsData();
-			
+			console.log(getCurrentPages());
 		},
 		watch: {
 			shoopInputValue() {
@@ -162,8 +176,10 @@
 						// - this.$set(原数组, 索引值, 需要赋的值)
 						element.children.forEach(item => {
 							this.$set(item, "shoopNum", 0);
+							this.$set(item, "price", 0);
 						})
 					});
+					console.log(this.list);
 				});
 			},
 			clickLeft() {
@@ -175,15 +191,16 @@
 			inputDialogToggle(classifi,goods) {
 				this.goodsObj = goods;
 				// console.log(this.$refs.inputDialog)
-				console.log(this.goodsObj);
+				// console.log(this.goodsObj);
+
 				this.shoopInputValue = goods.shoopNum==0?"":goods.shoopNum;
+				this.shoopInputPrice = goods.price==0?"":goods.price;
 				this.$refs.inputDialog.open();
 			},
 			// 底部弹窗
 			toggle(type) {
 
 				// 获取对象长度
-				
 				if(Object.keys(this.$store.state.orderlist).length) {
 					this.zd = this.$store.state.orderlist;
 					console.log(this.zd);
@@ -201,21 +218,32 @@
 			clsoeDialog() {
 				this.$refs.inputDialog.close()
 			},
-			
+			orderlistCount() {
+				this.count = 0;
+				for (const key in this.$store.state.orderlist) {
+					this.count += parseInt(this.$store.state.orderlist[key].shoopNum)*parseInt(this.$store.state.orderlist[key].price);
+				}
+				this.count = this.count.toFixed(2);
+			},
 			// 加入账单
 			dialogInputConfirm(val) {
+				if(this.shoopInputValue==0) return uni.showToast({title: '请输入商品数量',icon: 'none',duration: 1000});
+				if(this.shoopInputPrice==0) return uni.showToast({title: '请输入商品价格',icon: 'none',duration: 1000});
+				uni.showLoading({mask:true,title: '加入账单中...'});
 
-				uni.showLoading({title: '加入账单中'});
 
 				setTimeout(() => {
 					uni.hideLoading()
-					console.log(this.goodsObj);
 					this.goodsObj.shoopNum = this.shoopInputValue;
+					this.goodsObj.price = this.shoopInputPrice;
 					// this.$store.state.orderlist.push(this.goodsObj);
 					this.$set(this.$store.state.orderlist, this.goodsObj.id, this.goodsObj);
+					this.orderlistCount();
 					// 关闭窗口后，恢复默认内容
-					this.$refs.inputDialog.close()
-				}, 300)
+					this.$refs.inputDialog.close();
+					// console.log(this.goodsObj);
+					// console.log(this.$store.state.orderlist);
+				}, 300);
 			},
 			// 去到下单页
 			pushData() {
@@ -240,8 +268,13 @@
 					// 				}
 					// 		}
 					// });
-				} else uni.navigateTo({url: '/pages/shoppingCart/index'})
-				
+				} else {
+					uni.showLoading({mask:true,title: '订单加载中...'});
+					let s = setTimeout(() => {
+						clearTimeout(s);
+						uni.navigateTo({url: '/pages/shoppingCart/index'});
+					}, 1000);
+				}
 			},
 
 			// 加入账单
@@ -407,6 +440,7 @@
 <style lang="less">
 	// /deep/ .uni-navbar__content  {height: 6vh;}
 	// /deep/ .uni-nav-bar-text {font-size: 16px;}
+	/deep/ .uni-dialog-content {padding: 0;flex-wrap: wrap;}
 </style>
 
 <style>
@@ -416,6 +450,7 @@
 		/* display: grid;
     	grid-template-rows: auto 60px; */
 	}
+	
 
 	.bottomBox {
 		width: 100%;

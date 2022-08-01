@@ -1,58 +1,37 @@
 <template>
-	<view class="content">
+	<view class="">
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
 				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="出库管理" 
 					color="#fff" background-color="rgb(60, 158, 253)"
-					@clickLeft="clickLeft" />
-			</view>
-		</view>
-		<view>
-			<view class="example-body">
-				<uni-datetime-picker style="border:none;" v-model="range" type="daterange" @maskClick="maskClick" />
+					leftText="返回" 
+					@clickLeft="clickLeft"/>
 			</view>
 		</view>
 
-		<view class="orderlist">
+		<!-- <view class="action"> -->
+		<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()" >
+			<view class="scrollView" v-if="list.length">
+				<view class="flex header">
+					<text class="title u-line-2 title1">商品名称</text>
+					<text class="title u-line-2">件数</text>
+					<text class="title u-line-2">库存</text>
+					<text class="title u-line-2">单价</text>
+					<text class="title u-line-2">总价</text>
+
+				</view>
+				<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
+						<text class="title u-line-2 title1">{{ item.name }}</text>
+						<text class="title u-line-2">{{item.mobile}}</text>
+						<text class="title u-line-2">{{ item.linkName }}</text>
+						<text class="title u-line-2">{{ item.address }}</text>
+						<text class="title u-line-2">12345</text>
+				</view>
+			</view>
 			<view>
-				<checkbox-group class="block" @change="changeCheckbox">
-					<view v-for="(item,k) in orederList" :key="k" class="goods__item">
-						<view style="height: 100px;line-height: 100px;">
-							<checkbox :value="String(item.value)"
-								:checked="checkedArr.includes(String(item.value))"
-								:class="{'checked':checkedArr.includes(String(item.value))}"></checkbox>
-						</view>
-						<view class="flexCenter">
-							<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:100px;height:100px;"></view>
-						</view>
-						<view style="border-bottom: 1px solid #EEEEEE;height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
-							<view>
-								<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ item.label }}</view>
-								<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>湖北武汉<text></text></view>
-								<view style="color:#666666;"><text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text>A区36号</view>
-							</view>
-							<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
-								<view style="color:#FF4C4B;font-size:14px;">3600<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">件</text></view>
-							</view>
-						</view>
-					</view>
-				</checkbox-group>
-
+				<uni-load-more iconType="auto" :status="status" v-if="lodingStatus" />
 			</view>
-		</view>
-
-		<view style="width: 100%;height: 7vh;display: flex;justify-content: space-between;align-items: center;padding: 10px;padding-left: 12px;background-color: rgb(255, 255, 255);box-shadow: rgb(204 204 204) 0px -1px 10px 0px;font-size: 16px;color: #666666;position: fixed;bottom: 0;z-index: 1;">
-			<view style="display: flex;align-items: center;">
-				<checkbox-group @change="allChoose" class="checkboxStyle">
-					<checkbox value="all" :class="{'checked':allChecked}" :checked="allChecked?true:false"></checkbox>
-				</checkbox-group>
-				<view>共<text style="margin: 0 3px;color: #FF4C4B;">{{checkedArr.length}}</text>件</view>
-			</view>
-			<text @click="toOredrOver" style="height: 100%;width:100px;display: flex;align-items: center;justify-content: center;border-radius: 5px;padding: 2px 10px;font-weight: normal;cursor: pointer;background: #2982FF;border-radius: 100px;color: #fff;">
-				提交
-			</text>
-		</view>
-
+		</scroll-view>
 	</view>
 </template>
 
@@ -61,134 +40,135 @@
 	export default {
 		data() {
 			return {
-				range: [],
-				orederList: [
-					{label: "猪肉",value: "1",kw: "36号",num: "3600",},{label: "牛肉",value: "2",kw: "36号",num: "3600",},{label: "肌肉",value: "3",kw: "36号",num: "3600",},
-					{label: "猪肉",value: "4",kw: "36号",num: "3600",},{label: "牛肉",value: "5",kw: "36号",num: "3600",},{label: "肌肉",value: "6",kw: "36号",num: "3600",},
-					{label: "猪肉",value: "7",kw: "36号",num: "3600",},{label: "牛肉",value: "8",kw: "36号",num: "3600",},{label: "肌肉",value: "9",kw: "36号",num: "3600",},
-					{label: "猪肉",value: "10",kw: "36号",num: "3600",},{label: "牛肉",value: "11",kw: "36号",num: "3600",},{label: "肌肉",value: "12",kw: "36号",num: "3600",},
-				],
-
-				isChecked:false,
+				background: {
+					backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))'
+				},
+				list:[],
+				show: false,
 				
-				checkedArr:[], //复选框选中的值
-				allChecked:false //是否全选
+				id:null,
+				value: '',
+				type: 'text',
+				border: true,
+
+				page:1,
+				pageinfo:{},
+				status: 'loading',
+				lodingStatus: false,
 			}
+
 		},
 		onLoad() {
 			_this = this;
-			// 获取今天时间 yyyy-MM-dd
-			var date = new Date();
-			var year = date.getFullYear();
-			var month = date.getMonth() + 1;
-			var day = date.getDate();
-			var today = year + '-' + month + '-' + day;
-			this.range = [today,today]
+			_this.getlist();
 		},
-		watch: {
-			range(newval) {
-				console.log('范围选:', this.range);
-			}
+		onNavigationBarButtonTap(e) {
+			uni.navigateTo({
+				url:'add'
+			})
+			
 		},
 		methods: {
 			clickLeft() {
-				uni.switchTab({url: "/pages/statistics/index"});
+				uni.navigateBack({delta: 1});
 			},
-			// 多选复选框改变事件
-			changeCheckbox(e) {
-					this.checkedArr = e.detail.value;
-					// 如果选择的数组中有值，并且长度等于列表的长度，就是全选
-					if (this.checkedArr.length > 0 && this.checkedArr.length == this.orederList.length) {
-							this.allChecked = true;
-					} else {
-							this.allChecked = false;
-					}
-					console.log(this.checkedArr);
-			},
-			// 全选事件
-			allChoose(e) {
-					let chooseItem = e.detail.value;
-					// 全选
-					if (chooseItem[0] == 'all') {
-							this.allChecked = true;
-							for (let item of this.orederList) {
-									let itemVal = String(item.value);
-									if (!this.checkedArr.includes(itemVal)) {
-											this.checkedArr.push(itemVal);
-									}
-							}
-						console.log(this.checkedArr);
-					} else {
-							// 取消全选
-							this.allChecked = false;
-							this.checkedArr = [];
-					}
-			},
-			// 提交
-			toOredrOver() {
-				uni.showLoading({title: '提交账单中'});
-				setTimeout(() => {
-					uni.hideLoading()
-					uni.navigateTo({
-						url: '/pages/shoppingCart/over'
-					})
-				}, 300)
-			},
-			maskClick(e){
-				console.log('maskClick事件:', e);
+			
+			getlist() {
+				_this._post_form('/api/user/kehu', {page:this.page}, (result) => {
+					console.log(result);
+					// _this.setData({'list' : result.data.list})
+					_this.pageinfo = result.data.pageinfo;
+					_this.list = _this.list.concat(result.data.list);
+					console.log(_this.list);
+				});
 			},
 
-
+			lower(e) {
+				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
+				if(this.lodingStatus) return false;
+				this.lodingStatus = true;
+				let set = setTimeout(() => {
+					clearTimeout(set);
+					this.page++;
+					this.lodingStatus = false;
+					this.getlist()
+				}, 3000)
+			},
+			
 		}
 	}
 </script>
 
-<style lang="less">
-	/deep/ .example-body .uni-date__x-input {height: 5vh;}
-</style>
+<!-- page {background-color: #F4F5F6;} -->
 
-<style>
-	page {background: #F4F5F6;}
-
-	.orderlist {
-		height: 82vh;
-		padding:8px 12px;
-		background: #fff;
-		border-top: 1px solid #eee;
+<style lang="scss" scoped>
+	.action {
+		height:90vh;
+		padding-top: 1vh;
 		overflow: auto;
-	}
-
-	.flexCenter {display: flex;}
-	.radius5px {border-radius: 5px;overflow: hidden;}
-	.goods__item {
-		padding: 0upx;
 		box-sizing: border-box;
-		background-color: #ffffff;
-		border-radius: 4px;
-		font-size: 14px;
-		color: #262626;
-		margin-bottom: 24upx;
+	}
+	.action .scrollView {width:870px;}
+	.flex{display: flex;}
+	.action .title-wrap {
 		display: flex;
-		align-items: flex-start;
+	}
+	.action .title {
+		text-align: center;
+		width: 160px;
+		padding: 6px 10px;
+		box-sizing: border-box;
+		border-right: 1px solid #eee;
+		border-bottom: 1px solid #eee;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		font-size: 13px;
+	}
+	.action .title.title1 {
+		width: 225px;
+		text-align: left;
+		border-left: 1px solid #eee;
+		background: #fff;
+		position: sticky;
+		left: 0;
 		justify-content: flex-start;
+		/*border-color: #d5d5d6!important;*/
+	}
+	.action .header {
+		height: 50px;
+		color: #999;
+		border-top: 1px solid #eee;
+		position: sticky;
+		top: 0;
+		background: #fff;
+		z-index: 1;
+		box-sizing: content-box;
+	}
+	.action .header .title {
+		border-color: #d5d5d6;
 	}
 
-
-
-
-
+	.addBtnBox {
+		height: 8vh;
+		font-size: 20px;
+		font-weight: 900;
+		color: #fff;
+		padding: 10px;
+		letter-spacing: 1px;
+	}
+	.addBtn {
+		height: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background: #2982FF;
+		border-radius: 50px;
+	}
+	.uni-icons {color: #999 !important;}
+	
 </style>
 
 <style lang="less">
-	/deep/ .uni-date-x--border {border: none;}
-
-	/deep/ uni-checkbox .uni-checkbox-input {
-		border-radius: 22px;margin-right: 12px;
-	}
-	/deep/ uni-checkbox .uni-checkbox-input.uni-checkbox-input-checked {
-		border-color: #007aff !important;
-	}
-	/deep/ uni-checkbox:not([disabled]) .uni-checkbox-input:hover {
-		border-color: #d1d1d1;
-	}
+ /deep/ .uni-scroll-view-content {overflow: auto;margin: 0 5px;box-sizing: border-box; }
 </style>
