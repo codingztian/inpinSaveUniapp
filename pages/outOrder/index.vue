@@ -11,7 +11,7 @@
 
 		<!-- <view class="action"> -->
 		<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()" >
-			<view class="scrollView" v-if="list.length">
+			<view class="scrollView">
 				<view class="flex header">
 					<text class="title u-line-2 title1">商品名称</text>
 					<text class="title u-line-2">件数</text>
@@ -20,12 +20,14 @@
 					<text class="title u-line-2">总价</text>
 
 				</view>
-				<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
+				<view v-if="list.length">
+					<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
 						<text class="title u-line-2 title1">{{ item.name }}</text>
-						<text class="title u-line-2">{{item.mobile}}</text>
-						<text class="title u-line-2">{{ item.linkName }}</text>
-						<text class="title u-line-2">{{ item.address }}</text>
-						<text class="title u-line-2">12345</text>
+						<text class="title u-line-2" style="color:#f3a73f;">{{item.price}}件</text>
+						<text class="title u-line-2">{{ item.kucun }}件</text>
+						<text class="title u-line-2">¥{{parseInt(item.price).toFixed(2)}}</text>
+						<text class="title u-line-2">¥{{parseInt(item.price).toFixed(2)}}</text>
+					</view>
 				</view>
 			</view>
 			<view>
@@ -62,24 +64,17 @@
 			_this = this;
 			_this.getlist();
 		},
-		onNavigationBarButtonTap(e) {
-			uni.navigateTo({
-				url:'add'
-			})
-			
-		},
 		methods: {
 			clickLeft() {
 				uni.navigateBack({delta: 1});
 			},
 			
 			getlist() {
-				_this._post_form('/api/user/kehu', {page:this.page}, (result) => {
+				_this._post_form('/api/order/dailyStat', {type:2}, (result) => {
 					console.log(result);
-					// _this.setData({'list' : result.data.list})
-					_this.pageinfo = result.data.pageinfo;
-					_this.list = _this.list.concat(result.data.list);
-					console.log(_this.list);
+					if(result.errno==0) {
+						_this.list = result.data;
+					}
 				});
 			},
 
@@ -108,14 +103,15 @@
 		overflow: auto;
 		box-sizing: border-box;
 	}
-	.action .scrollView {width:870px;}
+	.action .scrollView {width:220vw;}
 	.flex{display: flex;}
 	.action .title-wrap {
+    min-height: 40px;
 		display: flex;
 	}
 	.action .title {
 		text-align: center;
-		width: 160px;
+		width: 40vw;
 		padding: 6px 10px;
 		box-sizing: border-box;
 		border-right: 1px solid #eee;
@@ -126,7 +122,7 @@
 		font-size: 13px;
 	}
 	.action .title.title1 {
-		width: 225px;
+		width: 60vw;
 		text-align: left;
 		border-left: 1px solid #eee;
 		background: #fff;
@@ -139,6 +135,8 @@
 		height: 50px;
 		color: #999;
 		border-top: 1px solid #eee;
+		border-color: #d5d5d6;
+		font-weight: 900;
 		position: sticky;
 		top: 0;
 		background: #fff;
@@ -147,6 +145,7 @@
 	}
 	.action .header .title {
 		border-color: #d5d5d6;
+		font-size: 15px;
 	}
 
 	.addBtnBox {

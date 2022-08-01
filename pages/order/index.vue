@@ -30,7 +30,7 @@
 							<view v-for="(item,index) in cell.goods" :key="index" class="goods__item">
 								<view style="width:100%;margin: 4px 0px;display: flex;justify-content: space-between;font-size: 13px;">
 									<span>订单号：{{cell.order}}</span>
-									<span :class="'f3a73f'" v-if="crOrderIndex==2">发货状态</span>
+									<span :class="item.status.state==1?'bc3711':'f3a73f'" v-if="crOrderIndex==2">{{item.status.txt}}</span>
 								</view>
 								<view class="flexCenter">
 									<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="item.thumb_img" alt="51" style="width:80px;height:80px;"></view>
@@ -56,7 +56,7 @@
 											<text style="font-weight:900;">{{item.num}}</text>
 											<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{item.unit_name}}</text>
 										</view>
-										<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{parseInt(item.id).toFixed(2)}}</view>
+										<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{parseInt(item.price).toFixed(2)}}</view>
 									</view>
 								</view>
 							</view>
@@ -92,7 +92,7 @@
 			// console.log(e.crOrderIndex);
 			if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
 			var startTime = new Date().getTime();
-			var sevenDay = 1000 * 60 * 60 * 24 * 1;
+			var sevenDay = 1000 * 60 * 60 * 24 * 7;
 			_this.range = [_this.timeTrans(new Date(startTime - sevenDay)),_this.timeTrans(new Date())];
 		},
 		watch: {

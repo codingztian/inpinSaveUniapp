@@ -3,8 +3,8 @@
 		<view class="box-bg">
 			<view class="box-bg uni-nav-bar">
 				<uni-nav-bar height="6vh" statusBar=true shadow left-icon="left" title="订货清单" 
-					color="#fff" background-color="rgb(60, 158, 253)"
-					@clickLeft="clickLeft" />
+					color="#fff" background-color="rgb(60, 158, 253)" rightIcon="home-filled"
+					@clickLeft="clickLeft" @clickRight="clickRight"/>
 			</view>
 		</view>
 
@@ -100,6 +100,11 @@
 				// uni.navigateTo({url: "/pages/overbooking/index"});
 				uni.navigateBack({delta: 1});
 			},
+			clickRight() {
+				uni.switchTab({
+					url: "/pages/statistics/index"
+				});
+			},
 			toUser() {
 				uni.navigateTo({url: "/pages/shoppingCart/userinfo"});
 			},
@@ -132,8 +137,9 @@
 				Object.values(this.zd).forEach(e=> {
 					goodsArr.push({
 						goods_id:e.id,
-						goods_num:e.shoopNum
-					})
+						goods_num:e.shoopNum,
+						price:e.price,
+					});
 				});
 				console.log(goodsArr);
 				if(!this.selectAddress.id) {

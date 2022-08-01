@@ -34,10 +34,12 @@
 			</view>
 			
 			<view class="color-box" v-if="infodata">
-				<view class="color-item ibg3" style="display: flex;flex-direction: column;justify-content: center;">
+				<view class="color-item ibg3" @click="toOverbooking('kcyj')" style="display: flex;flex-direction: column;justify-content: center;">
 					<view class="color-title" style="text-align: center;">
-						<!-- 库存预警 -->
-						敬请期待
+						<view class="color-title">库存预警</view>
+						<view class="color-value">
+							预警商品数：{{ parseInt(infodata.yj) }}
+						</view>
 					</view>
 					<!-- <view class="color-value">
 						预警商品数：{{ parseInt(infodata.PUR) }}
