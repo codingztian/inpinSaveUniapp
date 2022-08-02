@@ -90,9 +90,9 @@
 		onLoad(e) {
 			_this = this;
 			// console.log(e.crOrderIndex);
-			if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
+			// if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
 			var startTime = new Date().getTime();
-			var sevenDay = 1000 * 60 * 60 * 24 * 7;
+			var sevenDay = 1000 * 60 * 60 * 24 * 1;
 			_this.range = [_this.timeTrans(new Date(startTime - sevenDay)),_this.timeTrans(new Date())];
 		},
 		watch: {
@@ -123,12 +123,12 @@
 					page: 1
 				},
 				res=> {
+					if(res.errno==0) {
+						_this.orederList = _this.orederList.concat(res.data.list);
+						_this.pageinfo = res.data.pageinfo;
+						console.log(_this.orederList);
+					}
 					let s = setTimeout(()=>{
-						if(res.errno==0) {
-							_this.orederList = _this.orederList.concat(res.data.list);
-							_this.pageinfo = res.data.pageinfo;
-							console.log(_this.orederList);
-						}
 						clearTimeout(s);
 						uni.hideLoading();
 					},800);

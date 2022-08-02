@@ -10,7 +10,7 @@
 		</view>
 
 		<!-- <view class="action"> -->
-		<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()" >
+		<view  class="action scroll">
 			<view class="scrollView">
 				<view class="flex header">
 					<text class="title u-line-2 title1">商品名称</text>
@@ -33,7 +33,7 @@
 			<view>
 				<uni-load-more iconType="auto" :status="status" v-if="lodingStatus" />
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -78,18 +78,6 @@
 				});
 			},
 
-			lower(e) {
-				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
-				if(this.lodingStatus) return false;
-				this.lodingStatus = true;
-				let set = setTimeout(() => {
-					clearTimeout(set);
-					this.page++;
-					this.lodingStatus = false;
-					this.getlist()
-				}, 3000)
-			},
-			
 		}
 	}
 </script>

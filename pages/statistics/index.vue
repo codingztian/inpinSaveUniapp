@@ -34,19 +34,11 @@
 			</view>
 			
 			<view class="color-box" v-if="infodata">
-				<view class="color-item ibg3" @click="toOverbooking('kcyj')" style="display: flex;flex-direction: column;justify-content: center;">
-					<view class="color-title" style="text-align: center;">
-						<view class="color-title">库存预警</view>
-						<view class="color-value">
-							预警商品数：{{ parseInt(infodata.yj) }}
-						</view>
-					</view>
-					<!-- <view class="color-value">
-						预警商品数：{{ parseInt(infodata.PUR) }}
-					</view>
+				<view class="color-item ibg3" @click="toOverbooking('kcyj')">
+					<view class="color-title">库存预警</view>
 					<view class="color-value">
-						最低库存数：{{ parseInt(infodata.PUR) }}
-					</view> -->
+						预警商品数：{{ parseInt(infodata.yj) }}
+					</view>
 				</view>
 				<view class="color-item ibg4">
 					<view class="color-title">联系库管</view>
@@ -183,12 +175,16 @@
 		padding: 12rpx 0;
 		height: 103px;
 		border-radius: 10px;
+		display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 	}
 	.color-title {
 		padding: 12px;
 		font-size: 18px;
 		width: 100%;
 		text-align: left;
+		font-weight: 900;
 	}
 	
 	.color-value {

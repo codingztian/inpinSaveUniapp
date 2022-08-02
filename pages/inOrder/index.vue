@@ -9,7 +9,7 @@
 		</view>
 
 		<!-- <view class="action"> -->
-		<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()" >
+		<view  class="action scroll">
 			<view class="scrollView">
 				<view class="flex header">
 					<text class="title u-line-2 title1">商品名称</text>
@@ -28,7 +28,7 @@
 			<view>
 				<uni-load-more iconType="auto" :status="status" v-if="lodingStatus" />
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -73,18 +73,6 @@
 				});
 			},
 
-			lower(e) {
-				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
-				if(this.lodingStatus) return false;
-				this.lodingStatus = true;
-				let set = setTimeout(() => {
-					clearTimeout(set);
-					this.page++;
-					this.lodingStatus = false;
-					this.getlist()
-				}, 3000)
-			},
-			
 		}
 	}
 </script>
@@ -98,7 +86,7 @@
 		overflow: auto;
 		box-sizing: border-box;
 	}
-	.action .scrollView {width:98vw;}
+	.action .scrollView {width:100vw;}
 	.flex{display: flex;}
 	.action .title-wrap {
     min-height: 40px;
@@ -117,7 +105,7 @@
 		font-size: 13px;
 	}
 	.action .title.title1 {
-		width: 48vw;
+		width: 50vw;
 		text-align: left;
 		border-left: 1px solid #eee;
 		background: #fff;

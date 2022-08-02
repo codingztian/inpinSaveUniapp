@@ -9,7 +9,7 @@
 		</view>
 
 		<!-- <view class="action"> -->
-		<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()" >
+		<view  class="action scroll">
 			<view class="scrollView">
 				<view class="flex header">
 					<text class="title u-line-2 title1">商品名称</text>
@@ -23,14 +23,11 @@
 						<text class="title u-line-2 title1">{{ item.goods_name }}</text>
 						<text class="title u-line-2 e43d33">{{item.qty}}件</text>
 						<view class="title u-line-2">
-              				<text :class="parseInt(item.qty)>parseInt(item.high)?'bgf3a73f':'bgFE4C4B'">
-								<!-- {{
-									parseInt(item.qty)>=parseInt(item.low)&&parseInt(item.qty)<=parseInt(item.high) ? '库存正常':
-									parseInt(item.qty)>parseInt(item.high) ? '库存积压' :
-									parseInt(item.qty)<parseInt(item.low)  ? '库存不足' : ''
-								}} -->
-							</text> 
-						</view>
+							<!-- <text class="bgbc3711" v-if="parseInt(item.low)==0&&parseInt(item.high)==0">库存正常</text> -->
+							<text class="bgbc3711" v-if="parseInt(item.qty)>=parseInt(item.low)&&parseInt(item.qty)<=parseInt(item.high)">库存正常</text>
+							<text class="bgf3a73f" v-if="parseInt(item.qty)<parseInt(item.low)">库存不足</text>
+							<text class="bgFE4C4B" v-if="parseInt(item.qty)>parseInt(item.high)">库存积压</text>
+            </view>
 						<text class="title u-line-2">{{ item.high }}件</text>
 					</view>
 				</view>
@@ -38,7 +35,7 @@
 			<view>
 				<uni-load-more iconType="auto" :status="status" v-if="lodingStatus" />
 			</view>
-		</scroll-view>
+		</view>
 	</view>
 </template>
 
@@ -72,6 +69,7 @@
 		methods: {
 			clickLeft() {
 				uni.navigateBack({delta: 1});
+
 			},
 			
 			getlist() {
@@ -81,18 +79,6 @@
 						_this.list = result.data;
 					}
 				});
-			},
-
-			lower(e) {
-				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
-				if(this.lodingStatus) return false;
-				this.lodingStatus = true;
-				let set = setTimeout(() => {
-					clearTimeout(set);
-					this.page++;
-					this.lodingStatus = false;
-					this.getlist()
-				}, 3000)
 			},
 			
 		}
@@ -106,7 +92,7 @@
 	.f3a73f{color: #f3a73f;}
 	.e43d33{color: #e43d33;}
 	.f939c1{color: #8f939c;}
-  	.bgbc3711{background-color: #18bc37;color: #fff;padding: 2px 5px;border-radius: 2px;}
+  .bgbc3711{background-color: #18bc37;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.bgf3a73f{background-color: #f3a73f;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.bgFE4C4B{background-color: #FE4C4B;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.bgf939c1{background-color: #8f939c;color: #fff;padding: 2px 5px;border-radius: 2px;}
