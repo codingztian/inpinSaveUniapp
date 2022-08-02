@@ -22,14 +22,15 @@
 					<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
 						<text class="title u-line-2 title1">{{ item.goods_name }}</text>
 						<text class="title u-line-2 e43d33">{{item.qty}}件</text>
-						<text class="title u-line-2">
-              <text :class="parseInt(item.qty)>parseInt(item.high)?'bgf3a73f':'bgFE4C4B'">
-                {{
-                  parseInt(item.qty)>parseInt(item.high)?'库存积压': '库存正常'
-                }}
-                <!-- parseInt(item.qty)<parseInt(item.low)?'库存不足':'库存正常' -->
-              </text> 
-            </text>
+						<view class="title u-line-2">
+              				<text :class="parseInt(item.qty)>parseInt(item.high)?'bgf3a73f':'bgFE4C4B'">
+								<!-- {{
+									parseInt(item.qty)>=parseInt(item.low)&&parseInt(item.qty)<=parseInt(item.high) ? '库存正常':
+									parseInt(item.qty)>parseInt(item.high) ? '库存积压' :
+									parseInt(item.qty)<parseInt(item.low)  ? '库存不足' : ''
+								}} -->
+							</text> 
+						</view>
 						<text class="title u-line-2">{{ item.high }}件</text>
 					</view>
 				</view>
@@ -105,7 +106,7 @@
 	.f3a73f{color: #f3a73f;}
 	.e43d33{color: #e43d33;}
 	.f939c1{color: #8f939c;}
-  .bgbc3711{background-color: #18bc37;color: #fff;padding: 2px 5px;border-radius: 2px;}
+  	.bgbc3711{background-color: #18bc37;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.bgf3a73f{background-color: #f3a73f;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.bgFE4C4B{background-color: #FE4C4B;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.bgf939c1{background-color: #8f939c;color: #fff;padding: 2px 5px;border-radius: 2px;}
@@ -115,7 +116,7 @@
 		overflow: auto;
 		box-sizing: border-box;
 	}
-	.action .scrollView {width:180vw;}
+	.action .scrollView {width:125vw;}
 	.flex{display: flex;}
 	.action .title-wrap {
 		display: flex;
@@ -123,7 +124,7 @@
 	}
 	.action .title {
 		text-align: center;
-		width: 40vw;
+		width: 25vw;
 		padding: 6px 10px;
 		box-sizing: border-box;
 		border-right: 1px solid #eee;
@@ -134,7 +135,7 @@
 		font-size: 13px;
 	}
 	.action .title.title1 {
-		width: 60vw;
+		width: 50vw;
 		text-align: left;
 		border-left: 1px solid #eee;
 		background: #fff;

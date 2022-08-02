@@ -23,10 +23,10 @@
 				<view v-if="list.length">
 					<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
 						<text class="title u-line-2 title1">{{ item.name }}</text>
-						<text class="title u-line-2" style="color:#f3a73f;">{{item.price}}件</text>
+						<text class="title u-line-2" style="color:#f3a73f;">{{item.num}}件</text>
 						<text class="title u-line-2">{{ item.kucun }}件</text>
 						<text class="title u-line-2">¥{{parseInt(item.price).toFixed(2)}}</text>
-						<text class="title u-line-2">¥{{parseInt(item.price).toFixed(2)}}</text>
+						<text class="title u-line-2">¥{{(parseInt(item.price)*parseInt(item.num)).toFixed(2)}}</text>
 					</view>
 				</view>
 			</view>
@@ -103,7 +103,7 @@
 		overflow: auto;
 		box-sizing: border-box;
 	}
-	.action .scrollView {width:220vw;}
+	.action .scrollView {width:150vw;}
 	.flex{display: flex;}
 	.action .title-wrap {
     min-height: 40px;
@@ -111,7 +111,7 @@
 	}
 	.action .title {
 		text-align: center;
-		width: 40vw;
+		width: 25vw;
 		padding: 6px 10px;
 		box-sizing: border-box;
 		border-right: 1px solid #eee;
@@ -122,7 +122,7 @@
 		font-size: 13px;
 	}
 	.action .title.title1 {
-		width: 60vw;
+		width: 50vw;
 		text-align: left;
 		border-left: 1px solid #eee;
 		background: #fff;
