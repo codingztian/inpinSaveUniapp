@@ -11,7 +11,7 @@
 
 			<scroll-view  class="action scroll" scroll-y="true" @scrolltolower="lower()" >
 				<view style="padding: 12px;">
-					<view class="title-wrap" :class="{'curr': wrapIndex==index}" @tap="currTap(item,index)" :index="index" v-for="(item, index) in list" :key="item.id">
+					<view class="title-wrap" :class="{'curr': wrapIndex==index}" @tap="currTap(item,index)" v-for="(item, index) in list" :key="item.id">
 						<view>
 							<text class="title u-line-2" style="color:#333;font-size: 18px;font-weight: 900;line-height: 32px;">{{ item.name }}</text>
 							<text class="title u-line-2" style="color:#999999;font-size: 12px;">{{ item.linkName }} {{item.mobile}}</text>
@@ -73,20 +73,41 @@
 		},
 		methods: {
 			clickLeft() {
-				// uni.navigateTo({url: '/pages/shoppingCart/index'});
-				uni.navigateBack({delta: 1});
-
+				uni.redirectTo({url: '/pages/shoppingCart/index'});
+				// uni.navigateBack({delta: 1});
 			},
 			currTap(item,e) {
-				console.log(item);
+				// console.log(item);
 				this.wrapIndex = e;
 				this.selectObj = item;
 			},
 			toOrder() {
+				var len = Object.values(this.selectObj).length;
+				if(len == 0) {
+					uni.showToast({
+						title: '请选择收货地址',
+						icon: 'none'
+					});
+					return;
+				}
+				console.log(123);
+				console.log(this.$store.state.selectAddress);
 				this.$store.state.selectAddress = this.selectObj;
-				uni.navigateTo({
-					url:'/pages/shoppingCart/index'
-				})
+				// uni.navigateBack({delta: 1});
+				uni.showLoading({mask:true,title: '加载中...'});
+				setTimeout(() => {
+					uni.hideLoading();
+					uni.redirectTo({
+						url: '/pages/shoppingCart/index',
+						success(res) {
+							console.log('成功啦',res);
+						},
+						fail(err) {
+							console.log('失败啦',err);
+						}
+
+					});
+				}, 500);
 			},
 			getlist() {
 				_this._post_form('/api/user/kehu', {page:this.page}, (result) => {
@@ -98,7 +119,7 @@
 			},
 
 			lower(e) {
-				if(this.pageinfo.count < 10) return false;
+				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
 				if(this.lodingStatus) return false;
 				this.lodingStatus = true;
 				let set = setTimeout(() => {
@@ -172,8 +193,4 @@
 		background: #f3a73f;
 	}
 	
-</style>
-
-<style lang="less">
-
 </style>

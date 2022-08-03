@@ -81,8 +81,8 @@
 
 <style lang="scss" scoped>
 	.action {
-		height:90vh;
-		padding-top: 1vh;
+		height:89vh;
+		margin-top: 1vh;
 		overflow: auto;
 		box-sizing: border-box;
 	}

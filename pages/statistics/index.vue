@@ -88,6 +88,8 @@
 		onShow() {
 			_this = this;
 			_this.getinfo();
+			this.$store.state.orderlist = {};
+			this.$store.state.selectAddress = {};
 		},
 		methods: {
 			toOverbooking(path) {

@@ -51,7 +51,7 @@
 			
 			<view @click="toggle('bottom')" class="bottomBox">
 				<text>
-					<text>共<span style="margin: 0 3px;color: #FF4C4B;">{{Object.keys($store.state.orderlist).length}}</span>件商品</text>
+					<text>共<text style="margin: 0 3px;color: #FF4C4B;">{{Object.keys($store.state.orderlist).length}}</text>件商品</text>
 					<text style="color: #ff4c4b;font-weight: 900;margin-left: 10px;">¥{{count==0?'0.00':count}}</text>
 				</text>
 				<text style="height: 100%;width:100px;display: flex;align-items: center;justify-content: center;border-radius: 5px;padding: 2px 10px;font-weight: normal;cursor: pointer;background: #2982FF;border-radius: 100px;color: #fff;" @click.stop="pushData">
@@ -155,7 +155,6 @@
 			_this = this;
 
 			_this.getGoodsData();
-			console.log(getCurrentPages());
 		},
 		watch: {
 			shoopInputValue() {

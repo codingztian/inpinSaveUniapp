@@ -21,7 +21,7 @@
 			</view>
 		</view>
 
-		<view style="height: 71vh;padding: 12px;overflow: auto;">
+		<view style="height: 70vh;padding: 12px;overflow: auto;">
 			<view style="padding:12px;background: #fff;border-radius: 5px;">
 				<view v-for="(item,key) in zd" :key="key">
 					<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #eee;">
@@ -42,7 +42,7 @@
 
 		<view style="width: 100%;height: 7vh;display: flex;justify-content: space-between;padding: 10px;align-items: flex-end;background-color: rgb(255, 255, 255);box-shadow: rgb(204 204 204) 0px -1px 10px 0px;padding-left: 20px;font-size: 16px;color: #666666;position: fixed;bottom: 0;z-index: 1;">
 			<text>
-				<text>共<span style="margin: 0 3px;color: #FF4C4B;">{{Object.keys(zd).length}}</span>件商品</text>
+				<text>共<text style="margin: 0 3px;color: #FF4C4B;">{{Object.keys(zd).length}}</text>件商品</text>
 				<text style="color: #ff4c4b;font-weight: 900;margin-left: 10px;">¥{{count==0?'0.00':count}}</text>
 			</text>
 
@@ -106,7 +106,7 @@
 				});
 			},
 			toUser() {
-				uni.navigateTo({url: "/pages/shoppingCart/userinfo"});
+				uni.redirectTo({url: "/pages/shoppingCart/userinfo"});
 			},
 			// 数量修改弹窗
 			inputDialogToggle(classifi,goods) {

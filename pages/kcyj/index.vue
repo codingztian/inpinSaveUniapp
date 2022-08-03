@@ -97,8 +97,8 @@
 	.bgFE4C4B{background-color: #FE4C4B;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.bgf939c1{background-color: #8f939c;color: #fff;padding: 2px 5px;border-radius: 2px;}
 	.action {
-		height:90vh;
-		padding-top: 1vh;
+		height:89vh;
+		margin-top: 1vh;
 		overflow: auto;
 		box-sizing: border-box;
 	}
