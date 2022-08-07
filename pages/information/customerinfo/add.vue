@@ -134,37 +134,40 @@
 				labelPosition: 'left',
 				unitList: [],
 				unitListShow: false,
-				selectList:[{
-					label:'自有仓',
-					value:'自有仓',
-				},{
-					label:'合作仓',
-					value:'合作仓',
-				}],
 
 				detailDate: "",
+				addStatus:'user',
+
 			}
 
 		},
 		onLoad(e) {
-			console.log(e.detailDate);
+			console.log(e);
 			_this = this;
 			if(e.detailDate) {
 				_this.detailDate = JSON.parse(e.detailDate);
-				console.log(_this.detailDate);
+				// console.log(_this.detailDate);
 				_this.model.name = _this.detailDate.name;
 				_this.model.linkman = _this.detailDate.linkName;
 				_this.model.phone = _this.detailDate.mobile;
 				_this.model.city = _this.detailDate.address.split(" ")[0];
 				_this.model.address = _this.detailDate.address.split(" ")[1];
 			}
+			if(e.sendId) {
+				this.addStatus = e.sendId;
+			}
+			console.log(this.addStatus);
 		},
 		onReady() {
 			this.$refs.uForm.setRules(this.rules);
 		},
 		methods: {
 			clickLeft() {
-				uni.navigateTo({url: "/pages/user/userinfo"});
+				if(this.addStatus=='user') {
+					uni.redirectTo({url: "/pages/user/userinfo"});
+				} else if(this.addStatus=='shop') {
+					uni.redirectTo({url: '/pages/shoppingCart/userinfo'});
+				}
 			},
 			submit() {
 				_this.$refs.uForm.validate(valid => {

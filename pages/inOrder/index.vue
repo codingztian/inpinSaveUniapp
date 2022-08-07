@@ -20,8 +20,8 @@
 				<view v-if="list.length">
 					<view class="title-wrap" :index="index" v-for="(item, index) in list" :key="item.id">
 						<text class="title u-line-2 title1">{{ item.name }}</text>
-						<text class="title u-line-2" style="color:#18bc37;">{{item.price}}件</text>
-						<text class="title u-line-2">{{ item.kucun }}件</text>
+						<text class="title u-line-2" style="color:#18bc37;">{{item.price}}{{item.unit_name}}</text>
+						<text class="title u-line-2">{{ item.kucun }}{{item.unit_name}}</text>
 					</view>
 				</view>
 			</view>

@@ -28,9 +28,13 @@
 								<text style="float:right;">{{ crOrderIndex==2?'收货方：'+cell.kehu:''}}</text>
 							</view>
 							<view v-for="(item,index) in cell.goods" :key="index" class="goods__item">
-								<view style="width:100%;margin: 4px 0px;display: flex;justify-content: space-between;font-size: 13px;">
-									<span>订单号：{{cell.order}}</span>
-									<span :class="item.status.state==1?'bc3711':'f3a73f'" v-if="crOrderIndex==2">{{item.status.txt}}</span>
+								<view style="width:100%;margin: 6px 0px;display: flex;justify-content: space-between;font-size: 12px;">
+									<view style="font-size: 13px;">订单号：{{cell.order}}</view>
+									<view :class="item.status.state==1?'bc3711':'f3a73f'" v-if="crOrderIndex==2">
+										<text>{{item.status.txt}}</text>
+										<text style="color:#999;margin-left: 5px;">{{item.add_time}}</text>
+									</view>
+									<view style="color:#999;margin-left: 5px;" v-else>入库时间：{{item.add_time}}</view>
 								</view>
 								<view class="flexCenter">
 									<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="item.thumb_img" alt="51" style="width:80px;height:80px;"></view>
@@ -38,17 +42,17 @@
 								<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 									<view>
 										<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ item.name }}</view>
-										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==1">
-											<text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>
-											<text>{{item.factory_name}}</text>
+										<view style="color:#666666;display: flex;font-size: 12px;min-height: 20px;" v-if="crOrderIndex==1">
+											<text style="display: inline-block;color:#999999;width:50px;">供应商</text>
+											<text style="flex: 1;">{{item.factory_name}}</text>
 										</view>
-										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==1">
-											<text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">库位</text> 
-											<text>{{item.location}}</text>
+										<view style="color:#666666;display: flex;font-size: 12px;min-height: 20px;" v-if="crOrderIndex==1">
+											<text style="display: inline-block;color:#999999;width:50px;">库位</text> 
+											<text style="flex: 1;">{{item.location}}</text>
 										</view>
-										<view style="color:#666666;display: flex;align-items: center;font-size: 12px;" v-if="crOrderIndex==2">
-											<text style="display: inline-block;color:#999999;width:50px;line-height: 20px;">供应商</text>
-											<text>{{item.factory_name}}</text>
+										<view style="color:#666666;display: flex;font-size: 12px;min-height: 20px;" v-if="crOrderIndex==2">
+											<text style="display: inline-block;color:#999999;width:50px;">供应商</text>
+											<text style="flex: 1;">{{item.factory_name}}</text>
 										</view>
 									</view>
 									<view style="display:flex;align-items: flex-end;justify-content: space-between;margin-bottom: 10px;">
@@ -120,7 +124,7 @@
 					start_date: _this.range[0],
 					end_date: _this.range[1],
 					type: _this.crOrderIndex,
-					page: 1
+					page: _this.page
 				},
 				res=> {
 					if(res.errno==0) {

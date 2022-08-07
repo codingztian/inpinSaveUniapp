@@ -39,7 +39,7 @@
 			<!-- </view> -->
 
 		<view class="addBtnBox">
-			<view class="addBtn" @click="addUser">添加客户</view>
+			<view class="addBtn" @click="addUser">新增收货地址</view>
 		</view>
 		
 		<u-modal v-model="show" content="是否删除该客户？" :show-cancel-button = "true" @confirm="confirm"></u-modal>
@@ -93,7 +93,7 @@
 				uni.switchTab({url: '/pages/user/index'});
 			},
 			addUser() {
-				uni.navigateTo({url: '/pages/information/customerinfo/add'});
+				uni.navigateTo({url: '/pages/information/customerinfo/add?sendId=user'});
 			},
 			eidtorUser(e) {
 				uni.navigateTo({url: '/pages/information/customerinfo/add?detailDate='+ JSON.stringify(e)});

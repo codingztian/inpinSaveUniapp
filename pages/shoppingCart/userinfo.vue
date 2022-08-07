@@ -29,7 +29,7 @@
 				</view>
 			</scroll-view>
 		<view class="addBtnBox">
-			<view class="addBtn" @click="toOrder">确认收获地址</view>
+			<view class="addBtn" @click="toOrder">新增收货地址</view>
 		</view>
 
 	</view>
@@ -77,23 +77,9 @@
 				// uni.navigateBack({delta: 1});
 			},
 			currTap(item,e) {
-				// console.log(item);
 				this.wrapIndex = e;
 				this.selectObj = item;
-			},
-			toOrder() {
-				var len = Object.values(this.selectObj).length;
-				if(len == 0) {
-					uni.showToast({
-						title: '请选择收货地址',
-						icon: 'none'
-					});
-					return;
-				}
-				console.log(123);
-				console.log(this.$store.state.selectAddress);
 				this.$store.state.selectAddress = this.selectObj;
-				// uni.navigateBack({delta: 1});
 				uni.showLoading({mask:true,title: '加载中...'});
 				setTimeout(() => {
 					uni.hideLoading();
@@ -108,6 +94,17 @@
 
 					});
 				}, 500);
+			},
+			toOrder() {
+				uni.redirectTo({url: '/pages/information/customerinfo/add?sendId=shop'});
+				// var len = Object.values(this.selectObj).length;
+				// if(len == 0) {
+				// 	uni.showToast({
+				// 		title: '请选择收货地址',
+				// 		icon: 'none'
+				// 	});
+				// 	return;
+				// }
 			},
 			getlist() {
 				_this._post_form('/api/user/kehu', {page:this.page}, (result) => {

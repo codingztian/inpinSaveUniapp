@@ -24,13 +24,13 @@
 					<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 						<view>
 							<view style="font-size:16px;color:#333333;font-weight:900;margin-bottom: 7px;">{{ cell.name }}</view>
-							<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
-								<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">供应商</text>
-								<text>{{cell.factory_name}}</text>
+							<view style="color:#666666;display: flex;font-size: 12px;min-height: 20px;">
+								<text style="display: inline-block;color:#999999;width:40px;">供应商</text>
+								<text style="flex: 1;">{{cell.factory_name}}</text>
 							</view>
-							<view style="color:#666666;display: flex;align-items: center;font-size: 12px;">
-								<text style="display: inline-block;color:#999999;width:40px;line-height: 20px;">库位</text>
-								<text>{{cell.location}}</text>
+							<view style="color:#666666;display: flex;font-size: 12px;min-height: 20px;">
+								<text style="display: inline-block;color:#999999;width:40px;">库位</text>
+								<text style="flex: 1;">{{cell.location}}</text>
 							</view>
 						</view>
 						<view style="display:flex;align-items: center;justify-content: space-between;margin: 5px 0px;">

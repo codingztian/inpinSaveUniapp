@@ -15,7 +15,7 @@
 						<view v-if="selectAddressStatus" style="color:#333333;font-size: 17px;font-weight: 900;">{{selectAddress.name}}</view>
 						<view v-if="selectAddressStatus" style="color:#999;">{{selectAddress.linkName}} {{selectAddress.mobile}}</view>
 						<view v-if="selectAddressStatus" style="color:#666;">{{selectAddress.address}}</view>
-						<view v-if="!selectAddressStatus"  style="color:#333333;font-size: 17px;font-weight: 900;">选择收获地址</view>
+						<view v-if="!selectAddressStatus"  style="color:#333333;font-size: 17px;font-weight: 900;">选择收货地址</view>
 				</view>
 				<view style="display: flex;align-items: center;"><uni-icons type="forward" size="30"></uni-icons></view>
 			</view>
@@ -25,7 +25,7 @@
 			<view style="padding:12px;background: #fff;border-radius: 5px;">
 				<view v-for="(item,key) in zd" :key="key">
 					<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #eee;">
-						<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
+						<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="item.thumb_img" alt="51" style="width:60px;height:60px;"></view>
 						<view style="flex:1;font-size:18px;font-weight:900;margin-right: 10px;">
 							<view>{{ item.name }}</view>
 							<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{ item.price }}</view>
@@ -91,7 +91,7 @@
 			}
 			this.count = 0;
 			for (const key in this.$store.state.orderlist) {
-				this.count += parseInt(this.$store.state.orderlist[key].shoopNum)*parseInt(this.$store.state.orderlist[key].price);
+				this.count += parseInt(this.$store.state.orderlist[key].shoopNum)*parseFloat(this.$store.state.orderlist[key].price).toFixed(2);
 			}
 			this.count = this.count.toFixed(2);
 		},

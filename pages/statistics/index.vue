@@ -234,12 +234,14 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-	height: 84px;
+		height: 12vh;
     padding: 12px;
     font-size: 14px;
     margin: 10px 4px;
-	border-radius: 10px;
+		border-radius: 10px;
     color: #fff;
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
 	}
 	.akeySend:after {border: none;}
 
@@ -270,7 +272,7 @@
 	}
 	.bg2{
 		/*background: linear-gradient(-125deg, #70C1FD, #399BFD);*/
-		background: url(../../static/images/sendGoods.png) center / cover no-repeat;
+		background-image: url(../../static/images/sendGoods.png);
 	}
 	.bg3{
 		background: linear-gradient(-125deg, #e29811, #f1cf71);
