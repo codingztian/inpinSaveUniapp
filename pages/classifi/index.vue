@@ -39,7 +39,7 @@
 								<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{cell.unit_name}}</text>
 							</view>
 							<view style="display: flex;align-items: center;">
-									<uni-icons type="phone-filled" size="22" style="margin-right:6px;" @tap="call('13207196768','张三')"></uni-icons>
+								<uni-icons type="phone-filled" size="22" style="margin-right:6px;" @tap="call(cell.manager.mobile,cell.manager.name)"></uni-icons>
 							</view>
 						</view>
 					</view>

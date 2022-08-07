@@ -217,34 +217,7 @@
 				"navigationBarTitleText": "添加供应商"
 			}
 		},
-		{
-			"path": "pages/information/warehouse/index",
-			"style": {
-				"navigationBarTitleText": "仓库信息",
-				"navigationStyle": "custom",
-				"app-plus": {
-					"titleNView": {
-						"buttons": [{
-							"text": "添加",
-							"fontSize": "14",
-							"color":"#fff"
-						}]
-					}
-				}
-			}
-		},
-		{
-			"path": "pages/information/warehouse/details",
-			"style": {
-				"navigationBarTitleText": "仓库详情"
-			}
-		},
-		{
-			"path": "pages/information/warehouse/add",
-			"style": {
-				"navigationBarTitleText": "添加仓库"
-			}
-		},
+
 		{
 			"path": "pages/information/partition/index",
 			"style": {

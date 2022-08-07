@@ -40,7 +40,7 @@
 						预警商品数：{{ parseInt(infodata.yj) }}
 					</view>
 				</view>
-				<view class="color-item ibg4">
+				<view class="color-item ibg4" @tap="toCall(kginfo.manager_mobile,kginfo.manager_name)">
 					<view class="color-title">联系库管</view>
 					<view class="color-value">{{ kginfo.manager_name }}</view>
 					<view class="color-value">{{ kginfo.manager_mobile }}</view>
@@ -97,6 +97,38 @@
 			},
 			toTab(e) {
 				uni.switchTab({url: '/pages/order/index'});
+			},
+			toCall(phone,kg) {
+				this.kginfo.manager_name
+				this.kginfo.manager_mobile
+
+				const res = uni.getSystemInfoSync();
+
+				// ios系统默认有个模态框
+				if(res.platform=='ios'){
+					uni.makePhoneCall({
+						phoneNumber:phone,
+						success(){
+							console.log('拨打成功了');
+						},
+						fail() {
+							console.log('拨打失败了');
+						}
+					})
+				}else{
+					//安卓手机手动设置一个showActionSheet
+					uni.showActionSheet({
+						itemList: [kg+'：'+phone,'呼叫库管'],
+						success:function(res){
+							console.log(res);
+							if(res.tapIndex==1){
+								uni.makePhoneCall({
+									phoneNumber: phone,
+								})
+							}
+						}
+					})
+				}
 			},
 
 			onClick(url){
@@ -175,11 +207,11 @@
 		flex: 1;
 		margin: 0 8rpx;
 		padding: 12rpx 0;
-		height: 103px;
+		height: 130px;
 		border-radius: 10px;
 		display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+		flex-direction: column;
+		justify-content: space-between;
 	}
 	.color-title {
 		padding: 12px;
@@ -202,11 +234,11 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-		height: 72px;
+	height: 84px;
     padding: 12px;
     font-size: 14px;
     margin: 10px 4px;
-		border-radius: 8px;
+	border-radius: 10px;
     color: #fff;
 	}
 	.akeySend:after {border: none;}
