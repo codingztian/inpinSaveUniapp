@@ -82,7 +82,7 @@
 	export default {
 		data() {
 			return {
-				crOrderIndex: 1,
+				crOrderIndex: 2,
 				range: [],
 				orederList: [],
 				page:1,
@@ -91,8 +91,9 @@
 				lodingStatus: false,
 			}
 		},
-		onLoad(e) {
+		onShow(e) {
 			_this = this;
+			_this.crOrderIndex = 2;
 			// console.log(e.crOrderIndex);
 			// if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
 			var startTime = new Date().getTime();

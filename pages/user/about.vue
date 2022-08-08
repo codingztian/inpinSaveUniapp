@@ -53,7 +53,7 @@
 		data() {
 			return {
 				providerList: [],
-				version: 'V1.0.1',
+				version: 'V1.0.9',
 				sourceLink: 'https://www.ucharts.cn'
 			}
 		},

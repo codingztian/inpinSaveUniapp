@@ -112,13 +112,13 @@
 			<!-- 数量修改弹窗 -->
 			<uni-popup ref="inputDialog" type="dialog">
 				<uni-popup-dialog ref="inputClose"  mode="input" title="输入数量价格" value="" placeholder="请输入内容" @confirm="dialogInputConfirm">
-					<view style="padding: 20px 0;width: 80%;display: flex;align-items: center;">
-						<label>数 量：</label>
-						<input type="number" placeholder="请输入数量" v-model="shoopInputValue" style="box-sizing: border-box;width:78%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
+					<view style="padding: 20px 0;width:90%;display: flex;align-items: center;">
+						<label style="width:60px;">数 量：</label>
+						<input type="number" placeholder="请输入数量" v-model="shoopInputValue" style="box-sizing: border-box;flex:1;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
 					</view>
-					<view style="padding-bottom: 20px;width: 80%;display: flex;align-items: center;">
-						<label>价 格：</label>
-						<input type="number" placeholder="请输入价格" v-model="shoopInputPrice" style="box-sizing: border-box;width:78%;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
+					<view style="padding-bottom: 20px;width: 90%;display: flex;align-items: center;">
+						<label style="width:60px;">单 价：</label>
+						<input type="digit" placeholder="请输入价格" v-model="shoopInputPrice" style="box-sizing: border-box;flex:1;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
 					</view>
 				</uni-popup-dialog>
 			</uni-popup>
@@ -126,6 +126,7 @@
 </template>
 
 <script>
+
 	var _this;
 	export default {
 		data() {
@@ -158,10 +159,11 @@
 		},
 		watch: {
 			shoopInputValue() {
-				// console.log(this.shoopInputValue);
-				if(parseInt(this.shoopInputValue)>parseInt(this.goodsObj.kucun)) {
-					this.shoopInputValue = this.goodsObj.kucun;
-				}
+				this.$nextTick(() => {
+					if(parseInt(this.shoopInputValue)>parseInt(this.goodsObj.kucun)) {
+						this.shoopInputValue = this.goodsObj.kucun;
+					}
+				});
 			}
 		},
 		methods: {
@@ -220,13 +222,13 @@
 			orderlistCount() {
 				this.count = 0;
 				for (const key in this.$store.state.orderlist) {
-					this.count += parseInt(this.$store.state.orderlist[key].shoopNum)*parseInt(this.$store.state.orderlist[key].price);
+					this.count += parseInt(this.$store.state.orderlist[key].shoopNum)*parseFloat(this.$store.state.orderlist[key].price).toFixed(2);
 				}
 				this.count = this.count.toFixed(2);
 			},
 			// 加入账单
 			dialogInputConfirm(val) {
-				if(this.shoopInputValue==0) return uni.showToast({title: '请输入商品数量',icon: 'none',duration: 1000});
+				if(this.shoopInputValue<=0) return uni.showToast({title: '请输入商品数量',icon: 'none',duration: 1000});
 				if(this.shoopInputPrice==0) return uni.showToast({title: '请输入商品价格',icon: 'none',duration: 1000});
 				uni.showLoading({mask:true,title: '加入账单中...'});
 
