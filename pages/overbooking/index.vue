@@ -230,9 +230,10 @@
 			dialogConfirm() {
 				this.goodsObj.shoopNum = 0;
 				this.goodsObj.price = 0;
-				this.$delete(this.zd,this.goodsObj.id);
+				this.$delete(this.$store.state.orderlist,this.goodsObj.id);
 				this.orderlistCount();
 				this.$refs.alertDialog.close();
+				if(Object.values(this.$store.state.orderlist).length==0) this.$refs.popup.close()
 			},
 			dialogClose() {
 				console.log('点击关闭')
