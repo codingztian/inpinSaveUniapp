@@ -119,7 +119,7 @@
 			},
 			getOrderInfo() {
 				let _this = this;
-				uni.showLoading({mask:true,title: '订单载入中'});
+				if(_this.page==1) uni.showLoading({mask:true,title: '订单载入中'});
 
 				_this._post_form('/api/order/orderlist', {
 					start_date: _this.range[0],

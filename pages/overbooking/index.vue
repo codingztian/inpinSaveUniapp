@@ -38,9 +38,12 @@
 										<text style="font-weight:900;">{{cell.kucun}}</text>
 										<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{cell.unit_name}}</text>
 									</view>
-									<view class="button" :class="cell.shoopNum>0?'curr':''" @click="inputDialogToggle(item,cell)" style="text-align: center;font-size: 14px;">
-										<text v-if="cell.shoopNum>0" style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;">+{{cell.shoopNum}}</text>
-										<view v-else><uni-icons type="plus-filled" size="24"></uni-icons></view>
+									<view class="button" :class="cell.shoopNum>0?'curr':''" style="text-align: center;font-size: 14px;">
+										<view v-if="cell.shoopNum>0" style="display: flex;align-items: center;">
+											<view style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;" @click="inputDialogToggle(item,cell)">+{{cell.shoopNum}}</view>
+											<view style="width:30px;text-align: center;margin-left:5px;" @click="delShoop(cell)"><uni-icons style="color:#E20001;" type="clear" size="26"></uni-icons></view>
+										</view>
+										<view v-else @click="inputDialogToggle(item,cell)"><uni-icons type="plus-filled" size="24"></uni-icons></view>
 									</view>
 								</view>
 							</view>
@@ -94,15 +97,16 @@
 					<view style="font-size:18px;color:#333333;font-weight:900;line-height: 50px;text-align: center;">已选账单</view>
 					<view v-for="(item,key) in zd" :key="key">
 						<view class="flexCenter" style="justify-content: flex-start;align-items: center;padding: 10px;border-bottom: 1px solid #eee;">
-							<view style="margin-right: 15px;" class="flexCenter radius5px"><img src="/static/images/200.png" alt="51" style="width:60px;height:60px;"></view>
+							<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="item.thumb_img" alt="51" style="width:60px;height:60px;"></view>
 							<view style="flex:1;font-size:18px;font-weight:900;margin-right: 10px;">
 								<view>{{ item.name }}</view>
 								<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{ item.price }}</view>
 							</view>
-							<view style="flex:0;">
+							<view style="flex:0;align-items: center;" class="flexCenter">
 								<view class="button-text" @click="inputDialogToggle('',item)" style="text-align: center;font-size: 14px;">
 									<text style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;float: right;">+{{item.shoopNum}}</text>
 								</view>
+								<view style="width:33px;text-align: center;margin-left:10px;" @click="delShoop(item)"><uni-icons style="color:#E20001;" type="clear" size="28"></uni-icons></view>
 							</view>
 						</view>
 					</view>
@@ -121,6 +125,11 @@
 						<input type="digit" placeholder="请输入价格" v-model="shoopInputPrice" style="box-sizing: border-box;flex:1;font-size: 14px;border: 1px #eee solid;height: 40px;padding: 0 10px;border-radius: 5px;color: #555;">
 					</view>
 				</uni-popup-dialog>
+			</uni-popup>
+
+			<!-- 提示窗示例 -->
+			<uni-popup ref="alertDialog" type="dialog" class="alertDialog">
+				<uni-popup-dialog type="warn" cancelText="取消" confirmText="确认" title="注意" content="点击确认删除商品!" @confirm="dialogConfirm" @close="dialogClose"></uni-popup-dialog>
 			</uni-popup>
 	</view>
 </template>
@@ -214,6 +223,20 @@
 			change(e) {
 				// console.log('当前模式：' + e.type + ',状态：' + e.show);
 			},
+			delShoop(item) {
+				this.goodsObj = item;
+				this.$refs.alertDialog.open();
+			},
+			dialogConfirm() {
+				this.goodsObj.shoopNum = 0;
+				this.goodsObj.price = 0;
+				this.$delete(this.zd,this.goodsObj.id);
+				this.orderlistCount();
+				this.$refs.alertDialog.close();
+			},
+			dialogClose() {
+				console.log('点击关闭')
+			},
 			
 			// 关闭弹窗
 			clsoeDialog() {
@@ -233,7 +256,8 @@
 				uni.showLoading({mask:true,title: '加入账单中...'});
 
 
-				setTimeout(() => {
+				var s = setTimeout(() => {
+					clearTimeout(s);
 					uni.hideLoading()
 					this.goodsObj.shoopNum = this.shoopInputValue;
 					this.goodsObj.price = this.shoopInputPrice;
@@ -282,10 +306,10 @@
 			toOrder(res) { },
 
 			handelScrolltolower(e) {
-				console.log('handelScrolltolower', e)
+				// console.log('handelScrolltolower', e)
 			},
 			handelCategoryChange(e) {
-				console.log('handelCategoryChange', e)
+				// console.log('handelCategoryChange', e)
 			}
 		}
 	}
@@ -330,6 +354,7 @@
 				color: #666666;
 				background: #F4F5F6;
 				text-align: center;
+				height: 44px;
 				&:last-child{
 					// margin-bottom: 200upx;
 				}
@@ -341,7 +366,6 @@
 				position: relative;
 				color: #2982FF;
 				font-weight: 900;
-				font-size: 16px;
 				&::before {
 					content: "";
 					display: block;
@@ -435,6 +459,8 @@
 			}
 		}
 	}
+
+	
 	
 </style>
 
@@ -442,6 +468,8 @@
 	// /deep/ .uni-navbar__content  {height: 6vh;}
 	// /deep/ .uni-nav-bar-text {font-size: 16px;}
 	/deep/ .uni-dialog-content {padding: 0;flex-wrap: wrap;}
+	/deep/ .alertDialog .uni-dialog-content {margin: 30px 0;}
+	/deep/ .alertDialog .uni-dialog-content .uni-dialog-content-text {font-size: 17px;letter-spacing: 1px;}
 </style>
 
 <style>

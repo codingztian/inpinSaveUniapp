@@ -169,6 +169,7 @@
 				color: #666666;
 				background: #F4F5F6;
 				text-align: center;
+				height: 44px;
 				&:last-child{
 					// margin-bottom: 200upx;
 				}
@@ -180,7 +181,6 @@
 				position: relative;
 				color: #1660f5;
 				font-weight: 900;
-				font-size: 16px;
 				&::before {
 					content: "";
 					display: block;
