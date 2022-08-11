@@ -41,7 +41,7 @@
 									<view class="button" :class="cell.shoopNum>0?'curr':''" style="text-align: center;font-size: 14px;">
 										<view v-if="cell.shoopNum>0" style="display: flex;align-items: center;">
 											<view style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;" @click="inputDialogToggle(item,cell)">+{{cell.shoopNum}}</view>
-											<view style="width:30px;text-align: center;margin-left:5px;" @click="delShoop(cell)"><uni-icons style="color:#E20001;" type="clear" size="26"></uni-icons></view>
+											<view style="width:30px;text-align: center;margin-left:5px;" @click="delShoop(cell)"><uni-icons type="clear" size="26"></uni-icons></view>
 										</view>
 										<view v-else @click="inputDialogToggle(item,cell)"><uni-icons type="plus-filled" size="24"></uni-icons></view>
 									</view>
@@ -106,7 +106,7 @@
 								<view class="button-text" @click="inputDialogToggle('',item)" style="text-align: center;font-size: 14px;">
 									<text style="border: 1px solid #f3a73f;color:#f3a73f;border-radius: 5px;padding: 0 5px;float: right;">+{{item.shoopNum}}</text>
 								</view>
-								<view style="width:33px;text-align: center;margin-left:10px;" @click="delShoop(item)"><uni-icons style="color:#E20001;" type="clear" size="28"></uni-icons></view>
+								<view style="width:33px;text-align: center;margin-left:10px;" @click="delShoop(item)"><uni-icons type="clear" size="28"></uni-icons></view>
 							</view>
 						</view>
 					</view>
@@ -620,5 +620,6 @@
 		top: 4px;
 	}
 	.uniui-plus-filled {color: #f3a73f !important;}
+	.uniui-clear {color: #E20001 !important;}
 	
 </style>
