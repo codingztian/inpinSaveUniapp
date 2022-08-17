@@ -620,6 +620,6 @@
 		top: 4px;
 	}
 	.uniui-plus-filled {color: #f3a73f !important;}
-	.uniui-clear {color: #E20001 !important;}
+	.uniui-clear {color: #DDD !important;}
 	
 </style>
