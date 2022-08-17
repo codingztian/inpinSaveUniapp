@@ -85,16 +85,15 @@
 				userInfo: {}
 			}
 		},
-		onLoad() {
+		onShow() {
 			_this = this;
 			let userinfo = uni.getStorageSync('userinfo');
+			console.log(userinfo);
 			if (userinfo) {
 				this.login=true;
 				this.userInfo = userinfo;
 			}
 			this.getUserDetail();
-
-			console.log(uni.getStorageSync('userinfo'));
 		},
 		methods: {
 			loginout() {

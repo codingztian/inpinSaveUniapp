@@ -25,8 +25,8 @@
 						<text class="title u-line-2 title1">{{ item.name }}</text>
 						<text class="title u-line-2" style="color:#f3a73f;">{{item.num}}{{item.unit_name}}</text>
 						<text class="title u-line-2">{{ item.kucun }}{{item.unit_name}}</text>
-						<text class="title u-line-2">¥{{parseInt(item.price).toFixed(2)}}</text>
-						<text class="title u-line-2">¥{{(parseInt(item.price)*parseInt(item.num)).toFixed(2)}}</text>
+						<text class="title u-line-2">¥{{parseFloat(item.price).toFixed(2)}}</text>
+						<text class="title u-line-2">¥{{(parseFloat(item.price)*parseInt(item.num)).toFixed(2)}}</text>
 					</view>
 				</view>
 			</view>
