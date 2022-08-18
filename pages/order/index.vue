@@ -60,7 +60,7 @@
 											<text style="font-weight:900;">{{item.num}}</text>
 											<text style="display: inline-block;font-size:12px;color:#999999;margin-left:5px;">{{item.unit_name}}</text>
 										</view>
-										<view style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{parseInt(item.price).toFixed(2)}}</view>
+										<view v-if="crOrderIndex==2" style="color:#ff4c4b;font-size:13px;margin-top: 5px;">¥{{parseFloat(item.price).toFixed(2)}}</view>
 									</view>
 								</view>
 							</view>
