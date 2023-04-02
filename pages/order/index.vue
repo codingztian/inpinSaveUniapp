@@ -16,6 +16,9 @@
 			<view class="example-body">
 				<uni-datetime-picker v-model="range" type="daterange" @maskClick="maskClick" />
 			</view>
+			<view class="example-body" style="box-sizing: border-box;height: 5vh;margin: 1vh;border: 1px solid #ccc;border-radius: 2px;">
+				<u-input type="text" v-model="searchval" placeholder="请输入搜索名称" :clearable='false' @blur="searchFn"></u-input>
+			</view>
 		</view>
 
 		<view style="background: #fff;">
@@ -85,10 +88,12 @@
 				crOrderIndex: 2,
 				range: [],
 				orederList: [],
+				orederInitList: [],
 				page:1,
 				pageinfo:{},
 				status: 'loading',
 				lodingStatus: false,
+				searchval:"",
 			}
 		},
 		onShow(e) {
@@ -97,7 +102,7 @@
 			// console.log(e.crOrderIndex);
 			// if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
 			var startTime = new Date().getTime();
-			var sevenDay = 1000 * 60 * 60 * 24 * 1;
+			var sevenDay = 1000 * 60 * 60 * 24 * 1 * 360;
 			_this.range = [_this.timeTrans(new Date(startTime - sevenDay)),_this.timeTrans(new Date())];
 		},
 		watch: {
@@ -117,6 +122,25 @@
 					_this.getOrderInfo();
 				}
 			},
+			searchFn() {
+				if(!_this.searchval) return _this.orederList = _this.orederInitList;
+				_this.orederList = [];
+				_this.orederInitList.forEach(item => {
+					let gds = {
+						goods: [],
+						kehu: item.kehu,
+						order: item.order,
+						time: item.time
+					}
+					item.goods.forEach(ele => {
+						if(ele.name.indexOf(_this.searchval) != -1) {
+							gds.goods.push(ele);
+						}
+					});
+					if(gds.goods.length > 0) _this.orederList.push(gds);
+				});
+				console.log(_this.orederList);
+			},
 			getOrderInfo() {
 				let _this = this;
 				if(_this.page==1) uni.showLoading({mask:true,title: '订单载入中'});
@@ -129,7 +153,10 @@
 				},
 				res=> {
 					if(res.errno==0) {
-						_this.orederList = _this.orederList.concat(res.data.list);
+						_this.orederInitList = _this.orederInitList.concat(res.data.list);
+						// _this.orederList = JSON.parse(JSON.stringify(_this.orederInitList));
+						_this.orederList = _this.orederInitList;
+
 						_this.pageinfo = res.data.pageinfo;
 						console.log(_this.orederList);
 					}
@@ -140,14 +167,15 @@
 				});
 			},
 			lower(e) {
-				if(this.pageinfo.page==this.pageinfo.pageCount) return false;
-				if(this.lodingStatus) return false;
-				this.lodingStatus = true;
+				if(_this.pageinfo.page==_this.pageinfo.pageCount) return false;
+				if(_this.lodingStatus) return false;
+				_this.lodingStatus = true;
+				_this.searchval = "";
 				let set = setTimeout(() => {
 					clearTimeout(set);
-					this.page++;
-					this.lodingStatus = false;
-					this.getOrderInfo()
+					_this.page++;
+					_this.lodingStatus = false;
+					_this.getOrderInfo()
 				}, 3000)
 			},
 			timeTrans(date) {
@@ -166,9 +194,8 @@
 <style lang="less">
 	// /deep/ .uni-navbar__content  {height: 6vh;}
 	// /deep/ .uni-nav-bar-text {font-size: 16px;}
-	/deep/ .example-body .uni-date__x-input {height: 5vh;
-		// border-bottom: 1px solid #eee;
-	}
+	/deep/ .example-body .uni-date__x-input {height: 5vh;}
+	.example-body /deep/ .u-input__input { min-height: 5vh !important;padding-left: 10px; }
 	/deep/ .uni-date-x--border {border: none !important;border-radius: 0;box-sizing: border-box;}
 </style>
 <!-- border-bottom: 1px solid #dcdfe6;border-top: 1px solid #dcdfe6;
@@ -213,10 +240,10 @@
 		background: #2982FF;
 		color: #fff;
 	}
-	.example-body {}
+	.example-body {height: 5vh;}
 
 	.orderlist {
-		height: 77vh;
+		height: 70vh;
 		/* padding:8px 12px; */
 		overflow: auto;
 		box-sizing: border-box;
