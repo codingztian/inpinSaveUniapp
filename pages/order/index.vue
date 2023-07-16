@@ -16,9 +16,9 @@
 			<view class="example-body">
 				<uni-datetime-picker v-model="range" type="daterange" @maskClick="maskClick" />
 			</view>
-			<view class="example-body" style="box-sizing: border-box;height: 5vh;margin: 1vh;border: 1px solid #ccc;border-radius: 2px;">
+			<!-- <view class="example-body" style="box-sizing: border-box;height: 5vh;margin: 1vh;border: 1px solid #ccc;border-radius: 2px;">
 				<u-input type="text" v-model="searchval" placeholder="请输入搜索名称" :clearable='false' @blur="searchFn"></u-input>
-			</view>
+			</view> -->
 		</view>
 
 		<view style="background: #fff;">
@@ -102,7 +102,8 @@
 			// console.log(e.crOrderIndex);
 			// if(e.crOrderIndex) _this.crOrderIndex = e.crOrderIndex;
 			var startTime = new Date().getTime();
-			var sevenDay = 1000 * 60 * 60 * 24 * 1 * 360;
+			var sevenDay = 1000 * 60 * 60 * 24 * 1 * 30;
+			// var sevenDay = 1000 * 60 * 60 * 24 * 1;
 			_this.range = [_this.timeTrans(new Date(startTime - sevenDay)),_this.timeTrans(new Date())];
 		},
 		watch: {
@@ -118,6 +119,7 @@
 				if(val!=this.crOrderIndex) {
 					this.crOrderIndex = val;
 					this.orederList = [];
+					this.orederInitList = [];
 					this.page = 1;
 					_this.getOrderInfo();
 				}
@@ -243,7 +245,7 @@
 	.example-body {height: 5vh;}
 
 	.orderlist {
-		height: 70vh;
+		height: 77vh;
 		/* padding:8px 12px; */
 		overflow: auto;
 		box-sizing: border-box;

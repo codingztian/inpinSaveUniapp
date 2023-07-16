@@ -7,11 +7,14 @@
 						@clickLeft="clickLeft" />
 				</view>
 			</view>
+			<view class="example-body" style="box-sizing: border-box;height: 5vh;margin: 1vh;border: 1px solid #ccc;border-radius: 2px;">
+				<u-input type="text" v-model="searchval" placeholder="请输入搜索名称" :clearable='false' @blur="searchFn"></u-input>
+			</view>
 
 			<!-- 商品分类 -->
 			<view class="goods-select">
 				<cp-goods-select
-					height="83vh"
+					height="76vh"
 					:props="{label:'name',value:'id',children:'children'}" 
 					:options="list"
 					@scrolltolower="handelScrolltolower" 
@@ -19,7 +22,7 @@
 					<cp-goods-item v-for="(item,index) in list" :key="index" :category="item.name">
 						<view v-for="(cell,k) in item.children" :key="k" class="goods__item">
 							<view class="flexCenter">
-								<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="cell.thumb_img" alt="51" style="width:80px;height:80px;"></view>
+								<view style="margin-right: 15px;" class="flexCenter radius5px"><img :src="cell.thumb_img" alt="51" style="width:80px;height:80px;background: #F4F5F6;"></view>
 							</view>
 							<view style="border-bottom: 1px solid #EEEEEE;min-height: 110px;flex: 1;display: flex;flex-direction: column;justify-content: space-between;">
 								<view>
@@ -148,6 +151,7 @@
 				infodata:null,
 				
 				list: [],
+				listInitial: [],
 				specifications:[],
 
 				shoopInputValue:"",		// 商品数量vmodel
@@ -157,7 +161,9 @@
 
 				popupType:"",
 
-				zd:{}
+				zd:{},
+				
+				searchval:""
 
 			}
 		},
@@ -176,19 +182,38 @@
 			}
 		},
 		methods: {
+			searchFn() {
+				if(!_this.searchval) return _this.list = _this.listInitial;
+				_this.list = [];
+				_this.listInitial.forEach(item => {
+					let gds = {
+						children: [],
+						name: item.name,
+						id: item.id,
+					}
+					item.children.forEach(ele => {
+						if(ele.name.indexOf(_this.searchval) != -1) {
+							gds.children.push(ele);
+						}
+					});
+					if(gds.children.length > 0) _this.list.push(gds);
+				});
+				console.log(_this.list);
+			},
 			getGoodsData() {
 				_this._post_form('/api/goods/index', {}, (result) => {
 					if(result.errno==0) {
 						// result.data 对象格式 转为数组格式
-						_this.list = Object.values(result.data);
+						_this.listInitial = Object.values(result.data);
 					}
-					this.list.forEach(element => {
+					this.listInitial.forEach(element => {
 						// - this.$set(原数组, 索引值, 需要赋的值)
 						element.children.forEach(item => {
 							this.$set(item, "shoopNum", 0);
 							this.$set(item, "price", 0);
 						})
 					});
+					this.list = this.listInitial;
 					console.log(this.list);
 				});
 			},
@@ -321,6 +346,8 @@
 
 	.flexCenter {display: flex;}
 	.radius5px {border-radius: 5px;overflow: hidden;}
+	.goods-select /deep/ .cp-goods-select-category { background: #F4F5F6; }
+	.example-body /deep/ .u-input__input { min-height: 5vh !important;padding-left: 10px; }
 	
 	.cp-goods-select {
 		display: grid;

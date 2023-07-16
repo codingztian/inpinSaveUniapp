@@ -7,9 +7,13 @@
 			</view>
 		</view>
 
+		<view class="example-body" style="box-sizing: border-box;height: 5vh;margin: 1vh;border: 1px solid #ccc;border-radius: 2px;">
+			<u-input type="text" v-model="searchval" placeholder="请输入搜索名称" :clearable='false' @blur="searchFn"></u-input>
+		</view>
+		
 		<!-- 商品分类 -->
 		<cp-goods-select
-			height="90vh"  
+			height="82vh"  
 			:props="{label:'name',value:'id',children:'children'}" 
 			v-if="list"
 			:options="list" 
@@ -64,6 +68,9 @@
 				infodata:null,
 				
 				list: [],
+				listInitial: [],
+				
+				searchval:""
 				
 			}
 		},
@@ -74,6 +81,24 @@
 			_this.getGoodsData();
 		},
 		methods: {
+			searchFn() {
+				if(!_this.searchval) return _this.list = _this.listInitial;
+				_this.list = [];
+				_this.listInitial.forEach(item => {
+					let gds = {
+						children: [],
+						name: item.name,
+						id: item.id,
+					}
+					item.children.forEach(ele => {
+						if(ele.name.indexOf(_this.searchval) != -1) {
+							gds.children.push(ele);
+						}
+					});
+					if(gds.children.length > 0) _this.list.push(gds);
+				});
+				console.log(_this.list);
+			},
 			call(phone,kg) {
 				const res = uni.getSystemInfoSync();
 
@@ -108,8 +133,9 @@
 					console.log(result);
 					if(result.errno==0) {
 						// result.data 对象格式 转为数组格式
-						_this.list = Object.values(result.data);
+						_this.listInitial = Object.values(result.data);
 					}
+					this.list = this.listInitial;
 					console.log(_this.list);
 
 					// _this.data = result.data
@@ -126,6 +152,8 @@
 </script>
 
 <style lang="less">
+	.listlistlist /deep/ .cp-goods-select-category { background: #F4F5F6; }
+	.example-body /deep/ .u-input__input { min-height: 5vh !important;padding-left: 10px; }
 	// /deep/ .uni-navbar__content  {height: 6vh;}
 	// /deep/ .uni-nav-bar-text {font-size: 16px;}
 </style>
